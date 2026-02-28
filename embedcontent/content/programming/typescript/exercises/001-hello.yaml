@@ -1,0 +1,25 @@
+id: ts-basics-001
+title: "Hello, World!"
+difficulty: 1
+tags: [basics, output, deno]
+description: |
+  Write a TypeScript program that prints exactly:
+  Hello, World!
+  (This runs in Deno — no import needed for console)
+starter_code: |
+  // your code here
+test_cases:
+  - input: ""
+    expected_output: "Hello, World!\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+hints:
+  - "Use console.log() — it adds a newline automatically"
+solution: |
+  console.log("Hello, World!");
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: basics

@@ -1,0 +1,24 @@
+id: py-basics-001
+title: "Hello, World!"
+difficulty: 1
+tags: [basics, output]
+description: |
+  Write a Python program that prints exactly:
+  Hello, World!
+starter_code: |
+  # your code here
+test_cases:
+  - input: ""
+    expected_output: "Hello, World!\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Use the print() function"
+solution: |
+  print("Hello, World!")
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: basics

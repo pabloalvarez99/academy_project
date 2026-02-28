@@ -1,0 +1,41 @@
+id: go-basics-004
+title: "Fibonacci Sequence"
+difficulty: 2
+tags: [loops, math, sequences]
+description: |
+  Print the first 10 Fibonacci numbers, one per line.
+  Starting from: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34
+starter_code: |
+  package main
+
+  import "fmt"
+
+  func main() {
+      // print first 10 Fibonacci numbers
+  }
+test_cases:
+  - input: ""
+    expected_output: "0\n1\n1\n2\n3\n5\n8\n13\n21\n34\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Use two variables: a=0, b=1"
+  - "In each iteration: next = a + b, then a = b, b = next"
+solution: |
+  package main
+
+  import "fmt"
+
+  func main() {
+      a, b := 0, 1
+      for i := 0; i < 10; i++ {
+          fmt.Println(a)
+          a, b = b, a+b
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: basics
