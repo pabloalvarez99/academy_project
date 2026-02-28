@@ -1,0 +1,9 @@
+build/bin/
+node_modules/
+frontend/dist/
+frontend/node_modules/
+*.exe
+*.dll
+.DS_Store
+*.log
+~/.eks/
