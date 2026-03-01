@@ -1,0 +1,32 @@
+id: grammar-technical-001
+title: "Technical Terms and Acronyms"
+difficulty: 2
+tags: [capitalization, technical-writing, acronyms]
+description: |
+  In technical writing, proper nouns and acronyms must be capitalized correctly.
+  Common frameworks, languages, and standards have specific capitalization.
+
+  ORIGINAL: "the engineer used javascript and python to build a rest api.
+  the app runs on linux and connects to a postgres database using sql.
+  the team follows agile and uses github for version control."
+
+  Type the fully corrected version below.
+starter_code: "the engineer used javascript and python to build a rest api. the app runs on linux and connects to a postgres database using sql. the team follows agile and uses github for version control."
+hints:
+  - "JavaScript (not Javascript or javascript)"
+  - "Python (capital P — it's a proper noun)"
+  - "REST (acronym: Representational State Transfer)"
+  - "API (acronym: Application Programming Interface)"
+  - "Linux (proper noun)"
+  - "PostgreSQL or Postgres (proper noun)"
+  - "SQL (acronym: Structured Query Language)"
+  - "Agile (capitalize as a methodology name)"
+  - "GitHub (proper noun, camelCase)"
+  - "Capitalize 'the' at start of sentence"
+solution: "The engineer used JavaScript and Python to build a REST API. The app runs on Linux and connects to a Postgres database using SQL. The team follows Agile and uses GitHub for version control."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: capitalization
