@@ -1,0 +1,148 @@
+id: go-algorithms-016
+title: "Min Heap / Priority Queue"
+difficulty: 4
+tags: [heap, priority-queue, container-heap, data-structures]
+description: |
+  Implement a min-heap priority queue using Go's container/heap interface.
+
+  Read N tasks, each with a name and priority (lower number = higher priority).
+  Process them in priority order (min first). If priorities are equal, process
+  in the order they were inserted (stable).
+
+  Input: N, then N lines of "name priority"
+  Output: names in processing order, one per line
+starter_code: |
+  package main
+
+  import (
+      "container/heap"
+      "fmt"
+      "os"
+  )
+
+  type Task struct {
+      name     string
+      priority int
+      index    int // insertion order for stability
+  }
+
+  type MinHeap []Task
+
+  func (h MinHeap) Len() int { return len(h) }
+  func (h MinHeap) Less(i, j int) bool {
+      if h[i].priority != h[j].priority {
+          return h[i].priority < h[j].priority
+      }
+      return h[i].index < h[j].index
+  }
+  func (h MinHeap) Swap(i, j int) { h[i], h[j] = h[j], h[i] }
+
+  func (h *MinHeap) Push(x any) {
+      // TODO: append x.(Task) to *h
+  }
+
+  func (h *MinHeap) Pop() any {
+      // TODO: remove and return last element
+      return nil
+  }
+
+  func main() {
+      var n int
+      fmt.Fscan(os.Stdin, &n)
+
+      h := &MinHeap{}
+      heap.Init(h)
+
+      for i := 0; i < n; i++ {
+          var name string
+          var priority int
+          fmt.Fscan(os.Stdin, &name, &priority)
+          heap.Push(h, Task{name, priority, i})
+      }
+
+      for h.Len() > 0 {
+          task := heap.Pop(h).(Task)
+          fmt.Println(task.name)
+      }
+  }
+test_cases:
+  - input: "4\nalert 1\nbackup 3\nreport 2\ncritical 1\n"
+    expected_output: "alert\ncritical\nreport\nbackup\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "3\ntask-a 5\ntask-b 1\ntask-c 3\n"
+    expected_output: "task-b\ntask-c\ntask-a\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1\nonly 42\n"
+    expected_output: "only\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Push: *h = append(*h, x.(Task))"
+  - "Pop: old := *h; n := len(old); x := old[n-1]; *h = old[:n-1]; return x"
+  - "heap.Init, heap.Push, heap.Pop handle the heap property automatically"
+  - "Less returning h[i].index < h[j].index for equal priorities gives FIFO (stable) ordering"
+solution: |
+  package main
+
+  import (
+      "container/heap"
+      "fmt"
+      "os"
+  )
+
+  type Task struct {
+      name     string
+      priority int
+      index    int
+  }
+
+  type MinHeap []Task
+
+  func (h MinHeap) Len() int { return len(h) }
+  func (h MinHeap) Less(i, j int) bool {
+      if h[i].priority != h[j].priority {
+          return h[i].priority < h[j].priority
+      }
+      return h[i].index < h[j].index
+  }
+  func (h MinHeap) Swap(i, j int) { h[i], h[j] = h[j], h[i] }
+
+  func (h *MinHeap) Push(x any) {
+      *h = append(*h, x.(Task))
+  }
+
+  func (h *MinHeap) Pop() any {
+      old := *h
+      n := len(old)
+      x := old[n-1]
+      *h = old[:n-1]
+      return x
+  }
+
+  func main() {
+      var n int
+      fmt.Fscan(os.Stdin, &n)
+
+      h := &MinHeap{}
+      heap.Init(h)
+
+      for i := 0; i < n; i++ {
+          var name string
+          var priority int
+          fmt.Fscan(os.Stdin, &name, &priority)
+          heap.Push(h, Task{name, priority, i})
+      }
+
+      for h.Len() > 0 {
+          task := heap.Pop(h).(Task)
+          fmt.Println(task.name)
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: algorithms

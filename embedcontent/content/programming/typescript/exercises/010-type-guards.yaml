@@ -1,0 +1,128 @@
+id: ts-advanced-010
+title: "Type Guards and Discriminated Unions"
+difficulty: 3
+tags: [type-guards, discriminated-unions, narrowing, typescript, generics]
+description: |
+  Practice TypeScript's type narrowing with type guards and discriminated unions.
+
+  Define a discriminated union Shape:
+    Circle: { kind: "circle"; radius: number }
+    Rectangle: { kind: "rectangle"; width: number; height: number }
+    Triangle: { kind: "triangle"; base: number; height: number }
+
+  Implement:
+  1. area(shape: Shape): number — compute area using discriminated union
+  2. isCircle(shape: Shape): shape is Circle — custom type guard
+  3. describe(shape: Shape): string — "Circle r=N", "Rectangle WxH", "Triangle b=N h=N"
+
+  Read shapes from stdin, print area (2dp) then description per line.
+
+  Input: N, then N lines: "circle R" | "rectangle W H" | "triangle B H"
+starter_code: |
+  import * as readline from 'readline'
+
+  type Circle    = { kind: 'circle';    radius: number }
+  type Rectangle = { kind: 'rectangle'; width: number; height: number }
+  type Triangle  = { kind: 'triangle';  base: number;  height: number }
+  type Shape = Circle | Rectangle | Triangle
+
+  function area(shape: Shape): number {
+    switch (shape.kind) {
+      case 'circle':    return Math.PI * shape.radius ** 2
+      case 'rectangle': return shape.width * shape.height
+      case 'triangle':  return 0.5 * shape.base * shape.height
+    }
+  }
+
+  function isCircle(shape: Shape): shape is Circle {
+    return shape.kind === 'circle'
+  }
+
+  function describe(shape: Shape): string {
+    if (isCircle(shape)) return `Circle r=${shape.radius}`
+    if (shape.kind === 'rectangle') return `Rectangle ${shape.width}x${shape.height}`
+    return `Triangle b=${shape.base} h=${shape.height}`
+  }
+
+  const rl = readline.createInterface({ input: process.stdin })
+  const lines: string[] = []
+  rl.on('line', l => lines.push(l.trim()))
+  rl.on('close', () => {
+    const n = parseInt(lines[0])
+    for (let i = 1; i <= n; i++) {
+      const parts = lines[i].split(' ')
+      let shape: Shape
+      if (parts[0] === 'circle') {
+        shape = { kind: 'circle', radius: parseFloat(parts[1]) }
+      } else if (parts[0] === 'rectangle') {
+        shape = { kind: 'rectangle', width: parseFloat(parts[1]), height: parseFloat(parts[2]) }
+      } else {
+        shape = { kind: 'triangle', base: parseFloat(parts[1]), height: parseFloat(parts[2]) }
+      }
+      console.log(`${area(shape).toFixed(2)} ${describe(shape)}`)
+    }
+  })
+test_cases:
+  - input: "3\ncircle 5\nrectangle 4 6\ntriangle 3 8\n"
+    expected_output: "78.54 Circle r=5\n24.00 Rectangle 4x6\n12.00 Triangle b=3 h=8\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1\ncircle 1\n"
+    expected_output: "3.14 Circle r=1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Discriminated union: each variant has a 'kind' literal type — switch exhaustively"
+  - "Type guard 'shape is Circle' narrows the type in the if-branch"
+  - "switch on shape.kind gives TypeScript exhaustiveness checking (add default: never)"
+  - "Math.PI * r**2 for circle area; 0.5*base*height for triangle"
+solution: |
+  import * as readline from 'readline'
+
+  type Circle    = { kind: 'circle';    radius: number }
+  type Rectangle = { kind: 'rectangle'; width: number; height: number }
+  type Triangle  = { kind: 'triangle';  base: number;  height: number }
+  type Shape = Circle | Rectangle | Triangle
+
+  function area(shape: Shape): number {
+    switch (shape.kind) {
+      case 'circle':    return Math.PI * shape.radius ** 2
+      case 'rectangle': return shape.width * shape.height
+      case 'triangle':  return 0.5 * shape.base * shape.height
+    }
+  }
+
+  function isCircle(shape: Shape): shape is Circle {
+    return shape.kind === 'circle'
+  }
+
+  function describe(shape: Shape): string {
+    if (isCircle(shape)) return `Circle r=${shape.radius}`
+    if (shape.kind === 'rectangle') return `Rectangle ${shape.width}x${shape.height}`
+    return `Triangle b=${shape.base} h=${shape.height}`
+  }
+
+  const rl = readline.createInterface({ input: process.stdin })
+  const lines: string[] = []
+  rl.on('line', l => lines.push(l.trim()))
+  rl.on('close', () => {
+    const n = parseInt(lines[0])
+    for (let i = 1; i <= n; i++) {
+      const parts = lines[i].split(' ')
+      let shape: Shape
+      if (parts[0] === 'circle') {
+        shape = { kind: 'circle', radius: parseFloat(parts[1]) }
+      } else if (parts[0] === 'rectangle') {
+        shape = { kind: 'rectangle', width: parseFloat(parts[1]), height: parseFloat(parts[2]) }
+      } else {
+        shape = { kind: 'triangle', base: parseFloat(parts[1]), height: parseFloat(parts[2]) }
+      }
+      console.log(`${area(shape).toFixed(2)} ${describe(shape)}`)
+    }
+  })
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

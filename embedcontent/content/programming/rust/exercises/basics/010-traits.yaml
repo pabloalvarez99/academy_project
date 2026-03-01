@@ -1,0 +1,182 @@
+id: rust-basics-010
+title: "Traits and Generics"
+difficulty: 3
+tags: [traits, generics, polymorphism, display, rust]
+description: |
+  Practice Rust traits for defining shared behavior.
+
+  Define a trait Describable with method describe(&self) -> String.
+
+  Implement for three structs:
+    Point { x: f64, y: f64 }       → "Point(x, y)" (1dp each)
+    Circle { center: Point, radius: f64 } → "Circle at (x, y) r=N" (1dp)
+    Color { r: u8, g: u8, b: u8 }  → "Color rgb(R, G, B)"
+
+  Write a generic function print_all<T: Describable>(items: &[T]) that
+  calls describe() on each item and prints it.
+
+  Read N lines: "point X Y" | "circle X Y R" | "color R G B"
+  Print each description on its own line.
+starter_code: |
+  use std::io::{self, BufRead};
+
+  trait Describable {
+      fn describe(&self) -> String;
+  }
+
+  struct Point  { x: f64, y: f64 }
+  struct Circle { center: Point, radius: f64 }
+  struct Color  { r: u8, g: u8, b: u8 }
+
+  impl Describable for Point {
+      fn describe(&self) -> String {
+          format!("Point({:.1}, {:.1})", self.x, self.y)
+      }
+  }
+
+  impl Describable for Circle {
+      fn describe(&self) -> String {
+          format!("Circle at ({:.1}, {:.1}) r={:.1}", self.center.x, self.center.y, self.radius)
+      }
+  }
+
+  impl Describable for Color {
+      fn describe(&self) -> String {
+          format!("Color rgb({}, {}, {})", self.r, self.g, self.b)
+      }
+  }
+
+  fn print_all<T: Describable>(items: &[T]) {
+      for item in items {
+          println!("{}", item.describe());
+      }
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let lines: Vec<String> = stdin.lock().lines()
+          .map(|l| l.unwrap())
+          .filter(|l| !l.is_empty())
+          .collect();
+
+      for line in &lines {
+          let parts: Vec<&str> = line.split_whitespace().collect();
+          match parts[0] {
+              "point" => {
+                  let p = Point {
+                      x: parts[1].parse().unwrap(),
+                      y: parts[2].parse().unwrap(),
+                  };
+                  print_all(&[p]);
+              }
+              "circle" => {
+                  let c = Circle {
+                      center: Point {
+                          x: parts[1].parse().unwrap(),
+                          y: parts[2].parse().unwrap(),
+                      },
+                      radius: parts[3].parse().unwrap(),
+                  };
+                  print_all(&[c]);
+              }
+              "color" => {
+                  let col = Color {
+                      r: parts[1].parse().unwrap(),
+                      g: parts[2].parse().unwrap(),
+                      b: parts[3].parse().unwrap(),
+                  };
+                  print_all(&[col]);
+              }
+              _ => {}
+          }
+      }
+  }
+test_cases:
+  - input: "point 3.5 -2.0\ncircle 0 0 5\ncolor 255 128 0\n"
+    expected_output: "Point(3.5, -2.0)\nCircle at (0.0, 0.0) r=5.0\nColor rgb(255, 128, 0)\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "point 1 1\ncolor 0 0 0\n"
+    expected_output: "Point(1.0, 1.0)\nColor rgb(0, 0, 0)\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+hints:
+  - "trait Describable { fn describe(&self) -> String; } — defines the interface"
+  - "impl Describable for Point { ... } — provides the implementation"
+  - "fn print_all<T: Describable>(items: &[T]) — T bound ensures describe() is available"
+  - "format!() with {:.1} formats f64 to 1 decimal place"
+  - "Traits are Rust's version of interfaces — zero-cost abstraction at compile time"
+solution: |
+  use std::io::{self, BufRead};
+
+  trait Describable {
+      fn describe(&self) -> String;
+  }
+
+  struct Point  { x: f64, y: f64 }
+  struct Circle { center: Point, radius: f64 }
+  struct Color  { r: u8, g: u8, b: u8 }
+
+  impl Describable for Point {
+      fn describe(&self) -> String {
+          format!("Point({:.1}, {:.1})", self.x, self.y)
+      }
+  }
+
+  impl Describable for Circle {
+      fn describe(&self) -> String {
+          format!("Circle at ({:.1}, {:.1}) r={:.1}", self.center.x, self.center.y, self.radius)
+      }
+  }
+
+  impl Describable for Color {
+      fn describe(&self) -> String {
+          format!("Color rgb({}, {}, {})", self.r, self.g, self.b)
+      }
+  }
+
+  fn print_all<T: Describable>(items: &[T]) {
+      for item in items {
+          println!("{}", item.describe());
+      }
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let lines: Vec<String> = stdin.lock().lines()
+          .map(|l| l.unwrap())
+          .filter(|l| !l.is_empty())
+          .collect();
+
+      for line in &lines {
+          let parts: Vec<&str> = line.split_whitespace().collect();
+          match parts[0] {
+              "point" => {
+                  let p = Point { x: parts[1].parse().unwrap(), y: parts[2].parse().unwrap() };
+                  print_all(&[p]);
+              }
+              "circle" => {
+                  let c = Circle {
+                      center: Point { x: parts[1].parse().unwrap(), y: parts[2].parse().unwrap() },
+                      radius: parts[3].parse().unwrap(),
+                  };
+                  print_all(&[c]);
+              }
+              "color" => {
+                  let col = Color {
+                      r: parts[1].parse().unwrap(),
+                      g: parts[2].parse().unwrap(),
+                      b: parts[3].parse().unwrap(),
+                  };
+                  print_all(&[col]);
+              }
+              _ => {}
+          }
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: basics

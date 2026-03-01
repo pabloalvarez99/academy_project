@@ -1,0 +1,155 @@
+id: py-advanced-003
+title: "Context Managers"
+difficulty: 3
+tags: [context-managers, with-statement, contextlib, resource-management, python]
+description: |
+  Implement custom context managers for resource management.
+
+  1. ManagedFile: context manager class with __enter__/__exit__
+     Opens a file on enter, closes it on exit even if an exception occurs.
+     __exit__ should suppress FileNotFoundError (return True), propagate others.
+
+  2. timer(): context manager using @contextlib.contextmanager
+     Yields and prints elapsed time in ms on exit.
+
+  3. temp_directory(): context manager that creates a temp dir, yields its path,
+     and removes it (with all contents) on exit.
+
+  Input format:
+    managed name   → open file "name", write "opened: name", print contents
+    timer          → run a busy-loop (sum 0..999999), print "done: <ms>ms" (int)
+    tempdir        → create file "test.txt" in temp dir, print "exists: True/False"
+starter_code: |
+  import sys
+  import os
+  import time
+  import shutil
+  import tempfile
+  import contextlib
+
+  class ManagedFile:
+      def __init__(self, path, mode='r'):
+          self.path = path
+          self.mode = mode
+          self.file = None
+
+      def __enter__(self):
+          self.file = open(self.path, self.mode)
+          return self.file
+
+      def __exit__(self, exc_type, exc_val, exc_tb):
+          if self.file:
+              self.file.close()
+          if exc_type is FileNotFoundError:
+              return True  # suppress
+          return False
+
+  @contextlib.contextmanager
+  def timer():
+      start = time.time()
+      yield
+      elapsed = int((time.time() - start) * 1000)
+      print(f"done: {elapsed}ms")
+
+  @contextlib.contextmanager
+  def temp_directory():
+      path = tempfile.mkdtemp()
+      try:
+          yield path
+      finally:
+          shutil.rmtree(path, ignore_errors=True)
+
+  cmd = sys.stdin.read().split()
+  if cmd[0] == 'managed':
+      name = cmd[1]
+      # Write a file then read it back via ManagedFile
+      with open(name, 'w') as f:
+          f.write(f"opened: {name}")
+      with ManagedFile(name) as f:
+          print(f.read())
+      os.remove(name)
+  elif cmd[0] == 'timer':
+      with timer():
+          total = sum(range(1000000))
+  elif cmd[0] == 'tempdir':
+      with temp_directory() as d:
+          fpath = os.path.join(d, 'test.txt')
+          open(fpath, 'w').close()
+          print(f"exists: {os.path.exists(fpath)}")
+test_cases:
+  - input: "managed hello.txt\n"
+    expected_output: "opened: hello.txt\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "tempdir\n"
+    expected_output: "exists: True\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "__enter__ returns the resource (self or self.file); __exit__ receives exception info"
+  - "Return True from __exit__ to suppress an exception, False/None to propagate"
+  - "@contextlib.contextmanager: code before yield = __enter__, after yield = __exit__"
+  - "Use try/finally in contextmanager to guarantee cleanup even on exception"
+  - "tempfile.mkdtemp() creates a real temporary directory; shutil.rmtree removes it"
+solution: |
+  import sys
+  import os
+  import time
+  import shutil
+  import tempfile
+  import contextlib
+
+  class ManagedFile:
+      def __init__(self, path, mode='r'):
+          self.path = path
+          self.mode = mode
+          self.file = None
+
+      def __enter__(self):
+          self.file = open(self.path, self.mode)
+          return self.file
+
+      def __exit__(self, exc_type, exc_val, exc_tb):
+          if self.file:
+              self.file.close()
+          if exc_type is FileNotFoundError:
+              return True
+          return False
+
+  @contextlib.contextmanager
+  def timer():
+      start = time.time()
+      yield
+      elapsed = int((time.time() - start) * 1000)
+      print(f"done: {elapsed}ms")
+
+  @contextlib.contextmanager
+  def temp_directory():
+      path = tempfile.mkdtemp()
+      try:
+          yield path
+      finally:
+          shutil.rmtree(path, ignore_errors=True)
+
+  cmd = sys.stdin.read().split()
+  if cmd[0] == 'managed':
+      name = cmd[1]
+      with open(name, 'w') as f:
+          f.write(f"opened: {name}")
+      with ManagedFile(name) as f:
+          print(f.read())
+      os.remove(name)
+  elif cmd[0] == 'timer':
+      with timer():
+          total = sum(range(1000000))
+  elif cmd[0] == 'tempdir':
+      with temp_directory() as d:
+          fpath = os.path.join(d, 'test.txt')
+          open(fpath, 'w').close()
+          print(f"exists: {os.path.exists(fpath)}")
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: algorithms

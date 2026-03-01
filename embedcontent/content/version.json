@@ -1,10 +1,10 @@
 {
   "version": "1.0.0",
-  "build": 20,
+  "build": 21,
   "modules": {
     "grammar":     { "version": "1.3.0", "exercise_count": 12 },
-    "programming": { "version": "2.4.0", "exercise_count": 84 },
-    "sql":         { "version": "1.9.0", "exercise_count": 24 },
-    "knowledge":   { "version": "2.3.0", "article_count": 24 }
+    "programming": { "version": "2.5.0", "exercise_count": 89 },
+    "sql":         { "version": "2.0.0", "exercise_count": 26 },
+    "knowledge":   { "version": "2.5.0", "article_count": 27 }
   }
 }

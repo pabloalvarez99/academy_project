@@ -1,0 +1,89 @@
+id: sql-join-005
+title: "Self Join — Employee Hierarchy"
+difficulty: 3
+tags: [self-join, hierarchy, manager, employees]
+description: |
+  A self-join joins a table to itself to query hierarchical data.
+
+  Schema:
+    employees(id, name, manager_id)  -- manager_id references employees.id (NULL for CEO)
+
+  Tasks (run all three):
+  1. List each employee with their manager's name.
+     Employees with no manager show NULL for manager_name.
+     Order by employee id.
+
+  2. List all employees who directly report to 'Alice'.
+
+  3. Count how many direct reports each manager has.
+     Only show managers (employees who have at least one report).
+     Order by direct_reports DESC, manager_name ASC.
+
+  Separate each result set with a blank line.
+setup_sql: |
+  CREATE TABLE employees (
+      id         INTEGER PRIMARY KEY,
+      name       TEXT NOT NULL,
+      manager_id INTEGER REFERENCES employees(id)
+  );
+  INSERT INTO employees VALUES
+      (1, 'Alice',   NULL),
+      (2, 'Bob',     1),
+      (3, 'Carol',   1),
+      (4, 'Dave',    2),
+      (5, 'Eve',     2),
+      (6, 'Frank',   3),
+      (7, 'Grace',   3),
+      (8, 'Heidi',   3);
+solution_sql: |
+  SELECT e.name AS employee, m.name AS manager_name
+  FROM employees e
+  LEFT JOIN employees m ON e.manager_id = m.id
+  ORDER BY e.id;
+
+  SELECT e.name
+  FROM employees e
+  JOIN employees m ON e.manager_id = m.id
+  WHERE m.name = 'Alice'
+  ORDER BY e.name;
+
+  SELECT m.name AS manager_name, COUNT(*) AS direct_reports
+  FROM employees e
+  JOIN employees m ON e.manager_id = m.id
+  GROUP BY m.id, m.name
+  ORDER BY direct_reports DESC, manager_name ASC;
+expected_output: |
+  employee|manager_name
+  Alice|
+  Bob|Alice
+  Carol|Alice
+  Dave|Bob
+  Eve|Bob
+  Frank|Carol
+  Grace|Carol
+  Heidi|Carol
+
+  name
+  Bob
+  Carol
+
+  manager_name|direct_reports
+  Carol|3
+  Alice|2
+  Bob|2
+test_cases:
+  - input: ""
+    expected_output: "employee|manager_name\nAlice|\nBob|Alice\nCarol|Alice\nDave|Bob\nEve|Bob\nFrank|Carol\nGrace|Carol\nHeidi|Carol\n\nname\nBob\nCarol\n\nmanager_name|direct_reports\nCarol|3\nAlice|2\nBob|2\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Self-join: FROM employees e LEFT JOIN employees m ON e.manager_id = m.id"
+  - "LEFT JOIN preserves Alice (CEO) even though her manager_id is NULL"
+  - "For direct reports: JOIN (not LEFT JOIN) then WHERE m.name = 'Alice'"
+  - "COUNT(*) with GROUP BY m.id counts rows per manager"
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: sql
+  language: sql
+  category: join
