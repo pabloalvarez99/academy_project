@@ -1,0 +1,58 @@
+id: ts-algorithms-001
+title: "Two Sum"
+difficulty: 2
+tags: [algorithms, map, arrays]
+description: |
+  Read N integers and a target T. Find two indices i and j (i < j) such that
+  nums[i] + nums[j] == T. Print "i j". Guaranteed one solution.
+
+  Example:
+    Input:
+      4
+      2 7 11 15
+      9
+    Output: 0 1
+starter_code: |
+  const lines: string[] = [];
+  process.stdin.on('data', (d) => lines.push(...d.toString().split('\n').filter(Boolean)));
+  process.stdin.on('end', () => {
+      const n = parseInt(lines[0]);
+      const nums = lines[1].trim().split(' ').map(Number);
+      const target = parseInt(lines[2]);
+      // find two indices that sum to target
+  });
+test_cases:
+  - input: "4\n2 7 11 15\n9\n"
+    expected_output: "0 1\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+  - input: "3\n3 2 4\n6\n"
+    expected_output: "1 2\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+hints:
+  - "Use a Map<number, number> storing value → index"
+  - "For each element, check if (target - element) exists in the map"
+solution: |
+  const lines: string[] = [];
+  process.stdin.on('data', (d) => lines.push(...d.toString().split('\n').filter(Boolean)));
+  process.stdin.on('end', () => {
+      const n = parseInt(lines[0]);
+      const nums = lines[1].trim().split(' ').map(Number);
+      const target = parseInt(lines[2]);
+      const seen = new Map<number, number>();
+      for (let i = 0; i < n; i++) {
+          const complement = target - nums[i];
+          if (seen.has(complement)) {
+              console.log(seen.get(complement), i);
+              break;
+          }
+          seen.set(nums[i], i);
+      }
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

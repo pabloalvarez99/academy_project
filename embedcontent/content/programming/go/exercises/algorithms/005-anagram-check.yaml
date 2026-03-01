@@ -1,0 +1,103 @@
+id: go-algorithms-005
+title: "Anagram Check"
+difficulty: 2
+tags: [strings, hashmap, sorting]
+description: |
+  Read two words from stdin (one per line). Print "true" if they are anagrams of each
+  other (contain the same characters with the same frequencies, case-insensitive),
+  or "false" otherwise.
+
+  Examples:
+    listen / silent → true
+    hello  / world  → false
+    Astronomer / Moon starer → true (ignore spaces)
+starter_code: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+  )
+
+  func isAnagram(a, b string) bool {
+      // implement anagram check
+      return false
+  }
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      a, _ := reader.ReadString('\n')
+      b, _ := reader.ReadString('\n')
+      fmt.Println(isAnagram(a, b))
+  }
+test_cases:
+  - input: "listen\nsilent\n"
+    expected_output: "true\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "hello\nworld\n"
+    expected_output: "false\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "Astronomer\nMoon starer\n"
+    expected_output: "true\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Normalize: lowercase and remove spaces"
+  - "Use a map[rune]int to count character frequencies"
+  - "Increment for first word, decrement for second, check all are zero"
+solution: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strings"
+      "unicode"
+  )
+
+  func normalize(s string) string {
+      s = strings.ToLower(strings.TrimSpace(s))
+      var b strings.Builder
+      for _, r := range s {
+          if !unicode.IsSpace(r) {
+              b.WriteRune(r)
+          }
+      }
+      return b.String()
+  }
+
+  func isAnagram(a, b string) bool {
+      a = normalize(a)
+      b = normalize(b)
+      if len(a) != len(b) {
+          return false
+      }
+      counts := make(map[rune]int)
+      for _, r := range a {
+          counts[r]++
+      }
+      for _, r := range b {
+          counts[r]--
+          if counts[r] < 0 {
+              return false
+          }
+      }
+      return true
+  }
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      a, _ := reader.ReadString('\n')
+      b, _ := reader.ReadString('\n')
+      fmt.Println(isAnagram(a, b))
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: algorithms
