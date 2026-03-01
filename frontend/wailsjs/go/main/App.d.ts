@@ -45,6 +45,8 @@ export function Login(arg1:string,arg2:string):Promise<user.User>;
 
 export function Logout():Promise<void>;
 
+export function ResetProgress():Promise<void>;
+
 export function RunFreeSQL(arg1:string,arg2:string):Promise<sqllab.QueryResult>;
 
 export function SearchContent(arg1:string):Promise<Array<search.SearchResult>>;

@@ -74,6 +74,10 @@ export function Logout() {
   return window['go']['main']['App']['Logout']();
 }
 
+export function ResetProgress() {
+  return window['go']['main']['App']['ResetProgress']();
+}
+
 export function RunFreeSQL(arg1, arg2) {
   return window['go']['main']['App']['RunFreeSQL'](arg1, arg2);
 }

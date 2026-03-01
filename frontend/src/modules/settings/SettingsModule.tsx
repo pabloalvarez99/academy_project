@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { CheckRuntimes, GetContentVersion } from '../../../wailsjs/go/main/App'
+import { CheckRuntimes, GetContentVersion, ResetProgress } from '../../../wailsjs/go/main/App'
 import { content } from '../../../wailsjs/go/models'
 import { useUserStore } from '../../stores/userStore'
 
@@ -18,6 +18,16 @@ export function SettingsModule() {
   const [runtimes, setRuntimes] = useState<Record<string, boolean>>({})
   const [version, setVersion] = useState<content.ContentVersion | null>(null)
   const [loading, setLoading] = useState(true)
+  const [resetState, setResetState] = useState<'idle' | 'confirm' | 'done'>('idle')
+
+  async function handleReset() {
+    if (resetState === 'idle') { setResetState('confirm'); return }
+    if (resetState === 'confirm') {
+      await ResetProgress().catch(() => {})
+      setResetState('done')
+      setTimeout(() => setResetState('idle'), 3000)
+    }
+  }
 
   useEffect(() => {
     Promise.all([
@@ -115,6 +125,36 @@ export function SettingsModule() {
           </div>
         </section>
       )}
+
+      {/* Danger zone */}
+      <section>
+        <h2 className="section-header text-red-400">Danger Zone</h2>
+        <div className="card border-red-900/50 space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-200">Reset All Progress</p>
+              <p className="text-xs text-gray-500 mt-0.5">Delete all attempts, streaks, and achievements for your profile</p>
+            </div>
+            <button
+              onClick={handleReset}
+              className={`btn text-xs shrink-0 ml-4 ${
+                resetState === 'done'
+                  ? 'bg-green-900/40 text-green-400 border border-green-800 cursor-default'
+                  : resetState === 'confirm'
+                  ? 'bg-red-600 hover:bg-red-700 text-white'
+                  : 'bg-surface-700 text-red-400 hover:bg-red-900/40 border border-red-900/50'
+              }`}
+            >
+              {resetState === 'done' ? '✓ Reset' : resetState === 'confirm' ? '⚠ Confirm?' : 'Reset'}
+            </button>
+          </div>
+          {resetState === 'confirm' && (
+            <p className="text-xs text-red-400 border-t border-red-900/30 pt-2">
+              Click "Confirm?" again to permanently delete all your progress. This cannot be undone.
+            </p>
+          )}
+        </div>
+      </section>
 
       {/* About */}
       <section>

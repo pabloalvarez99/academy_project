@@ -89,6 +89,16 @@ func (s *Service) GetStats(userID string) (*UserStats, error) {
 	return stats, nil
 }
 
+// ResetProgress deletes all attempts, progress rows, and achievements for a user.
+func (s *Service) ResetProgress(userID string) error {
+	for _, table := range []string{"attempts", "progress", "achievements"} {
+		if _, err := s.db.Exec("DELETE FROM "+table+" WHERE user_id=?", userID); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // ListAchievements returns all achievements with earned status for a user.
 func (s *Service) ListAchievements(userID string) []Achievement {
 	earned := make(map[string]int64)

@@ -254,6 +254,14 @@ func (a *App) GetAchievements() []progress.Achievement {
 	return a.progress.ListAchievements(a.currentUser)
 }
 
+// ResetProgress deletes all progress data for the active user.
+func (a *App) ResetProgress() error {
+	if a.currentUser == "" {
+		return nil
+	}
+	return a.progress.ResetProgress(a.currentUser)
+}
+
 // ── Search ────────────────────────────────────────────────────────────────────
 
 // SearchContent performs a full-text search across all content.
