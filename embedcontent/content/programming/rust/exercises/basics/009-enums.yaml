@@ -1,0 +1,116 @@
+id: rust-basics-009
+title: "Enums and Pattern Matching"
+difficulty: 3
+tags: [enums, pattern-matching, match, rust]
+description: |
+  Model a simple calculator using Rust enums and pattern matching.
+  Define an Operation enum with variants: Add(f64,f64), Sub(f64,f64), Mul(f64,f64), Div(f64,f64)
+
+  Read N operations (one per line: add/sub/mul/div a b) and print each result (2 decimal places).
+  For division by zero, print "error: division by zero".
+
+  Example:
+    add 3 4    → 7.00
+    div 10 0   → error: division by zero
+    mul 2.5 4  → 10.00
+starter_code: |
+  use std::io::{self, BufRead};
+
+  enum Operation {
+      Add(f64, f64),
+      Sub(f64, f64),
+      Mul(f64, f64),
+      Div(f64, f64),
+  }
+
+  fn evaluate(op: Operation) -> Result<f64, String> {
+      match op {
+          Operation::Add(a, b) => Ok(a + b),
+          Operation::Sub(a, b) => todo!(),
+          Operation::Mul(a, b) => todo!(),
+          Operation::Div(a, b) => todo!(), // return Err for b==0
+      }
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      for line in stdin.lock().lines() {
+          let line = line.unwrap();
+          let parts: Vec<&str> = line.trim().split_whitespace().collect();
+          if parts.len() < 3 { continue; }
+          let a: f64 = parts[1].parse().unwrap();
+          let b: f64 = parts[2].parse().unwrap();
+          let op = match parts[0] {
+              "add" => Operation::Add(a, b),
+              "sub" => Operation::Sub(a, b),
+              "mul" => Operation::Mul(a, b),
+              _     => Operation::Div(a, b),
+          };
+          match evaluate(op) {
+              Ok(v)  => println!("{:.2}", v),
+              Err(e) => println!("error: {}", e),
+          }
+      }
+  }
+test_cases:
+  - input: "add 3 4\ndiv 10 0\nmul 2.5 4\nsub 10 3\n"
+    expected_output: "7.00\nerror: division by zero\n10.00\n7.00\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "div 7 2\n"
+    expected_output: "3.50\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+hints:
+  - "Sub: Ok(a - b), Mul: Ok(a * b)"
+  - "Div: if b == 0.0 { Err(\"division by zero\".to_string()) } else { Ok(a / b) }"
+  - "match exhaustively covers all enum variants — compiler enforces completeness"
+  - "Enums can hold data (tuple variants like Add(f64,f64)) — this is an algebraic data type"
+solution: |
+  use std::io::{self, BufRead};
+
+  enum Operation {
+      Add(f64, f64),
+      Sub(f64, f64),
+      Mul(f64, f64),
+      Div(f64, f64),
+  }
+
+  fn evaluate(op: Operation) -> Result<f64, String> {
+      match op {
+          Operation::Add(a, b) => Ok(a + b),
+          Operation::Sub(a, b) => Ok(a - b),
+          Operation::Mul(a, b) => Ok(a * b),
+          Operation::Div(a, b) => {
+              if b == 0.0 { Err("division by zero".to_string()) }
+              else { Ok(a / b) }
+          }
+      }
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      for line in stdin.lock().lines() {
+          let line = line.unwrap();
+          let parts: Vec<&str> = line.trim().split_whitespace().collect();
+          if parts.len() < 3 { continue; }
+          let a: f64 = parts[1].parse().unwrap();
+          let b: f64 = parts[2].parse().unwrap();
+          let op = match parts[0] {
+              "add" => Operation::Add(a, b),
+              "sub" => Operation::Sub(a, b),
+              "mul" => Operation::Mul(a, b),
+              _     => Operation::Div(a, b),
+          };
+          match evaluate(op) {
+              Ok(v)  => println!("{:.2}", v),
+              Err(e) => println!("error: {}", e),
+          }
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: basics

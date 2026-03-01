@@ -1,0 +1,86 @@
+id: ts-algorithms-007
+title: "Async/Await and Promise Chaining"
+difficulty: 3
+tags: [async, promises, typescript, concurrency]
+description: |
+  Practice TypeScript async patterns. Simulate async operations using setTimeout
+  wrapped in Promises.
+
+  Implement:
+  1. delay(ms): Promise that resolves after ms milliseconds
+  2. fetchUser(id): returns Promise<{id, name}> — resolves after 10ms
+  3. fetchOrders(userId): returns Promise<string[]> — resolves after 10ms
+  4. Run both in parallel with Promise.all, print "user: NAME, orders: N"
+
+  Input: user id (integer)
+  Output: "user: User{id}, orders: 3"  (example for id=1)
+starter_code: |
+  const readline = require('readline');
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', async (line: string) => {
+      rl.close();
+      const id = parseInt(line.trim());
+
+      function delay(ms: number): Promise<void> {
+          return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      async function fetchUser(id: number): Promise<{id: number, name: string}> {
+          await delay(10);
+          return { id, name: `User${id}` };
+      }
+
+      async function fetchOrders(userId: number): Promise<string[]> {
+          await delay(10);
+          // return 3 mock orders per user
+          return [`order-${userId}-1`, `order-${userId}-2`, `order-${userId}-3`];
+      }
+
+      // fetch both in parallel, then print result
+      const [user, orders] = await Promise.all([fetchUser(id), fetchOrders(id)]);
+      console.log(`user: ${user.name}, orders: ${orders.length}`);
+  });
+test_cases:
+  - input: "1\n"
+    expected_output: "user: User1, orders: 3\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+  - input: "42\n"
+    expected_output: "user: User42, orders: 3\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+hints:
+  - "Promise.all([p1, p2]) runs both in parallel and resolves when both complete"
+  - "async/await is syntactic sugar over Promises — no .then() chains needed"
+  - "delay wraps setTimeout in a new Promise: resolve is called when timer fires"
+  - "Both fetches start simultaneously — total time ≈ 10ms (not 20ms)"
+solution: |
+  const readline = require('readline');
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', async (line: string) => {
+      rl.close();
+      const id = parseInt(line.trim());
+
+      function delay(ms: number): Promise<void> {
+          return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      async function fetchUser(id: number): Promise<{id: number, name: string}> {
+          await delay(10);
+          return { id, name: `User${id}` };
+      }
+
+      async function fetchOrders(userId: number): Promise<string[]> {
+          await delay(10);
+          return [`order-${userId}-1`, `order-${userId}-2`, `order-${userId}-3`];
+      }
+
+      const [user, orders] = await Promise.all([fetchUser(id), fetchOrders(id)]);
+      console.log(`user: ${user.name}, orders: ${orders.length}`);
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

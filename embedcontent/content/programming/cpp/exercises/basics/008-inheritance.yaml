@@ -1,0 +1,135 @@
+id: cpp-basics-008
+title: "Inheritance and Virtual Functions"
+difficulty: 3
+tags: [inheritance, polymorphism, virtual, oop, cpp]
+description: |
+  Implement a simple employee payroll system using C++ inheritance.
+  - Base class Employee(name, baseSalary) with virtual pay() → baseSalary
+  - Manager(name, baseSalary, bonus) → pay() = baseSalary + bonus
+  - Contractor(name, hourlyRate, hours) → pay() = hourlyRate * hours
+
+  Read N employees (one per line: E name salary | M name salary bonus | C name rate hours)
+  Print "name: X.00" for each.
+
+  Example:
+    E Alice 5000
+    M Bob 6000 1500
+    C Carol 75 120
+    Output:
+      Alice: 5000.00
+      Bob: 7500.00
+      Carol: 9000.00
+starter_code: |
+  #include <iostream>
+  #include <string>
+  #include <vector>
+  using namespace std;
+
+  class Employee {
+  protected:
+      string name;
+      double baseSalary;
+  public:
+      Employee(string n, double s) : name(n), baseSalary(s) {}
+      virtual double pay() const { return baseSalary; }
+      string getName() const { return name; }
+      virtual ~Employee() {}
+  };
+
+  class Manager : public Employee {
+      double bonus;
+  public:
+      Manager(string n, double s, double b) : Employee(n, s), bonus(b) {}
+      double pay() const override { return 0; } // TODO
+  };
+
+  class Contractor : public Employee {
+      double hourlyRate, hours;
+  public:
+      Contractor(string n, double r, double h) : Employee(n, 0), hourlyRate(r), hours(h) {}
+      double pay() const override { return 0; } // TODO
+  };
+
+  int main() {
+      vector<Employee*> employees;
+      string type;
+      while (cin >> type) {
+          string name; double a, b;
+          if (type == "E") { cin >> name >> a; employees.push_back(new Employee(name, a)); }
+          else if (type == "M") { cin >> name >> a >> b; employees.push_back(new Manager(name, a, b)); }
+          else { cin >> name >> a >> b; employees.push_back(new Contractor(name, a, b)); }
+      }
+      for (auto* e : employees) {
+          cout << fixed;
+          cout.precision(2);
+          cout << e->getName() << ": " << e->pay() << "\n";
+          delete e;
+      }
+  }
+test_cases:
+  - input: "E Alice 5000\nM Bob 6000 1500\nC Carol 75 120\n"
+    expected_output: "Alice: 5000.00\nBob: 7500.00\nCarol: 9000.00\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "M Zara 3000 500\n"
+    expected_output: "Zara: 3500.00\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+hints:
+  - "Manager::pay() { return baseSalary + bonus; }"
+  - "Contractor::pay() { return hourlyRate * hours; }"
+  - "virtual + override enables runtime polymorphism — correct pay() is called even through Employee*"
+  - "Virtual destructor ensures derived class destructors are called properly"
+solution: |
+  #include <iostream>
+  #include <string>
+  #include <vector>
+  using namespace std;
+
+  class Employee {
+  protected:
+      string name;
+      double baseSalary;
+  public:
+      Employee(string n, double s) : name(n), baseSalary(s) {}
+      virtual double pay() const { return baseSalary; }
+      string getName() const { return name; }
+      virtual ~Employee() {}
+  };
+
+  class Manager : public Employee {
+      double bonus;
+  public:
+      Manager(string n, double s, double b) : Employee(n, s), bonus(b) {}
+      double pay() const override { return baseSalary + bonus; }
+  };
+
+  class Contractor : public Employee {
+      double hourlyRate, hours;
+  public:
+      Contractor(string n, double r, double h) : Employee(n, 0), hourlyRate(r), hours(h) {}
+      double pay() const override { return hourlyRate * hours; }
+  };
+
+  int main() {
+      vector<Employee*> employees;
+      string type;
+      while (cin >> type) {
+          string name; double a, b;
+          if (type == "E") { cin >> name >> a; employees.push_back(new Employee(name, a)); }
+          else if (type == "M") { cin >> name >> a >> b; employees.push_back(new Manager(name, a, b)); }
+          else { cin >> name >> a >> b; employees.push_back(new Contractor(name, a, b)); }
+      }
+      for (auto* e : employees) {
+          cout << fixed;
+          cout.precision(2);
+          cout << e->getName() << ": " << e->pay() << "\n";
+          delete e;
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: cpp
+  category: basics

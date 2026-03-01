@@ -1,0 +1,157 @@
+id: go-algorithms-013
+title: "Trie (Prefix Tree)"
+difficulty: 4
+tags: [trie, data-structures, strings, search]
+description: |
+  Implement a Trie supporting INSERT and SEARCH operations.
+  SEARCH returns true if word was inserted, STARTSWITH returns true if any
+  inserted word starts with the given prefix.
+
+  Operations: INSERT word, SEARCH word, STARTSWITH prefix
+  Print results for SEARCH and STARTSWITH (true/false).
+
+  Example:
+    INSERT apple
+    SEARCH apple  → true
+    SEARCH app    → false
+    STARTSWITH app → true
+    INSERT app
+    SEARCH app    → true
+starter_code: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strings"
+  )
+
+  type TrieNode struct {
+      children [26]*TrieNode
+      isEnd    bool
+  }
+
+  type Trie struct {
+      root *TrieNode
+  }
+
+  func NewTrie() *Trie {
+      return &Trie{root: &TrieNode{}}
+  }
+
+  func (t *Trie) Insert(word string) {
+      // walk/create nodes for each char
+  }
+
+  func (t *Trie) Search(word string) bool {
+      // return true only if full word was inserted
+      return false
+  }
+
+  func (t *Trie) StartsWith(prefix string) bool {
+      // return true if any word starts with prefix
+      return false
+  }
+
+  func main() {
+      scanner := bufio.NewScanner(os.Stdin)
+      trie := NewTrie()
+      for scanner.Scan() {
+          parts := strings.Fields(scanner.Text())
+          if len(parts) < 2 { continue }
+          switch parts[0] {
+          case "INSERT":
+              trie.Insert(parts[1])
+          case "SEARCH":
+              fmt.Println(trie.Search(parts[1]))
+          case "STARTSWITH":
+              fmt.Println(trie.StartsWith(parts[1]))
+          }
+      }
+  }
+test_cases:
+  - input: "INSERT apple\nSEARCH apple\nSEARCH app\nSTARTSWITH app\nINSERT app\nSEARCH app\n"
+    expected_output: "true\nfalse\ntrue\ntrue\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "INSERT hello\nINSERT world\nSEARCH hello\nSEARCH hell\nSTARTSWITH hell\nSTARTSWITH xyz\n"
+    expected_output: "true\nfalse\ntrue\nfalse\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Each node has 26 children (one per letter a-z)"
+  - "Index char c as: c - 'a'"
+  - "Insert: for each char, if child nil create it, then advance node"
+  - "At end of word: node.isEnd = true"
+  - "Search: walk nodes per char, return false if any child missing, final node.isEnd"
+  - "StartsWith: same walk but return true if all chars found (don't check isEnd)"
+solution: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strings"
+  )
+
+  type TrieNode struct {
+      children [26]*TrieNode
+      isEnd    bool
+  }
+
+  type Trie struct{ root *TrieNode }
+
+  func NewTrie() *Trie { return &Trie{root: &TrieNode{}} }
+
+  func (t *Trie) Insert(word string) {
+      node := t.root
+      for _, c := range word {
+          idx := c - 'a'
+          if node.children[idx] == nil {
+              node.children[idx] = &TrieNode{}
+          }
+          node = node.children[idx]
+      }
+      node.isEnd = true
+  }
+
+  func (t *Trie) walk(s string) *TrieNode {
+      node := t.root
+      for _, c := range s {
+          idx := c - 'a'
+          if node.children[idx] == nil { return nil }
+          node = node.children[idx]
+      }
+      return node
+  }
+
+  func (t *Trie) Search(word string) bool {
+      n := t.walk(word)
+      return n != nil && n.isEnd
+  }
+
+  func (t *Trie) StartsWith(prefix string) bool {
+      return t.walk(prefix) != nil
+  }
+
+  func main() {
+      scanner := bufio.NewScanner(os.Stdin)
+      trie := NewTrie()
+      for scanner.Scan() {
+          parts := strings.Fields(scanner.Text())
+          if len(parts) < 2 { continue }
+          switch parts[0] {
+          case "INSERT":     trie.Insert(parts[1])
+          case "SEARCH":     fmt.Println(trie.Search(parts[1]))
+          case "STARTSWITH": fmt.Println(trie.StartsWith(parts[1]))
+          }
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: algorithms

@@ -1,0 +1,119 @@
+id: go-algorithms-014
+title: "Two Sum — HashMap Approach"
+difficulty: 1
+tags: [hashmap, arrays, two-sum, beginner]
+description: |
+  Given an array of integers and a target sum, find two indices whose values add up to target.
+  Return them in ascending order. Assume exactly one solution exists.
+
+  Input:
+    Line 1: N target
+    Line 2: N integers
+
+  Examples:
+    [2,7,11,15], target=9  → 0 1 (nums[0]+nums[1]=9)
+    [3,2,4],     target=6  → 1 2
+
+  Implement in O(n) using a hash map.
+starter_code: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  func twoSum(nums []int, target int) (int, int) {
+      seen := make(map[int]int) // value → index
+      for i, v := range nums {
+          complement := target - v
+          if j, ok := seen[complement]; ok {
+              if j < i { return j, i }
+              return i, j
+          }
+          seen[v] = i
+      }
+      return -1, -1
+  }
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      line1, _ := reader.ReadString('\n')
+      parts1 := strings.Fields(strings.TrimSpace(line1))
+      n, _ := strconv.Atoi(parts1[0])
+      target, _ := strconv.Atoi(parts1[1])
+      line2, _ := reader.ReadString('\n')
+      parts2 := strings.Fields(strings.TrimSpace(line2))
+      nums := make([]int, n)
+      for i, p := range parts2 {
+          nums[i], _ = strconv.Atoi(p)
+      }
+      a, b := twoSum(nums, target)
+      fmt.Println(a, b)
+  }
+test_cases:
+  - input: "4 9\n2 7 11 15\n"
+    expected_output: "0 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "3 6\n3 2 4\n"
+    expected_output: "1 2\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "2 6\n3 3\n"
+    expected_output: "0 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "For each element, look up (target - nums[i]) in the map"
+  - "If found: you have your pair"
+  - "If not found: store nums[i] → i in the map for future lookups"
+  - "One pass, O(n) time, O(n) space"
+solution: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  func twoSum(nums []int, target int) (int, int) {
+      seen := make(map[int]int)
+      for i, v := range nums {
+          complement := target - v
+          if j, ok := seen[complement]; ok {
+              if j < i { return j, i }
+              return i, j
+          }
+          seen[v] = i
+      }
+      return -1, -1
+  }
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      line1, _ := reader.ReadString('\n')
+      parts1 := strings.Fields(strings.TrimSpace(line1))
+      n, _ := strconv.Atoi(parts1[0])
+      target, _ := strconv.Atoi(parts1[1])
+      line2, _ := reader.ReadString('\n')
+      parts2 := strings.Fields(strings.TrimSpace(line2))
+      nums := make([]int, n)
+      for i, p := range parts2 {
+          nums[i], _ = strconv.Atoi(p)
+      }
+      a, b := twoSum(nums, target)
+      fmt.Println(a, b)
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: algorithms

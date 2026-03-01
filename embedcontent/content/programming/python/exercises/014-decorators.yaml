@@ -1,0 +1,112 @@
+id: py-advanced-001
+title: "Decorators"
+difficulty: 3
+tags: [decorators, higher-order-functions, closures, python]
+description: |
+  Implement two decorators:
+  1. @timer: prints execution time in ms after function runs ("Elapsed: Xms")
+  2. @retry(n): retries function up to n times if it raises an exception; after all retries exhausted, re-raises
+
+  Input: N (number of retries for retry decorator) and a call sequence
+  You'll implement the decorators and test harness is pre-built.
+
+  The program reads N, runs a flaky function (raises ValueError first N-1 times,
+  then succeeds returning "ok"), and prints the result.
+
+  Input format:
+    Line 1: max_attempts (the @retry limit)
+  Output:
+    Line 1: "ok"   (the function's return value when it finally succeeds)
+starter_code: |
+  import sys
+  import time
+  import functools
+
+  def timer(func):
+      @functools.wraps(func)
+      def wrapper(*args, **kwargs):
+          # record start, call func, print elapsed ms, return result
+          return func(*args, **kwargs)
+      return wrapper
+
+  def retry(n):
+      def decorator(func):
+          @functools.wraps(func)
+          def wrapper(*args, **kwargs):
+              # try up to n times; re-raise after n failures
+              return func(*args, **kwargs)
+          return wrapper
+      return decorator
+
+  # --- test harness (do not modify) ---
+  max_attempts = int(sys.stdin.read().strip())
+  call_count = [0]
+
+  @retry(max_attempts)
+  def flaky():
+      call_count[0] += 1
+      if call_count[0] < max_attempts:
+          raise ValueError("not yet")
+      return "ok"
+
+  print(flaky())
+test_cases:
+  - input: "3\n"
+    expected_output: "ok\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1\n"
+    expected_output: "ok\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "timer: start=time.time(); result=func(*args,**kwargs); print(f'Elapsed: {int((time.time()-start)*1000)}ms'); return result"
+  - "retry(n): loop for i in range(n): try: return func(); except Exception as e: last=e; raise last"
+  - "@functools.wraps(func) preserves the original function's name and docstring"
+  - "retry returns a decorator (3 levels: retry → decorator → wrapper)"
+solution: |
+  import sys
+  import time
+  import functools
+
+  def timer(func):
+      @functools.wraps(func)
+      def wrapper(*args, **kwargs):
+          start = time.time()
+          result = func(*args, **kwargs)
+          elapsed = int((time.time() - start) * 1000)
+          print(f"Elapsed: {elapsed}ms")
+          return result
+      return wrapper
+
+  def retry(n):
+      def decorator(func):
+          @functools.wraps(func)
+          def wrapper(*args, **kwargs):
+              last_exc = None
+              for _ in range(n):
+                  try:
+                      return func(*args, **kwargs)
+                  except Exception as e:
+                      last_exc = e
+              raise last_exc
+          return wrapper
+      return decorator
+
+  max_attempts = int(sys.stdin.read().strip())
+  call_count = [0]
+
+  @retry(max_attempts)
+  def flaky():
+      call_count[0] += 1
+      if call_count[0] < max_attempts:
+          raise ValueError("not yet")
+      return "ok"
+
+  print(flaky())
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: algorithms
