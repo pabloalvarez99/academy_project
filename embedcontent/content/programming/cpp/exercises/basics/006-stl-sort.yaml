@@ -1,0 +1,80 @@
+id: cpp-basics-006
+title: "STL Sort and Custom Comparator"
+difficulty: 2
+tags: [stl, sort, lambda, comparator, cpp]
+description: |
+  Read N integers and sort them in descending order using std::sort with a custom
+  comparator (lambda). Then print them space-separated.
+
+  Bonus: also read a target K and print how many numbers are >= K using std::count_if.
+
+  Input:
+    Line 1: N K
+    Line 2: N integers
+
+  Example:
+    Input: 5 3 / 7 2 9 1 5
+    Output:
+      9 7 5 2 1
+      3
+starter_code: |
+  #include <iostream>
+  #include <vector>
+  #include <algorithm>
+  using namespace std;
+
+  int main() {
+      int n, k;
+      cin >> n >> k;
+      vector<int> v(n);
+      for (int &x : v) cin >> x;
+
+      // sort descending with lambda comparator
+      // count elements >= k with count_if
+
+      return 0;
+  }
+test_cases:
+  - input: "5 3\n7 2 9 1 5\n"
+    expected_output: "9 7 5 2 1\n3\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "4 5\n3 8 1 6\n"
+    expected_output: "8 6 3 1\n2\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+hints:
+  - "sort(v.begin(), v.end(), [](int a, int b){ return a > b; })"
+  - "count_if(v.begin(), v.end(), [k](int x){ return x >= k; })"
+  - "Print with a loop or copy to ostream with spaces"
+solution: |
+  #include <iostream>
+  #include <vector>
+  #include <algorithm>
+  using namespace std;
+
+  int main() {
+      int n, k;
+      cin >> n >> k;
+      vector<int> v(n);
+      for (int &x : v) cin >> x;
+
+      sort(v.begin(), v.end(), [](int a, int b){ return a > b; });
+
+      for (int i = 0; i < n; i++) {
+          if (i) cout << " ";
+          cout << v[i];
+      }
+      cout << "\n";
+
+      int cnt = count_if(v.begin(), v.end(), [k](int x){ return x >= k; });
+      cout << cnt << "\n";
+
+      return 0;
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: cpp
+  category: basics

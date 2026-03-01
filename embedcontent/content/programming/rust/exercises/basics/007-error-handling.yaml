@@ -1,0 +1,86 @@
+id: rust-basics-007
+title: "Error Handling with Result"
+difficulty: 3
+tags: [error-handling, result, option, rust]
+description: |
+  Practice Rust's Result<T, E> type for error handling. Write a function
+  parse_and_divide(a: &str, b: &str) -> Result<f64, String> that:
+  - Parses both strings as f64
+  - Returns Err("parse error") if either fails to parse
+  - Returns Err("division by zero") if b is zero
+  - Otherwise returns Ok(a / b)
+
+  Read two values from stdin and print the result or error.
+
+  Examples:
+    "10" "4" → 2.5
+    "10" "0" → division by zero
+    "abc" "2" → parse error
+starter_code: |
+  use std::io::{self, BufRead};
+
+  fn parse_and_divide(a: &str, b: &str) -> Result<f64, String> {
+      // use .parse::<f64>().map_err(|_| "parse error".to_string())
+      todo!()
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines();
+      let a = lines.next().unwrap().unwrap();
+      let b = lines.next().unwrap().unwrap();
+      match parse_and_divide(a.trim(), b.trim()) {
+          Ok(v) => println!("{}", v),
+          Err(e) => println!("{}", e),
+      }
+  }
+test_cases:
+  - input: "10\n4\n"
+    expected_output: "2.5\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "10\n0\n"
+    expected_output: "division by zero\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "abc\n2\n"
+    expected_output: "parse error\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "7\n2\n"
+    expected_output: "3.5\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+hints:
+  - "a.parse::<f64>().map_err(|_| \"parse error\".to_string()) returns Result<f64, String>"
+  - "Use ? operator to propagate errors early"
+  - "Check if b_val == 0.0 before dividing"
+  - "The ? operator: val? is shorthand for match val { Ok(v) => v, Err(e) => return Err(e) }"
+solution: |
+  use std::io::{self, BufRead};
+
+  fn parse_and_divide(a: &str, b: &str) -> Result<f64, String> {
+      let a_val = a.parse::<f64>().map_err(|_| "parse error".to_string())?;
+      let b_val = b.parse::<f64>().map_err(|_| "parse error".to_string())?;
+      if b_val == 0.0 {
+          return Err("division by zero".to_string());
+      }
+      Ok(a_val / b_val)
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines();
+      let a = lines.next().unwrap().unwrap();
+      let b = lines.next().unwrap().unwrap();
+      match parse_and_divide(a.trim(), b.trim()) {
+          Ok(v) => println!("{}", v),
+          Err(e) => println!("{}", e),
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: basics
