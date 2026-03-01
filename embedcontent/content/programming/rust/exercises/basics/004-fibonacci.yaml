@@ -1,0 +1,58 @@
+id: rust-basics-004
+title: "Fibonacci Sequence"
+difficulty: 2
+tags: [fibonacci, iterators, vec]
+description: |
+  Read an integer N from stdin. Print the first N Fibonacci numbers separated by spaces.
+
+  F(1)=1, F(2)=1, F(3)=2, ...
+
+  Example:
+    Input:  6
+    Output: 1 1 2 3 5 8
+starter_code: |
+  use std::io::{self, BufRead};
+
+  fn main() {
+      let stdin = io::stdin();
+      let n: usize = stdin.lock().lines().next().unwrap().unwrap().trim().parse().unwrap();
+      // compute and print first n fibonacci numbers
+  }
+test_cases:
+  - input: "1\n"
+    expected_output: "1\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "6\n"
+    expected_output: "1 1 2 3 5 8\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "10\n"
+    expected_output: "1 1 2 3 5 8 13 21 34 55\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+hints:
+  - "Use two mutable variables a=1u64, b=1u64"
+  - "Collect into a Vec<String> then join with ' '"
+solution: |
+  use std::io::{self, BufRead};
+
+  fn main() {
+      let stdin = io::stdin();
+      let n: usize = stdin.lock().lines().next().unwrap().unwrap().trim().parse().unwrap();
+      let mut result = Vec::new();
+      let (mut a, mut b) = (1u64, 1u64);
+      for _ in 0..n {
+          result.push(a.to_string());
+          let tmp = a + b;
+          a = b;
+          b = tmp;
+      }
+      println!("{}", result.join(" "));
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: basics

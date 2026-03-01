@@ -1,0 +1,50 @@
+id: python-basics-005
+title: "Word Frequency Counter"
+difficulty: 2
+tags: [dictionaries, strings, counting]
+description: |
+  Read lines from stdin until EOF. Count the frequency of each word (case-insensitive,
+  ignore punctuation). Print each unique word and its count, sorted alphabetically,
+  one per line as "word: count".
+
+  Example:
+    Input:  Hello world hello
+    Output:
+      hello: 2
+      world: 1
+starter_code: |
+  import sys
+  import re
+
+  text = sys.stdin.read().lower()
+  words = re.findall(r"[a-z']+", text)
+  # count frequencies and print sorted
+test_cases:
+  - input: "Hello world hello\n"
+    expected_output: "hello: 2\nworld: 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "the cat sat on the mat the cat\n"
+    expected_output: "cat: 2\nmat: 1\non: 1\nsat: 1\nthe: 3\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Use collections.Counter or a plain dict"
+  - "Sort the items alphabetically before printing"
+  - "re.findall(r\"[a-z']+\", text) extracts words nicely"
+solution: |
+  import sys
+  import re
+  from collections import Counter
+
+  text = sys.stdin.read().lower()
+  words = re.findall(r"[a-z']+", text)
+  counts = Counter(words)
+  for word in sorted(counts):
+      print(f"{word}: {counts[word]}")
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: basics

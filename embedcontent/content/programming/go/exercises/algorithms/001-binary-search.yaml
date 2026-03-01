@@ -1,0 +1,104 @@
+id: go-algorithms-001
+title: "Binary Search"
+difficulty: 2
+tags: [algorithms, binary-search, slices]
+description: |
+  Implement binary search. Read an integer N, then N sorted integers on the next line,
+  then a target T. Print the 0-based index where T is found, or -1 if not found.
+
+  Example:
+    Input:
+      5
+      1 3 5 7 9
+      7
+    Output: 3
+starter_code: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+  )
+
+  func binarySearch(nums []int, target int) int {
+      // implement binary search
+      return -1
+  }
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      var n int
+      fmt.Fscan(reader, &n)
+      nums := make([]int, n)
+      for i := range nums {
+          fmt.Fscan(reader, &nums[i])
+      }
+      var target int
+      fmt.Fscan(reader, &target)
+      fmt.Println(binarySearch(nums, target))
+  }
+test_cases:
+  - input: "5\n1 3 5 7 9\n7\n"
+    expected_output: "3\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "5\n1 3 5 7 9\n4\n"
+    expected_output: "-1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1\n42\n42\n"
+    expected_output: "0\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "6\n2 4 6 8 10 12\n1\n"
+    expected_output: "-1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Use two pointers: lo=0, hi=n-1"
+  - "Each iteration: mid = (lo+hi)/2; if nums[mid]==target return mid"
+  - "If target < nums[mid]: hi = mid-1; else lo = mid+1"
+  - "Return -1 if lo > hi"
+solution: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+  )
+
+  func binarySearch(nums []int, target int) int {
+      lo, hi := 0, len(nums)-1
+      for lo <= hi {
+          mid := (lo + hi) / 2
+          if nums[mid] == target {
+              return mid
+          } else if nums[mid] < target {
+              lo = mid + 1
+          } else {
+              hi = mid - 1
+          }
+      }
+      return -1
+  }
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      var n int
+      fmt.Fscan(reader, &n)
+      nums := make([]int, n)
+      for i := range nums {
+          fmt.Fscan(reader, &nums[i])
+      }
+      var target int
+      fmt.Fscan(reader, &target)
+      fmt.Println(binarySearch(nums, target))
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: algorithms

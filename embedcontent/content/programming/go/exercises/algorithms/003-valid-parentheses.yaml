@@ -1,0 +1,92 @@
+id: go-algorithms-003
+title: "Valid Parentheses"
+difficulty: 2
+tags: [stack, strings, algorithms]
+description: |
+  Given a string containing only '(', ')', '{', '}', '[', ']', determine if it is valid.
+
+  A string is valid if:
+  - Open brackets are closed by the same type of bracket
+  - Open brackets are closed in the correct order
+
+  Print "true" or "false".
+
+  Examples:
+    "()"      → true
+    "()[]{}"  → true
+    "(]"      → false
+    "([)]"    → false
+starter_code: |
+  package main
+
+  import "fmt"
+
+  func isValid(s string) bool {
+      // use a stack
+      return false
+  }
+
+  func main() {
+      var s string
+      fmt.Scan(&s)
+      fmt.Println(isValid(s))
+  }
+test_cases:
+  - input: "()\n"
+    expected_output: "true\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "()[]{}\n"
+    expected_output: "true\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "(]\n"
+    expected_output: "false\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "([)]\n"
+    expected_output: "false\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "{[]}\n"
+    expected_output: "true\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Use a slice as a stack"
+  - "Push opening brackets onto the stack"
+  - "For closing brackets, check if the top of the stack is the matching opener"
+  - "At the end, the stack must be empty"
+solution: |
+  package main
+
+  import "fmt"
+
+  func isValid(s string) bool {
+      stack := []rune{}
+      pairs := map[rune]rune{')': '(', '}': '{', ']': '['}
+      for _, ch := range s {
+          switch ch {
+          case '(', '{', '[':
+              stack = append(stack, ch)
+          case ')', '}', ']':
+              if len(stack) == 0 || stack[len(stack)-1] != pairs[ch] {
+                  return false
+              }
+              stack = stack[:len(stack)-1]
+          }
+      }
+      return len(stack) == 0
+  }
+
+  func main() {
+      var s string
+      fmt.Scan(&s)
+      fmt.Println(isValid(s))
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: algorithms

@@ -1,0 +1,55 @@
+id: java-basics-004
+title: "Palindrome Check"
+difficulty: 2
+tags: [strings, palindrome, StringBuilder]
+description: |
+  Read a string from stdin and print "true" if it is a palindrome (case-insensitive,
+  considering only alphanumeric characters), or "false" otherwise.
+
+  Examples:
+    "racecar"              → true
+    "A man a plan a canal Panama" → true
+    "hello"               → false
+starter_code: |
+  import java.util.Scanner;
+
+  public class Main {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          String line = sc.nextLine();
+          // check if line is a palindrome
+      }
+  }
+test_cases:
+  - input: "racecar\n"
+    expected_output: "true\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "hello\n"
+    expected_output: "false\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "A man a plan a canal Panama\n"
+    expected_output: "true\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+hints:
+  - "Normalize: lowercase and keep only letters/digits"
+  - "Use StringBuilder.reverse() and compare with original"
+solution: |
+  import java.util.Scanner;
+
+  public class Main {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          String line = sc.nextLine().toLowerCase().replaceAll("[^a-z0-9]", "");
+          String reversed = new StringBuilder(line).reverse().toString();
+          System.out.println(line.equals(reversed));
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: java
+  category: basics

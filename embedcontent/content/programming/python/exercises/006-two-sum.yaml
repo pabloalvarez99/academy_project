@@ -1,0 +1,52 @@
+id: python-algorithms-001
+title: "Two Sum"
+difficulty: 2
+tags: [algorithms, hashmap, arrays]
+description: |
+  Read N integers and a target T. Find two indices i and j (i < j) such that
+  nums[i] + nums[j] == T. Print "i j". Guaranteed exactly one solution.
+
+  Example:
+    Input:
+      4
+      2 7 11 15
+      9
+    Output: 0 1
+starter_code: |
+  n = int(input())
+  nums = list(map(int, input().split()))
+  target = int(input())
+  # find two indices that sum to target
+test_cases:
+  - input: "4\n2 7 11 15\n9\n"
+    expected_output: "0 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "3\n3 2 4\n6\n"
+    expected_output: "1 2\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "2\n3 3\n6\n"
+    expected_output: "0 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Use a dict: for each element, check if (target - element) is already in dict"
+  - "Store value → index as you iterate"
+solution: |
+  n = int(input())
+  nums = list(map(int, input().split()))
+  target = int(input())
+  seen = {}
+  for i, v in enumerate(nums):
+      complement = target - v
+      if complement in seen:
+          print(seen[complement], i)
+          break
+      seen[v] = i
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: algorithms
