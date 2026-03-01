@@ -1,0 +1,143 @@
+id: go-ds-003
+title: "Min Stack"
+difficulty: 3
+tags: [stack, data-structures, design]
+description: |
+  Design a stack that supports push, pop, and getMin in O(1) time.
+  Process a sequence of operations and print the result for each GETMIN.
+
+  Operations: PUSH x, POP, GETMIN
+
+  Example:
+    PUSH 5
+    PUSH 3
+    PUSH 7
+    GETMIN  → 3
+    POP
+    GETMIN  → 3
+    POP
+    GETMIN  → 5
+starter_code: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  type MinStack struct {
+      stack    []int
+      minStack []int
+  }
+
+  func (s *MinStack) Push(val int) {
+      // push to main stack and update min stack
+  }
+
+  func (s *MinStack) Pop() {
+      // pop from both stacks
+  }
+
+  func (s *MinStack) GetMin() int {
+      // return current minimum in O(1)
+      return 0
+  }
+
+  func main() {
+      scanner := bufio.NewScanner(os.Stdin)
+      ms := &MinStack{}
+      for scanner.Scan() {
+          line := strings.TrimSpace(scanner.Text())
+          if line == "" {
+              continue
+          }
+          parts := strings.Fields(line)
+          switch parts[0] {
+          case "PUSH":
+              v, _ := strconv.Atoi(parts[1])
+              ms.Push(v)
+          case "POP":
+              ms.Pop()
+          case "GETMIN":
+              fmt.Println(ms.GetMin())
+          }
+      }
+  }
+test_cases:
+  - input: "PUSH 5\nPUSH 3\nPUSH 7\nGETMIN\nPOP\nGETMIN\nPOP\nGETMIN\n"
+    expected_output: "3\n3\n5\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "PUSH 1\nGETMIN\nPUSH 0\nGETMIN\nPOP\nGETMIN\n"
+    expected_output: "1\n0\n1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Use a second 'min stack' that tracks the minimum at each level"
+  - "Push: if minStack is empty or val <= top of minStack, push val to minStack too"
+  - "Pop: if top of main stack == top of minStack, pop both"
+  - "GetMin: return top of minStack"
+solution: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  type MinStack struct {
+      stack    []int
+      minStack []int
+  }
+
+  func (s *MinStack) Push(val int) {
+      s.stack = append(s.stack, val)
+      if len(s.minStack) == 0 || val <= s.minStack[len(s.minStack)-1] {
+          s.minStack = append(s.minStack, val)
+      }
+  }
+
+  func (s *MinStack) Pop() {
+      top := s.stack[len(s.stack)-1]
+      s.stack = s.stack[:len(s.stack)-1]
+      if top == s.minStack[len(s.minStack)-1] {
+          s.minStack = s.minStack[:len(s.minStack)-1]
+      }
+  }
+
+  func (s *MinStack) GetMin() int {
+      return s.minStack[len(s.minStack)-1]
+  }
+
+  func main() {
+      scanner := bufio.NewScanner(os.Stdin)
+      ms := &MinStack{}
+      for scanner.Scan() {
+          line := strings.TrimSpace(scanner.Text())
+          if line == "" {
+              continue
+          }
+          parts := strings.Fields(line)
+          switch parts[0] {
+          case "PUSH":
+              v, _ := strconv.Atoi(parts[1])
+              ms.Push(v)
+          case "POP":
+              ms.Pop()
+          case "GETMIN":
+              fmt.Println(ms.GetMin())
+          }
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: data-structures

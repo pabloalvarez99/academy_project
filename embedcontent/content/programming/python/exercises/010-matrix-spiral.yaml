@@ -1,0 +1,87 @@
+id: py-algorithms-003
+title: "Matrix Spiral Traversal"
+difficulty: 4
+tags: [matrix, simulation, algorithms]
+description: |
+  Given an M×N matrix, return all elements in spiral order (clockwise from top-left).
+  Print elements space-separated on a single line.
+
+  Input:
+    Line 1: M N (rows, cols)
+    Next M lines: N space-separated integers each
+
+  Example:
+    3 3 matrix:
+      1 2 3
+      4 5 6
+      7 8 9
+    Output: 1 2 3 6 9 8 7 4 5
+starter_code: |
+  import sys
+
+  def spiral(matrix):
+      result = []
+      # Peel the outer layer, recurse/loop inward
+      return result
+
+  data = sys.stdin.read().split('\n')
+  m, n = map(int, data[0].split())
+  matrix = [list(map(int, data[i+1].split())) for i in range(m)]
+  print(' '.join(map(str, spiral(matrix))))
+test_cases:
+  - input: "3 3\n1 2 3\n4 5 6\n7 8 9\n"
+    expected_output: "1 2 3 6 9 8 7 4 5\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1 4\n1 2 3 4\n"
+    expected_output: "1 2 3 4\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "4 1\n1\n2\n3\n4\n"
+    expected_output: "1 2 3 4\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "3 4\n1 2 3 4\n5 6 7 8\n9 10 11 12\n"
+    expected_output: "1 2 3 4 8 12 11 10 9 5 6 7\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Maintain four boundaries: top, bottom, left, right"
+  - "Traverse: left→right (top row), then top→bottom (right col), then right→left (bottom row), then bottom→top (left col)"
+  - "After each direction, shrink the boundary in that direction"
+  - "Stop when top > bottom or left > right"
+solution: |
+  import sys
+
+  def spiral(matrix):
+      if not matrix:
+          return []
+      result = []
+      top, bottom, left, right = 0, len(matrix)-1, 0, len(matrix[0])-1
+      while top <= bottom and left <= right:
+          for c in range(left, right+1):
+              result.append(matrix[top][c])
+          top += 1
+          for r in range(top, bottom+1):
+              result.append(matrix[r][right])
+          right -= 1
+          if top <= bottom:
+              for c in range(right, left-1, -1):
+                  result.append(matrix[bottom][c])
+              bottom -= 1
+          if left <= right:
+              for r in range(bottom, top-1, -1):
+                  result.append(matrix[r][left])
+              left += 1
+      return result
+
+  data = sys.stdin.read().split('\n')
+  m, n = map(int, data[0].split())
+  matrix = [list(map(int, data[i+1].split())) for i in range(m)]
+  print(' '.join(map(str, spiral(matrix))))
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: algorithms

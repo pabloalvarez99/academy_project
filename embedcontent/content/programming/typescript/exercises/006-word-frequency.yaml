@@ -1,0 +1,65 @@
+id: ts-algorithms-004
+title: "Word Frequency Counter"
+difficulty: 2
+tags: [maps, strings, algorithms]
+description: |
+  Count the frequency of each word in the input (case-insensitive, ignore punctuation).
+  Print each word and its count, sorted by frequency descending, then alphabetically for ties.
+
+  Input: One or more lines of text.
+
+  Example:
+    Input: "Hello world hello"
+    Output:
+      hello 2
+      world 1
+starter_code: |
+  const lines: string[] = [];
+  process.stdin.on('data', (d) => lines.push(d.toString()));
+  process.stdin.on('end', () => {
+      const text = lines.join('');
+      const freq = new Map<string, number>();
+      // normalize: lowercase, split on non-letter chars
+      const words = text.toLowerCase().split(/[^a-z]+/).filter(Boolean);
+      // count frequencies and print sorted
+  });
+test_cases:
+  - input: "Hello world hello\n"
+    expected_output: "hello 2\nworld 1\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+  - input: "the cat sat on the mat the cat\n"
+    expected_output: "the 3\ncat 2\nmat 1\non 1\nsat 1\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+  - input: "Go is great! Go is fast.\n"
+    expected_output: "go 2\nis 2\nfast 1\ngreat 1\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+hints:
+  - "Split text using /[^a-z]+/ after lowercasing"
+  - "Use Map<string, number> to count: freq.set(w, (freq.get(w) ?? 0) + 1)"
+  - "Sort entries: first by count descending, then by word alphabetically"
+  - "Array.from(freq.entries()).sort((a, b) => b[1]-a[1] || a[0].localeCompare(b[0]))"
+solution: |
+  const lines: string[] = [];
+  process.stdin.on('data', (d) => lines.push(d.toString()));
+  process.stdin.on('end', () => {
+      const text = lines.join('');
+      const freq = new Map<string, number>();
+      const words = text.toLowerCase().split(/[^a-z]+/).filter(Boolean);
+      for (const w of words) {
+          freq.set(w, (freq.get(w) ?? 0) + 1);
+      }
+      const sorted = Array.from(freq.entries())
+          .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+      for (const [word, count] of sorted) {
+          console.log(`${word} ${count}`);
+      }
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms
