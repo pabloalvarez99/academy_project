@@ -210,6 +210,11 @@ func (a *App) ListSQLExercises() ([]string, error) {
 	return a.sqlLab.ListExercises()
 }
 
+// GetSQLExercise loads a SQL exercise by ID.
+func (a *App) GetSQLExercise(exerciseID string) (*content.Exercise, error) {
+	return a.sqlLab.GetExercise(exerciseID)
+}
+
 // ── Knowledge Base ────────────────────────────────────────────────────────────
 
 // ListKnowledgeCategories returns all knowledge base categories.

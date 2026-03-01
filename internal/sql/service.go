@@ -1,10 +1,17 @@
 package sqllab
 
-import "github.com/eks/eks/internal/content"
+import (
+	"strings"
+	"sync"
+
+	"github.com/eks/eks/internal/content"
+)
 
 // Service is the SQL Laboratory module API.
 type Service struct {
-	engine *Engine
+	engine         *Engine
+	northwindOnce  sync.Once
+	northwindSchema string
 }
 
 // NewService creates a SQL Service.
@@ -12,15 +19,43 @@ func NewService() *Service {
 	return &Service{engine: NewEngine()}
 }
 
+// northwind returns the cached Northwind DDL, loading it once from the embedded FS.
+func (s *Service) northwind() string {
+	s.northwindOnce.Do(func() {
+		data, err := content.ReadFile("sql/schemas/northwind-mini.sql")
+		if err == nil {
+			s.northwindSchema = string(data)
+		}
+	})
+	return s.northwindSchema
+}
+
+// exercisePath converts a raw exercise ID to a content-relative path.
+// If the ID already starts with "sql/", use it directly (stripping .yaml and re-adding).
+// Otherwise prepend "sql/exercises/" and append ".yaml".
+func exercisePath(id string) string {
+	// strip .yaml if present
+	id = strings.TrimSuffix(id, ".yaml")
+	if strings.HasPrefix(id, "sql/") {
+		return id + ".yaml"
+	}
+	return "sql/exercises/" + id + ".yaml"
+}
+
+// GetExercise loads a SQL exercise by ID.
+func (s *Service) GetExercise(exerciseID string) (*content.Exercise, error) {
+	return content.LoadExercise(exercisePath(exerciseID))
+}
+
 // ExecuteQuery evaluates a user's SQL query against the expected solution for an exercise.
-// The exercise's starter_code field contains the schema SQL to pre-load.
+// All SQL exercises run against the Northwind schema.
 func (s *Service) ExecuteQuery(exerciseID, userQuery string) EvaluationResult {
-	ex, err := content.LoadExercise("sql/exercises/" + exerciseID + ".yaml")
+	ex, err := content.LoadExercise(exercisePath(exerciseID))
 	if err != nil {
 		return EvaluationResult{Message: "exercise not found: " + err.Error()}
 	}
 
-	schema := ex.StarterCode // starter_code = schema DDL for SQL exercises
+	schema := s.northwind()
 
 	userResult := s.engine.RunQuery(schema, userQuery)
 	if userResult.Error != "" {
@@ -54,8 +89,12 @@ func (s *Service) ExecuteQuery(exerciseID, userQuery string) EvaluationResult {
 	}
 }
 
-// FreeQuery runs an arbitrary SQL query against a provided schema (for sandbox/playground mode).
+// FreeQuery runs an arbitrary SQL query against the Northwind schema (playground mode).
+// If an explicit schema is provided it takes precedence.
 func (s *Service) FreeQuery(schema, query string) QueryResult {
+	if schema == "" {
+		schema = s.northwind()
+	}
 	return s.engine.RunQuery(schema, query)
 }
 

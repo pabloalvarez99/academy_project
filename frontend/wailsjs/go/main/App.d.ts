@@ -25,6 +25,8 @@ export function GetGrammarExercise(arg1:string):Promise<content.Exercise>;
 
 export function GetProgrammingExercise(arg1:string,arg2:string):Promise<content.Exercise>;
 
+export function GetSQLExercise(arg1:string):Promise<content.Exercise>;
+
 export function GetUserStats():Promise<progress.UserStats>;
 
 export function ListGrammarExercises():Promise<Array<string>>;

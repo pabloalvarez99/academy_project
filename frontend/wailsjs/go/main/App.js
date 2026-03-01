@@ -34,6 +34,10 @@ export function GetProgrammingExercise(arg1, arg2) {
   return window['go']['main']['App']['GetProgrammingExercise'](arg1, arg2);
 }
 
+export function GetSQLExercise(arg1) {
+  return window['go']['main']['App']['GetSQLExercise'](arg1);
+}
+
 export function GetUserStats() {
   return window['go']['main']['App']['GetUserStats']();
 }
