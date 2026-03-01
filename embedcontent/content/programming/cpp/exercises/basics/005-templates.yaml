@@ -1,0 +1,90 @@
+id: cpp-basics-005
+title: "Function Templates"
+difficulty: 3
+tags: [templates, generics, functions, cpp]
+description: |
+  Write a generic swap function template that swaps two values of any type,
+  and a generic max function template that returns the larger of two values.
+
+  Read two integers and print:
+    1. Both values after swapping (space-separated)
+    2. The max of the original two values
+
+  Example:
+    Input: 3 7
+    Output:
+      7 3
+      7
+starter_code: |
+  #include <iostream>
+  using namespace std;
+
+  template<typename T>
+  void mySwap(T &a, T &b) {
+      // implement generic swap
+  }
+
+  template<typename T>
+  T myMax(T a, T b) {
+      // implement generic max
+      return a;
+  }
+
+  int main() {
+      int a, b;
+      cin >> a >> b;
+      int origMax = myMax(a, b);
+      mySwap(a, b);
+      cout << a << " " << b << "\n";
+      cout << origMax << "\n";
+      return 0;
+  }
+test_cases:
+  - input: "3 7\n"
+    expected_output: "7 3\n7\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "10 5\n"
+    expected_output: "5 10\n10\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "4 4\n"
+    expected_output: "4 4\n4\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+hints:
+  - "mySwap: use a temp variable: T tmp = a; a = b; b = tmp;"
+  - "Or use std::swap internally, or XOR swap for integers"
+  - "myMax: return a > b ? a : b;"
+  - "Templates are instantiated at compile-time for each concrete type used"
+solution: |
+  #include <iostream>
+  using namespace std;
+
+  template<typename T>
+  void mySwap(T &a, T &b) {
+      T tmp = a;
+      a = b;
+      b = tmp;
+  }
+
+  template<typename T>
+  T myMax(T a, T b) {
+      return a > b ? a : b;
+  }
+
+  int main() {
+      int a, b;
+      cin >> a >> b;
+      int origMax = myMax(a, b);
+      mySwap(a, b);
+      cout << a << " " << b << "\n";
+      cout << origMax << "\n";
+      return 0;
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: cpp
+  category: basics

@@ -1,0 +1,43 @@
+id: sql-aggregate-006
+title: "MIN/MAX Per Group"
+difficulty: 2
+tags: [aggregate, group-by, min, max]
+description: |
+  Find the cheapest and most expensive product in each category.
+  Return category_name, min_price, max_price ordered by category_name.
+
+  Expected columns: category_name, min_price, max_price
+  Note: prices should be rounded to 2 decimal places.
+starter_code: |
+  -- Schema is pre-loaded (customers, orders, products, categories, employees, shippers)
+  SELECT
+    c.category_name,
+    ROUND(MIN(p.unit_price), 2) AS min_price,
+    ROUND(MAX(p.unit_price), 2) AS max_price
+  FROM products p
+  -- join categories and group
+  ORDER BY c.category_name;
+test_cases:
+  - input: ""
+    expected_output: "category_name|min_price|max_price\nBeverages|4.5|263.5\nCondiments|10.0|43.9\nConfections|9.2|81.0\nDairy Products|2.5|55.0\nGrains/Cereals|7.0|38.0\nMeat/Poultry|7.45|123.79\nProduce|10.0|53.0\nSeafood|6.0|62.5\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+hints:
+  - "JOIN categories c ON p.category_id = c.id"
+  - "GROUP BY c.category_name (or c.id)"
+  - "MIN(p.unit_price) and MAX(p.unit_price) give range per group"
+solution: |
+  SELECT
+    c.category_name,
+    ROUND(MIN(p.unit_price), 2) AS min_price,
+    ROUND(MAX(p.unit_price), 2) AS max_price
+  FROM products p
+  JOIN categories c ON p.category_id = c.id
+  GROUP BY c.category_name
+  ORDER BY c.category_name;
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: sql
+  language: sql
+  category: aggregate

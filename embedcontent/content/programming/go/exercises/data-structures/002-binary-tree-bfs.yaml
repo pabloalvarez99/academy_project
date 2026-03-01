@@ -1,0 +1,119 @@
+id: go-ds-002
+title: "Binary Tree Level-Order Traversal (BFS)"
+difficulty: 4
+tags: [binary-tree, bfs, queue, data-structures]
+description: |
+  Given a binary tree stored as an array in level-order (index 0 = root,
+  left child of i = 2i+1, right child of i = 2i+2, -1 = no node),
+  perform a BFS (level-order) traversal and print each level's values
+  space-separated on its own line.
+
+  Input:
+    Line 1: N (number of nodes including gaps)
+    Line 2: N space-separated integers (-1 = absent node)
+
+  Example:
+    7 nodes: [1, 2, 3, 4, 5, -1, 6]
+    Output:
+      1
+      2 3
+      4 5 6
+starter_code: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      line1, _ := reader.ReadString('\n')
+      n, _ := strconv.Atoi(strings.TrimSpace(line1))
+      line2, _ := reader.ReadString('\n')
+      parts := strings.Fields(strings.TrimSpace(line2))
+      tree := make([]int, n)
+      for i, p := range parts {
+          tree[i], _ = strconv.Atoi(p)
+      }
+
+      // BFS using a queue of indices
+      // For each level, collect all valid node values
+  }
+test_cases:
+  - input: "7\n1 2 3 4 5 -1 6\n"
+    expected_output: "1\n2 3\n4 5 6\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1\n42\n"
+    expected_output: "42\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "3\n10 -1 20\n"
+    expected_output: "10\n20\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Use a queue (slice) of node indices, start with [0] if tree[0] != -1"
+  - "Each iteration: dequeue all nodes at current level (the queue size at start of iteration)"
+  - "For each node at index i: check left (2*i+1) and right (2*i+2) — enqueue if valid and < n and != -1"
+  - "Collect non-(-1) values at each level and print them"
+solution: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      line1, _ := reader.ReadString('\n')
+      n, _ := strconv.Atoi(strings.TrimSpace(line1))
+      line2, _ := reader.ReadString('\n')
+      parts := strings.Fields(strings.TrimSpace(line2))
+      tree := make([]int, n)
+      for i, p := range parts {
+          tree[i], _ = strconv.Atoi(p)
+      }
+
+      if n == 0 || tree[0] == -1 {
+          return
+      }
+
+      queue := []int{0}
+      for len(queue) > 0 {
+          size := len(queue)
+          level := []string{}
+          for i := 0; i < size; i++ {
+              idx := queue[i]
+              if tree[idx] != -1 {
+                  level = append(level, strconv.Itoa(tree[idx]))
+                  left := 2*idx + 1
+                  right := 2*idx + 2
+                  if left < n && tree[left] != -1 {
+                      queue = append(queue, left)
+                  }
+                  if right < n && tree[right] != -1 {
+                      queue = append(queue, right)
+                  }
+              }
+          }
+          queue = queue[size:]
+          if len(level) > 0 {
+              fmt.Println(strings.Join(level, " "))
+          }
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: data-structures

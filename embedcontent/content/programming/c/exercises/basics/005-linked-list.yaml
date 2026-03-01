@@ -1,0 +1,131 @@
+id: c-basics-005
+title: "Linked List — Insert and Print"
+difficulty: 3
+tags: [linked-list, pointers, malloc, structs]
+description: |
+  Implement a singly linked list in C. Read N integers and insert each at the
+  END of the list (append). Then print all values space-separated.
+
+  Input:
+    Line 1: N
+    Line 2: space-separated integers
+
+  Example:
+    Input: 4 / 10 20 30 40
+    Output: 10 20 30 40
+starter_code: |
+  #include <stdio.h>
+  #include <stdlib.h>
+
+  typedef struct Node {
+      int val;
+      struct Node *next;
+  } Node;
+
+  Node* append(Node *head, int val) {
+      // allocate new node, append to end, return updated head
+      return head;
+  }
+
+  void printList(Node *head) {
+      // print all values space-separated
+  }
+
+  void freeList(Node *head) {
+      while (head) {
+          Node *tmp = head;
+          head = head->next;
+          free(tmp);
+      }
+  }
+
+  int main() {
+      int n;
+      scanf("%d", &n);
+      Node *head = NULL;
+      for (int i = 0; i < n; i++) {
+          int v;
+          scanf("%d", &v);
+          head = append(head, v);
+      }
+      printList(head);
+      freeList(head);
+      return 0;
+  }
+test_cases:
+  - input: "4\n10 20 30 40\n"
+    expected_output: "10 20 30 40\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1\n99\n"
+    expected_output: "99\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "3\n5 3 8\n"
+    expected_output: "5 3 8\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Allocate: Node *node = malloc(sizeof(Node)); node->val = val; node->next = NULL;"
+  - "To append: traverse to the last node (where next == NULL), then set last->next = node"
+  - "If head == NULL, the new node becomes the head"
+  - "printList: iterate while head != NULL, print val and advance; use printf('%d', head->val)"
+  - "For spacing: print space before each element except the first, or use a flag"
+solution: |
+  #include <stdio.h>
+  #include <stdlib.h>
+
+  typedef struct Node {
+      int val;
+      struct Node *next;
+  } Node;
+
+  Node* append(Node *head, int val) {
+      Node *node = malloc(sizeof(Node));
+      node->val = val;
+      node->next = NULL;
+      if (!head) return node;
+      Node *curr = head;
+      while (curr->next) curr = curr->next;
+      curr->next = node;
+      return head;
+  }
+
+  void printList(Node *head) {
+      int first = 1;
+      while (head) {
+          if (!first) printf(" ");
+          printf("%d", head->val);
+          first = 0;
+          head = head->next;
+      }
+      printf("\n");
+  }
+
+  void freeList(Node *head) {
+      while (head) {
+          Node *tmp = head;
+          head = head->next;
+          free(tmp);
+      }
+  }
+
+  int main() {
+      int n;
+      scanf("%d", &n);
+      Node *head = NULL;
+      for (int i = 0; i < n; i++) {
+          int v;
+          scanf("%d", &v);
+          head = append(head, v);
+      }
+      printList(head);
+      freeList(head);
+      return 0;
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: c
+  category: basics

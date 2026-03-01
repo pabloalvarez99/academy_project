@@ -1,0 +1,98 @@
+id: java-algorithms-002
+title: "Linked List Cycle Detection"
+difficulty: 3
+tags: [linked-list, two-pointers, floyd, algorithms]
+description: |
+  Detect if a linked list has a cycle using Floyd's tortoise-and-hare algorithm.
+  Given a sequence of integers and a cycle position (-1 = no cycle), print "true" or "false".
+
+  Input format:
+    Line 1: N values
+    Line 2: space-separated integers
+    Line 3: cycle_pos (tail.next points to node at this index, or -1)
+
+  Examples:
+    [3,2,0,-4], cycle_pos=1 → true (tail points to index 1)
+    [1,2],      cycle_pos=0 → true
+    [1],        cycle_pos=-1 → false
+starter_code: |
+  import java.util.Scanner;
+
+  public class Main {
+      static class ListNode {
+          int val;
+          ListNode next;
+          ListNode(int v) { val = v; }
+      }
+
+      static boolean hasCycle(ListNode head) {
+          // Floyd's algorithm: slow and fast pointers
+          return false;
+      }
+
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = sc.nextInt();
+          ListNode[] nodes = new ListNode[n];
+          for (int i = 0; i < n; i++) nodes[i] = new ListNode(sc.nextInt());
+          for (int i = 0; i < n - 1; i++) nodes[i].next = nodes[i + 1];
+          int cyclePos = sc.nextInt();
+          if (cyclePos >= 0) nodes[n - 1].next = nodes[cyclePos];
+          System.out.println(hasCycle(nodes[0]));
+      }
+  }
+test_cases:
+  - input: "4\n3 2 0 -4\n1\n"
+    expected_output: "true\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "2\n1 2\n0\n"
+    expected_output: "true\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "1\n1\n-1\n"
+    expected_output: "false\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+hints:
+  - "Use two pointers: slow moves 1 step, fast moves 2 steps"
+  - "If fast or fast.next is null → no cycle (returns false)"
+  - "If slow == fast → cycle detected (returns true)"
+  - "They will always meet inside the cycle if one exists"
+solution: |
+  import java.util.Scanner;
+
+  public class Main {
+      static class ListNode {
+          int val;
+          ListNode next;
+          ListNode(int v) { val = v; }
+      }
+
+      static boolean hasCycle(ListNode head) {
+          ListNode slow = head, fast = head;
+          while (fast != null && fast.next != null) {
+              slow = slow.next;
+              fast = fast.next.next;
+              if (slow == fast) return true;
+          }
+          return false;
+      }
+
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = sc.nextInt();
+          ListNode[] nodes = new ListNode[n];
+          for (int i = 0; i < n; i++) nodes[i] = new ListNode(sc.nextInt());
+          for (int i = 0; i < n - 1; i++) nodes[i].next = nodes[i + 1];
+          int cyclePos = sc.nextInt();
+          if (cyclePos >= 0) nodes[n - 1].next = nodes[cyclePos];
+          System.out.println(hasCycle(nodes[0]));
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: java
+  category: algorithms
