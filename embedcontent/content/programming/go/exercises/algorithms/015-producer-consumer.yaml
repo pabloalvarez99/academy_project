@@ -1,0 +1,137 @@
+id: go-algorithms-015
+title: "Producer-Consumer with Channels"
+difficulty: 4
+tags: [goroutines, channels, concurrency, producer-consumer]
+description: |
+  Classic producer-consumer pattern using Go channels.
+  Producers generate numbers 1..N, consumers square them.
+
+  Read N and P (numbers to process, number of consumers).
+  Each consumer reads from a shared channel, squares the number, sends to results.
+  Main collects all results and prints them sorted ascending.
+
+  Input: N P (N numbers, P consumers)
+  Output: sorted squares, one per line
+starter_code: |
+  package main
+
+  import (
+      "fmt"
+      "os"
+      "sort"
+      "sync"
+  )
+
+  func main() {
+      var n, p int
+      fmt.Fscan(os.Stdin, &n, &p)
+
+      jobs := make(chan int, n)
+      results := make(chan int, n)
+
+      // Start P consumer goroutines
+      var wg sync.WaitGroup
+      for i := 0; i < p; i++ {
+          wg.Add(1)
+          go func() {
+              defer wg.Done()
+              for num := range jobs {
+                  // square the number and send to results
+                  _ = num
+              }
+          }()
+      }
+
+      // Producer: send 1..N to jobs, then close
+      for i := 1; i <= n; i++ {
+          jobs <- i
+      }
+      close(jobs)
+
+      // Close results after all consumers finish
+      go func() {
+          wg.Wait()
+          close(results)
+      }()
+
+      // Collect and sort results
+      var out []int
+      for r := range results {
+          out = append(out, r)
+      }
+      sort.Ints(out)
+      for _, v := range out {
+          fmt.Println(v)
+      }
+  }
+test_cases:
+  - input: "5 2\n"
+    expected_output: "1\n4\n9\n16\n25\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "3 3\n"
+    expected_output: "1\n4\n9\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1 1\n"
+    expected_output: "1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Consumer goroutine: for num := range jobs { results <- num*num }"
+  - "Close jobs after sending all work so range exits"
+  - "Use a separate goroutine to wait for all consumers then close results"
+  - "Sort results because goroutines run in non-deterministic order"
+solution: |
+  package main
+
+  import (
+      "fmt"
+      "os"
+      "sort"
+      "sync"
+  )
+
+  func main() {
+      var n, p int
+      fmt.Fscan(os.Stdin, &n, &p)
+
+      jobs := make(chan int, n)
+      results := make(chan int, n)
+
+      var wg sync.WaitGroup
+      for i := 0; i < p; i++ {
+          wg.Add(1)
+          go func() {
+              defer wg.Done()
+              for num := range jobs {
+                  results <- num * num
+              }
+          }()
+      }
+
+      for i := 1; i <= n; i++ {
+          jobs <- i
+      }
+      close(jobs)
+
+      go func() {
+          wg.Wait()
+          close(results)
+      }()
+
+      var out []int
+      for r := range results {
+          out = append(out, r)
+      }
+      sort.Ints(out)
+      for _, v := range out {
+          fmt.Println(v)
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: algorithms

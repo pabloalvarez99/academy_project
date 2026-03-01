@@ -1,0 +1,118 @@
+id: py-advanced-002
+title: "Generators and Lazy Evaluation"
+difficulty: 3
+tags: [generators, yield, lazy-evaluation, itertools, python]
+description: |
+  Practice Python generators for memory-efficient iteration.
+
+  Implement:
+  1. fibonacci_gen(): infinite generator yielding Fibonacci numbers
+  2. running_average(iterable): generator yielding running average after each element
+  3. chunked(iterable, size): generator yielding successive chunks of given size
+
+  Read a command and arguments, run the corresponding generator.
+
+  Input format:
+    fib N        → print first N Fibonacci numbers
+    avg nums...  → print running average after each number (2 dp)
+    chunk N nums → print chunks of size N from the numbers
+starter_code: |
+  import sys
+  from itertools import islice
+
+  def fibonacci_gen():
+      a, b = 0, 1
+      while True:
+          yield a
+          a, b = b, a + b
+
+  def running_average(iterable):
+      total, count = 0, 0
+      for x in iterable:
+          total += x
+          count += 1
+          yield total / count  # TODO: implement correctly
+
+  def chunked(iterable, size):
+      lst = list(iterable)
+      # yield sub-lists of length size
+      pass  # TODO
+
+  parts = sys.stdin.read().split()
+  cmd = parts[0]
+
+  if cmd == 'fib':
+      n = int(parts[1])
+      for v in islice(fibonacci_gen(), n):
+          print(v)
+  elif cmd == 'avg':
+      nums = list(map(float, parts[1:]))
+      for avg in running_average(nums):
+          print(f"{avg:.2f}")
+  elif cmd == 'chunk':
+      size = int(parts[1])
+      nums = list(map(int, parts[2:]))
+      for chunk in chunked(nums, size):
+          print(' '.join(map(str, chunk)))
+test_cases:
+  - input: "fib 8\n"
+    expected_output: "0\n1\n1\n2\n3\n5\n8\n13\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "avg 1 2 3 4\n"
+    expected_output: "1.00\n1.50\n2.00\n2.50\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "chunk 3 1 2 3 4 5 6 7\n"
+    expected_output: "1 2 3\n4 5 6\n7\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "fibonacci_gen is already correct — it's an infinite generator using yield"
+  - "running_average: yield total/count after each element (already correct in starter)"
+  - "chunked: for i in range(0, len(lst), size): yield lst[i:i+size]"
+  - "islice(gen, n) takes first n values from an infinite generator without consuming all"
+solution: |
+  import sys
+  from itertools import islice
+
+  def fibonacci_gen():
+      a, b = 0, 1
+      while True:
+          yield a
+          a, b = b, a + b
+
+  def running_average(iterable):
+      total, count = 0, 0
+      for x in iterable:
+          total += x
+          count += 1
+          yield total / count
+
+  def chunked(iterable, size):
+      lst = list(iterable)
+      for i in range(0, len(lst), size):
+          yield lst[i:i+size]
+
+  parts = sys.stdin.read().split()
+  cmd = parts[0]
+
+  if cmd == 'fib':
+      n = int(parts[1])
+      for v in islice(fibonacci_gen(), n):
+          print(v)
+  elif cmd == 'avg':
+      nums = list(map(float, parts[1:]))
+      for avg in running_average(nums):
+          print(f"{avg:.2f}")
+  elif cmd == 'chunk':
+      size = int(parts[1])
+      nums = list(map(int, parts[2:]))
+      for chunk in chunked(nums, size):
+          print(' '.join(map(str, chunk)))
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: algorithms
