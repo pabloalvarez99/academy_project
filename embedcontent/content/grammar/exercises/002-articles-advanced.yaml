@@ -1,0 +1,27 @@
+id: grammar-articles-002
+title: "Articles in Technical Writing"
+difficulty: 2
+tags: [articles, technical, a-an]
+description: |
+  Technical texts often misuse articles. Correct the article errors in this sentence:
+
+  ORIGINAL: "She installed an HTTP server and a application on a Ubuntu machine.
+  It took an hour to configure an user account."
+
+  Type the corrected version below.
+starter_code: |
+  She installed an HTTP server and a application on a Ubuntu machine. It took an hour to configure an user account.
+hints:
+  - "'HTTP' is pronounced 'aitch-tee-tee-pee' — starts with vowel sound → 'an HTTP'"
+  - "'application' starts with 'a' → 'an application'"
+  - "'Ubuntu' starts with 'oo' sound → 'an Ubuntu'"
+  - "'hour' is silent h → 'an hour'"
+  - "'user' sounds like 'yoo-zer' → consonant sound → 'a user'"
+solution: |
+  She installed an HTTP server and an application on an Ubuntu machine. It took an hour to configure a user account.
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: articles

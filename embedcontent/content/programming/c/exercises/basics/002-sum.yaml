@@ -1,0 +1,49 @@
+id: c-basics-002
+title: "Sum of Two Integers"
+difficulty: 1
+tags: [basics, scanf, printf, arithmetic]
+description: |
+  Write a C program that reads two integers from stdin and prints their sum.
+
+  Example:
+    Input:  3 7
+    Output: 10
+starter_code: |
+  #include <stdio.h>
+
+  int main() {
+      int a, b;
+      // read two integers and print their sum
+      return 0;
+  }
+test_cases:
+  - input: "3 7\n"
+    expected_output: "10\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "100 200\n"
+    expected_output: "300\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "-5 5\n"
+    expected_output: "0\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+hints:
+  - "Use scanf(\"%d %d\", &a, &b) to read two integers"
+  - "Use printf(\"%d\\n\", a + b) to print the result"
+solution: |
+  #include <stdio.h>
+
+  int main() {
+      int a, b;
+      scanf("%d %d", &a, &b);
+      printf("%d\n", a + b);
+      return 0;
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: c
+  category: basics

@@ -1,0 +1,46 @@
+id: python-basics-003
+title: "Fibonacci Sequence"
+difficulty: 2
+tags: [fibonacci, generators, loops]
+description: |
+  Write a Python program that reads an integer N from stdin and prints the first N
+  Fibonacci numbers separated by spaces.
+
+  F(1)=1, F(2)=1, F(3)=2, F(4)=3, F(5)=5
+
+  Example:
+    Input:  6
+    Output: 1 1 2 3 5 8
+starter_code: |
+  n = int(input())
+  # print first n fibonacci numbers separated by spaces
+test_cases:
+  - input: "1\n"
+    expected_output: "1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "6\n"
+    expected_output: "1 1 2 3 5 8\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "10\n"
+    expected_output: "1 1 2 3 5 8 13 21 34 55\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Use two variables a=1, b=1 and swap them each iteration"
+  - "Collect results in a list, then print(' '.join(map(str, results)))"
+solution: |
+  n = int(input())
+  fibs = []
+  a, b = 1, 1
+  for _ in range(n):
+      fibs.append(a)
+      a, b = b, a + b
+  print(' '.join(map(str, fibs)))
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: basics

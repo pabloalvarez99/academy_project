@@ -1,0 +1,29 @@
+id: sql-subquery-001
+title: "Orders Above Average Amount"
+difficulty: 3
+tags: [subquery, WHERE, AVG]
+description: |
+  Write a query that returns all orders with an amount greater than the average order amount.
+  Show: id, customer_id, order_date, amount.
+  Order by amount descending.
+
+  Schema:
+    orders(id, customer_id, order_date, amount)
+starter_code: |
+  -- Select orders where amount > average amount (use a subquery)
+
+solution: "SELECT id, customer_id, order_date, amount FROM orders WHERE amount > (SELECT AVG(amount) FROM orders) ORDER BY amount DESC"
+test_cases:
+  - input: ""
+    expected_output: ""
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Use a scalar subquery in the WHERE clause: WHERE amount > (SELECT AVG(amount) FROM orders)"
+  - "Order the results by amount DESC"
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: sql
+  language: sql
+  category: subquery

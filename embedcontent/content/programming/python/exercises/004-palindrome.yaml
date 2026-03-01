@@ -1,0 +1,42 @@
+id: python-basics-004
+title: "Palindrome Check"
+difficulty: 2
+tags: [strings, palindrome, slicing]
+description: |
+  Write a Python program that reads a string from stdin and prints "yes" if it is a
+  palindrome (reads the same forwards and backwards, case-insensitive, ignoring spaces),
+  or "no" otherwise.
+
+  Examples:
+    Input:  racecar  → Output: yes
+    Input:  A man a plan a canal Panama  → Output: yes
+    Input:  hello  → Output: no
+starter_code: |
+  s = input()
+  # print "yes" or "no"
+test_cases:
+  - input: "racecar\n"
+    expected_output: "yes\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "hello\n"
+    expected_output: "no\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "A man a plan a canal Panama\n"
+    expected_output: "yes\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Normalize: lowercase and remove spaces"
+  - "Check if the string equals its reverse: s == s[::-1]"
+solution: |
+  s = input()
+  normalized = s.lower().replace(' ', '')
+  print('yes' if normalized == normalized[::-1] else 'no')
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: basics

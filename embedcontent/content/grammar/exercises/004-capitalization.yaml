@@ -1,0 +1,23 @@
+id: grammar-capitalization-001
+title: "Fix Sentence Capitalization"
+difficulty: 1
+tags: [capitalization, basics, sentences]
+description: |
+  Each of the following sentences starts with a lowercase letter. Rewrite the paragraph
+  with correct capitalization at the start of each sentence.
+
+  ORIGINAL: "the database crashed at midnight. it took three engineers to restore it.
+  the logs showed an out-of-memory error."
+
+  Type the corrected version below.
+starter_code: "the database crashed at midnight. it took three engineers to restore it. the logs showed an out-of-memory error."
+hints:
+  - "Every sentence must start with a capital letter"
+  - "Look for periods followed by a space — the next word starts a new sentence"
+solution: "The database crashed at midnight. It took three engineers to restore it. The logs showed an out-of-memory error."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: capitalization

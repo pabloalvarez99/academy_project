@@ -1,0 +1,62 @@
+id: c-basics-003
+title: "Factorial"
+difficulty: 2
+tags: [recursion, factorial, functions]
+description: |
+  Write a C program that reads a non-negative integer N from stdin and prints N! (factorial).
+
+  0! = 1, 1! = 1, 5! = 120
+
+  Example:
+    Input:  5
+    Output: 120
+starter_code: |
+  #include <stdio.h>
+
+  long long factorial(int n) {
+      // implement factorial
+  }
+
+  int main() {
+      int n;
+      scanf("%d", &n);
+      printf("%lld\n", factorial(n));
+      return 0;
+  }
+test_cases:
+  - input: "0\n"
+    expected_output: "1\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "5\n"
+    expected_output: "120\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "10\n"
+    expected_output: "3628800\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+hints:
+  - "Use recursion: factorial(n) = n * factorial(n-1)"
+  - "Base case: factorial(0) = 1"
+  - "Use long long to avoid overflow"
+solution: |
+  #include <stdio.h>
+
+  long long factorial(int n) {
+      if (n <= 0) return 1;
+      return n * factorial(n - 1);
+  }
+
+  int main() {
+      int n;
+      scanf("%d", &n);
+      printf("%lld\n", factorial(n));
+      return 0;
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: c
+  category: basics

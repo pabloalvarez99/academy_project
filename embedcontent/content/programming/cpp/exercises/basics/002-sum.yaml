@@ -1,0 +1,49 @@
+id: cpp-basics-002
+title: "Sum of Two Numbers"
+difficulty: 1
+tags: [basics, cin, cout, arithmetic]
+description: |
+  Write a C++ program that reads two integers from stdin and prints their sum.
+
+  Example:
+    Input:  4 6
+    Output: 10
+starter_code: |
+  #include <iostream>
+
+  int main() {
+      int a, b;
+      // read two integers and print their sum
+      return 0;
+  }
+test_cases:
+  - input: "4 6\n"
+    expected_output: "10\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "100 200\n"
+    expected_output: "300\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "-3 3\n"
+    expected_output: "0\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+hints:
+  - "Use std::cin >> a >> b to read two integers"
+  - "Use std::cout << (a + b) << std::endl"
+solution: |
+  #include <iostream>
+
+  int main() {
+      int a, b;
+      std::cin >> a >> b;
+      std::cout << (a + b) << std::endl;
+      return 0;
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: cpp
+  category: basics

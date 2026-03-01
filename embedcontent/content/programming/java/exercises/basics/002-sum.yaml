@@ -1,0 +1,52 @@
+id: java-basics-002
+title: "Sum of Two Numbers"
+difficulty: 1
+tags: [basics, arithmetic, variables]
+description: |
+  Write a Java program that reads two integers from stdin (one per line) and prints their sum.
+
+  Example:
+    Input:  3\n7
+    Output: 10
+starter_code: |
+  import java.util.Scanner;
+
+  public class Main {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          // read two numbers and print their sum
+      }
+  }
+test_cases:
+  - input: "3\n7\n"
+    expected_output: "10\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "100\n200\n"
+    expected_output: "300\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "-5\n5\n"
+    expected_output: "0\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+hints:
+  - "Use sc.nextInt() to read each integer"
+  - "Store both values in variables before adding"
+solution: |
+  import java.util.Scanner;
+
+  public class Main {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int a = sc.nextInt();
+          int b = sc.nextInt();
+          System.out.println(a + b);
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: java
+  category: basics

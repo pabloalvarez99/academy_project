@@ -1,0 +1,22 @@
+id: grammar-double-words-001
+title: "Remove Duplicate Words"
+difficulty: 1
+tags: [duplicate-words, proofreading, basics]
+description: |
+  The following paragraph contains duplicate words that were accidentally typed twice.
+  Remove the duplicate words to fix the text.
+
+  ORIGINAL: "The the server was was down for for maintenance. We we notified all all users by by email."
+
+  Type the corrected version below.
+starter_code: "The the server was was down for for maintenance. We we notified all all users by by email."
+hints:
+  - "Read each word pair carefully — if two identical words appear in a row, remove one"
+  - "Check every word boundary"
+solution: "The server was down for maintenance. We notified all users by email."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: proofreading

@@ -20,6 +20,7 @@ func NewEngine() *Engine {
 			rules.NewArticleRule(),
 			rules.NewDoubleWordRule(),
 			rules.NewCapitalizationRule(),
+			rules.NewContractionRule(),
 		},
 	}
 }

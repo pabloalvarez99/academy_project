@@ -1,0 +1,31 @@
+id: sql-join-001
+title: "Customer Orders"
+difficulty: 2
+tags: [JOIN, INNER JOIN, customers, orders]
+description: |
+  Write a query that lists each customer's name alongside their orders.
+  Return: customer name, order_date, and amount.
+  Order by customer name ascending, then order_date ascending.
+
+  Schema:
+    customers(id, name, city, country)
+    orders(id, customer_id, order_date, amount)
+starter_code: |
+  -- Join customers with orders, show name, order_date, amount
+
+solution: "SELECT c.name, o.order_date, o.amount FROM customers c JOIN orders o ON c.id = o.customer_id ORDER BY c.name, o.order_date"
+test_cases:
+  - input: ""
+    expected_output: ""
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Use INNER JOIN (or just JOIN) between customers and orders"
+  - "Join condition: ON c.id = o.customer_id"
+  - "Order by c.name, o.order_date"
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: sql
+  language: sql
+  category: join

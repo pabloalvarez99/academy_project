@@ -1,0 +1,27 @@
+id: grammar-mixed-001
+title: "Mixed Grammar Errors"
+difficulty: 3
+tags: [articles, capitalization, duplicate-words, mixed]
+description: |
+  This paragraph contains multiple types of grammar errors: wrong articles, duplicate words,
+  and missing capitalization. Fix all errors.
+
+  ORIGINAL: "the engineer installed a application on an server. the the process was
+  was straightforward. it took an hour to complete a update."
+
+  Type the fully corrected version below.
+starter_code: "the engineer installed a application on an server. the the process was was straightforward. it took an hour to complete a update."
+hints:
+  - "First fix capitalization: 'the' → 'The' at sentence starts"
+  - "'application' starts with vowel → 'an application'"
+  - "'server' starts with consonant → 'a server'"
+  - "Remove duplicate 'the the' → 'the'"
+  - "Remove duplicate 'was was' → 'was'"
+  - "'update' starts with vowel → 'an update'"
+solution: "The engineer installed an application on a server. The process was straightforward. It took an hour to complete an update."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: mixed

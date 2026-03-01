@@ -1,0 +1,25 @@
+id: grammar-articles-001
+title: "Fix Article Errors (a/an)"
+difficulty: 1
+tags: [articles, a-an, basics]
+description: |
+  The following sentence contains article errors. Rewrite it correctly using "a" or "an"
+  where appropriate.
+
+  ORIGINAL: "I saw a elephant and a owl. It was an unique experience at an zoo."
+
+  Type the corrected sentence in the box below, then click Validate.
+starter_code: "I saw a elephant and a owl. It was an unique experience at an zoo."
+hints:
+  - "Use 'an' before words starting with a vowel SOUND (not just letter)"
+  - "'elephant' starts with 'e' (vowel) → 'an elephant'"
+  - "'owl' starts with 'o' (vowel) → 'an owl'"
+  - "'unique' sounds like 'yoo-neek' → consonant sound → 'a unique'"
+  - "'zoo' starts with 'z' (consonant) → 'a zoo'"
+solution: "I saw an elephant and an owl. It was a unique experience at a zoo."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: articles

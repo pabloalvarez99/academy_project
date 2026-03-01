@@ -1,0 +1,50 @@
+id: rust-basics-003
+title: "Sum of Numbers"
+difficulty: 2
+tags: [stdin, parsing, iterators]
+description: |
+  Write a Rust program that reads two integers from stdin (one per line) and prints their sum.
+
+  Example:
+    Input:  4\n6
+    Output: 10
+starter_code: |
+  use std::io::{self, BufRead};
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines();
+      // read two lines, parse them as i64, print their sum
+  }
+test_cases:
+  - input: "4\n6\n"
+    expected_output: "10\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "100\n200\n"
+    expected_output: "300\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "-10\n10\n"
+    expected_output: "0\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+hints:
+  - "Use lines.next().unwrap().unwrap() to read a line"
+  - "Use .trim().parse::<i64>().unwrap() to parse the integer"
+solution: |
+  use std::io::{self, BufRead};
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines();
+      let a: i64 = lines.next().unwrap().unwrap().trim().parse().unwrap();
+      let b: i64 = lines.next().unwrap().unwrap().trim().parse().unwrap();
+      println!("{}", a + b);
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: basics

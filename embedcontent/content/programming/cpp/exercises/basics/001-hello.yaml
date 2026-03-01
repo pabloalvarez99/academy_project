@@ -1,0 +1,35 @@
+id: cpp-basics-001
+title: "Hello, World!"
+difficulty: 1
+tags: [basics, cout, iostream]
+description: |
+  Write a C++ program that prints exactly:
+  Hello, World!
+starter_code: |
+  #include <iostream>
+
+  int main() {
+      // your code here
+      return 0;
+  }
+test_cases:
+  - input: ""
+    expected_output: "Hello, World!\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+hints:
+  - "Use std::cout to print"
+  - "std::endl or '\\n' adds a newline"
+solution: |
+  #include <iostream>
+
+  int main() {
+      std::cout << "Hello, World!" << std::endl;
+      return 0;
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: cpp
+  category: basics
