@@ -72,6 +72,29 @@ func ListExercises(module, language string) ([]string, error) {
 	return paths, err
 }
 
+// ListExerciseMeta loads all exercises for a module+language and returns lightweight summaries.
+// Uses the exercise cache so repeated calls are cheap.
+func ListExerciseMeta(module, language string) ([]ExerciseSummary, error) {
+	paths, err := ListExercises(module, language)
+	if err != nil {
+		return nil, err
+	}
+	summaries := make([]ExerciseSummary, 0, len(paths))
+	for _, path := range paths {
+		ex, loadErr := LoadExercise(path)
+		if loadErr != nil {
+			continue
+		}
+		summaries = append(summaries, ExerciseSummary{
+			ID:         path,
+			Title:      ex.Title,
+			Difficulty: ex.Difficulty,
+			Category:   ex.Metadata.Category,
+		})
+	}
+	return summaries, nil
+}
+
 // LoadVersion returns the content version manifest.
 func LoadVersion() (*ContentVersion, error) {
 	data, err := fs.ReadFile(embedcontent.FS, "content/version.json")

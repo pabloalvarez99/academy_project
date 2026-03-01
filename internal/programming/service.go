@@ -104,6 +104,11 @@ func (s *Service) ListExercises(lang sandbox.Language) ([]string, error) {
 	return content.ListExercises("programming", string(lang))
 }
 
+// ListExerciseMeta returns lightweight metadata for all exercises in a language.
+func (s *Service) ListExerciseMeta(lang sandbox.Language) ([]content.ExerciseSummary, error) {
+	return content.ListExerciseMeta("programming", string(lang))
+}
+
 // buildExercisePath constructs the content-relative path for an exercise.
 // If id already looks like a full path (contains "/"), use it directly.
 func buildExercisePath(lang sandbox.Language, id string) string {

@@ -35,6 +35,8 @@ export function ListKnowledgeArticles(arg1:string):Promise<Array<string>>;
 
 export function ListKnowledgeCategories():Promise<Array<knowledge.Category>>;
 
+export function ListProgrammingExerciseMeta(arg1:string):Promise<Array<content.ExerciseSummary>>;
+
 export function ListProgrammingExercises(arg1:string):Promise<Array<string>>;
 
 export function ListSQLExercises():Promise<Array<string>>;

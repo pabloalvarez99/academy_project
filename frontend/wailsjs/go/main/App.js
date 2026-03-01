@@ -54,6 +54,10 @@ export function ListKnowledgeCategories() {
   return window['go']['main']['App']['ListKnowledgeCategories']();
 }
 
+export function ListProgrammingExerciseMeta(arg1) {
+  return window['go']['main']['App']['ListProgrammingExerciseMeta'](arg1);
+}
+
 export function ListProgrammingExercises(arg1) {
   return window['go']['main']['App']['ListProgrammingExercises'](arg1);
 }

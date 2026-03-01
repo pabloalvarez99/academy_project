@@ -146,6 +146,12 @@ func (a *App) ListProgrammingExercises(lang string) ([]string, error) {
 	return a.programming.ListExercises(sandbox.Language(lang))
 }
 
+// ListProgrammingExerciseMeta returns lightweight metadata (id, title, difficulty, category)
+// for all exercises in a language, enabling client-side filtering without loading full content.
+func (a *App) ListProgrammingExerciseMeta(lang string) ([]content.ExerciseSummary, error) {
+	return a.programming.ListExerciseMeta(sandbox.Language(lang))
+}
+
 // GetProgrammingExercise loads a programming exercise.
 func (a *App) GetProgrammingExercise(lang, id string) (*content.Exercise, error) {
 	return a.programming.GetExercise(sandbox.Language(lang), id)

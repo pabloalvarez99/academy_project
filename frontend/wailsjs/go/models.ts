@@ -137,6 +137,24 @@ export namespace content {
 		}
 	}
 	
+	export class ExerciseSummary {
+	    id: string;
+	    title: string;
+	    difficulty: number;
+	    category: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ExerciseSummary(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.title = source["title"];
+	        this.difficulty = source["difficulty"];
+	        this.category = source["category"];
+	    }
+	}
 	
 
 }

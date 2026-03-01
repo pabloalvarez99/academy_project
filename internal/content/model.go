@@ -40,6 +40,14 @@ type Article struct {
 	Body     string   `json:"body"` // HTML rendered from Markdown
 }
 
+// ExerciseSummary is lightweight exercise metadata for listing without loading full content.
+type ExerciseSummary struct {
+	ID         string `json:"id"`
+	Title      string `json:"title"`
+	Difficulty int    `json:"difficulty"`
+	Category   string `json:"category"`
+}
+
 // ContentVersion is the top-level content manifest embedded in content/version.json.
 type ContentVersion struct {
 	Version string                   `json:"version"`

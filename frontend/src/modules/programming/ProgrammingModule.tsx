@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Editor from '@monaco-editor/react'
 import {
-  ListProgrammingExercises,
+  ListProgrammingExerciseMeta,
   GetProgrammingExercise,
   SubmitCode,
   CheckRuntimes,
@@ -15,9 +15,19 @@ const LANG_MONACO: Record<string, string> = {
   java: 'java', rust: 'rust', c: 'c', cpp: 'cpp',
 }
 
+type DiffFilter = 'all' | 'easy' | 'medium' | 'hard'
+
+function matchesDiff(difficulty: number, filter: DiffFilter): boolean {
+  if (filter === 'all') return true
+  if (filter === 'easy') return difficulty <= 1
+  if (filter === 'medium') return difficulty === 2
+  return difficulty >= 3
+}
+
 export function ProgrammingModule() {
   const [lang, setLang] = useState('go')
-  const [exercises, setExercises] = useState<string[]>([])
+  const [exercises, setExercises] = useState<content.ExerciseSummary[]>([])
+  const [diffFilter, setDiffFilter] = useState<DiffFilter>('all')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [exercise, setExercise] = useState<content.Exercise | null>(null)
   const [code, setCode] = useState('')
@@ -35,7 +45,8 @@ export function ProgrammingModule() {
     setSelectedId(null)
     setExercise(null)
     setResult(null)
-    ListProgrammingExercises(lang).then(setExercises).catch(() => setExercises([]))
+    setDiffFilter('all')
+    ListProgrammingExerciseMeta(lang).then(setExercises).catch(() => setExercises([]))
   }, [lang])
 
   useEffect(() => {
@@ -66,7 +77,17 @@ export function ProgrammingModule() {
   }
 
   const runtimeAvailable = runtimes[lang] !== false
-  const exerciseLabel = (path: string) => path.split('/').pop()?.replace('.yaml', '') || path
+  const exerciseLabel = (ex: content.ExerciseSummary) =>
+    ex.title || ex.id.split('/').pop()?.replace('.yaml', '') || ex.id
+
+  const filtered = exercises.filter((ex) => matchesDiff(ex.difficulty, diffFilter))
+
+  const DIFF_BUTTONS: { key: DiffFilter; label: string; active: string; count: number }[] = [
+    { key: 'all',    label: 'All',    active: 'bg-surface-600 text-gray-100', count: exercises.length },
+    { key: 'easy',   label: 'Easy',   active: 'bg-green-800/60 text-green-300', count: exercises.filter(e => e.difficulty <= 1).length },
+    { key: 'medium', label: 'Med',    active: 'bg-yellow-800/60 text-yellow-300', count: exercises.filter(e => e.difficulty === 2).length },
+    { key: 'hard',   label: 'Hard',   active: 'bg-red-800/60 text-red-300', count: exercises.filter(e => e.difficulty >= 3).length },
+  ]
 
   return (
     <div className="flex h-full">
@@ -90,23 +111,45 @@ export function ProgrammingModule() {
               ⚠ Runtime not found on PATH. Install {lang} to run exercises.
             </p>
           )}
+
+          {/* Difficulty filter */}
+          {exercises.length > 0 && (
+            <div className="mt-2 flex gap-1">
+              {DIFF_BUTTONS.map(({ key, label, active, count }) => (
+                <button
+                  key={key}
+                  onClick={() => setDiffFilter(key)}
+                  className={`flex-1 text-xs rounded px-1 py-1 transition-colors ${
+                    diffFilter === key
+                      ? active
+                      : 'text-gray-600 hover:text-gray-400 hover:bg-surface-700'
+                  }`}
+                >
+                  {label}
+                  <span className="block text-[10px] leading-none mt-0.5 opacity-70">{count}</span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="flex-1 overflow-y-auto py-2">
-          {exercises.length === 0 ? (
-            <p className="px-3 py-4 text-xs text-gray-600 text-center">No exercises for {lang}</p>
+          {filtered.length === 0 ? (
+            <p className="px-3 py-4 text-xs text-gray-600 text-center">
+              {exercises.length === 0 ? `No exercises for ${lang}` : 'No exercises match filter'}
+            </p>
           ) : (
-            exercises.map((id) => (
+            filtered.map((ex) => (
               <button
-                key={id}
-                onClick={() => setSelectedId(id)}
+                key={ex.id}
+                onClick={() => setSelectedId(ex.id)}
                 className={`w-full text-left px-3 py-2 text-xs truncate transition-colors ${
-                  selectedId === id
+                  selectedId === ex.id
                     ? 'bg-accent/20 text-accent'
                     : 'text-gray-400 hover:text-gray-100 hover:bg-surface-700'
                 }`}
               >
-                {exerciseLabel(id)}
+                {exerciseLabel(ex)}
               </button>
             ))
           )}
