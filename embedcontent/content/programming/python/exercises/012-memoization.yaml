@@ -1,0 +1,76 @@
+id: py-algorithms-005
+title: "Memoization with functools.lru_cache"
+difficulty: 3
+tags: [dynamic-programming, memoization, recursion, python]
+description: |
+  Practice memoization. Implement:
+  1. fib(n): nth Fibonacci number (0-indexed: fib(0)=0, fib(1)=1)
+  2. ways(n): number of ways to reach nth stair (1 or 2 steps at a time)
+
+  Use @functools.lru_cache for automatic memoization.
+
+  Read N M and print fib(N) and ways(M) on separate lines.
+
+  Examples:
+    N=10, M=5 → 55 and 8
+    N=30, M=10 → 832040 and 89
+starter_code: |
+  import sys
+  import functools
+
+  @functools.lru_cache(maxsize=None)
+  def fib(n):
+      # base cases: fib(0)=0, fib(1)=1
+      pass
+
+  @functools.lru_cache(maxsize=None)
+  def ways(n):
+      # base cases: ways(0)=1, ways(1)=1
+      pass
+
+  n, m = map(int, sys.stdin.read().split())
+  print(fib(n))
+  print(ways(m))
+test_cases:
+  - input: "10 5\n"
+    expected_output: "55\n8\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "30 10\n"
+    expected_output: "832040\n89\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "0 1\n"
+    expected_output: "0\n1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "fib: if n <= 1: return n; else return fib(n-1) + fib(n-2)"
+  - "ways: if n <= 1: return 1; else return ways(n-1) + ways(n-2)"
+  - "@lru_cache caches results so each unique argument is computed only once"
+  - "Without memoization, fib(30) would make ~2M recursive calls; with cache, just 31"
+solution: |
+  import sys
+  import functools
+
+  @functools.lru_cache(maxsize=None)
+  def fib(n):
+      if n <= 1:
+          return n
+      return fib(n-1) + fib(n-2)
+
+  @functools.lru_cache(maxsize=None)
+  def ways(n):
+      if n <= 1:
+          return 1
+      return ways(n-1) + ways(n-2)
+
+  n, m = map(int, sys.stdin.read().split())
+  print(fib(n))
+  print(ways(m))
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: algorithms
