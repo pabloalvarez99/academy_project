@@ -24,6 +24,8 @@
   .badge-blue   { @apply badge bg-blue-900/50 text-blue-400 border border-blue-800; }
   .badge-gray   { @apply badge bg-surface-700 text-gray-400 border border-surface-600; }
 
+  .section-header { @apply text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3; }
+
   .prose-dark { @apply text-gray-300 leading-relaxed; }
   .prose-dark h1,
   .prose-dark h2,

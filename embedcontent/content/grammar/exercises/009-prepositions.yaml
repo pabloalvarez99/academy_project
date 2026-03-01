@@ -1,0 +1,25 @@
+id: grammar-prepositions-001
+title: "Preposition Errors"
+difficulty: 2
+tags: [prepositions, word-choice]
+description: |
+  The following sentences use incorrect prepositions. Replace each wrong preposition
+  with the correct one.
+
+  ORIGINAL: "The bug depends of the network. We are working in a solution.
+  She is responsible of the deployment. The server is different than expected."
+
+  Type the fully corrected version below.
+starter_code: "The bug depends of the network. We are working in a solution. She is responsible of the deployment. The server is different than expected."
+hints:
+  - "'depends on' (not 'of')"
+  - "'working on a solution' (not 'in')"
+  - "'responsible for' (not 'of')"
+  - "'different from' (not 'than') — American style accepts 'than' but 'from' is standard"
+solution: "The bug depends on the network. We are working on a solution. She is responsible for the deployment. The server is different from expected."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: prepositions

@@ -1,0 +1,27 @@
+id: grammar-advanced-001
+title: "Advanced Mixed Errors"
+difficulty: 3
+tags: [mixed, advanced, articles, tense, subject-verb]
+description: |
+  This paragraph has multiple errors: wrong articles, tense inconsistency, a subject-verb
+  mismatch, and a missing contraction. Fix all of them.
+
+  ORIGINAL: "The team of developers were ready. They opens the dashboard and checks
+  a output. The data does not lies. It is clear that a issue exist."
+
+  Type the fully corrected version below.
+starter_code: "The team of developers were ready. They opens the dashboard and checks a output. The data does not lies. It is clear that a issue exist."
+hints:
+  - "'team' is singular → 'was ready'"
+  - "Present simple: 'opens' → 'open', 'checks' → 'check' (subject 'They' is plural)"
+  - "'output' starts with vowel → 'an output'"
+  - "'does not lies' is wrong: 'does not lie'"
+  - "'a issue' → 'an issue' (vowel sound)"
+  - "'an issue exist' → 'an issue exists' (singular subject)"
+solution: "The team of developers was ready. They open the dashboard and check an output. The data does not lie. It is clear that an issue exists."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: mixed

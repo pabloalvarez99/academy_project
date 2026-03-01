@@ -1,0 +1,140 @@
+id: go-ds-001
+title: "Reverse a Linked List"
+difficulty: 3
+tags: [data-structures, linked-list, pointers]
+description: |
+  Implement a singly linked list and a function to reverse it.
+  Read N integers, build the list, reverse it, then print the values space-separated.
+
+  Input:
+    Line 1: N
+    Line 2: space-separated integers
+
+  Example:
+    5 numbers [1 2 3 4 5] → reversed: 5 4 3 2 1
+starter_code: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  type Node struct {
+      Val  int
+      Next *Node
+  }
+
+  func reverse(head *Node) *Node {
+      // iterative reversal: prev, curr, next pointers
+      return nil
+  }
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      line1, _ := reader.ReadString('\n')
+      n, _ := strconv.Atoi(strings.TrimSpace(line1))
+      line2, _ := reader.ReadString('\n')
+      parts := strings.Fields(strings.TrimSpace(line2))
+
+      var head, tail *Node
+      for i := 0; i < n; i++ {
+          v, _ := strconv.Atoi(parts[i])
+          node := &Node{Val: v}
+          if head == nil {
+              head = node
+              tail = node
+          } else {
+              tail.Next = node
+              tail = node
+          }
+      }
+
+      head = reverse(head)
+      result := []string{}
+      for curr := head; curr != nil; curr = curr.Next {
+          result = append(result, strconv.Itoa(curr.Val))
+      }
+      fmt.Println(strings.Join(result, " "))
+  }
+test_cases:
+  - input: "5\n1 2 3 4 5\n"
+    expected_output: "5 4 3 2 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1\n42\n"
+    expected_output: "42\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "3\n7 8 9\n"
+    expected_output: "9 8 7\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Three pointers: prev=nil, curr=head, next"
+  - "Loop: save next=curr.Next, point curr.Next=prev, advance prev=curr, curr=next"
+  - "When curr is nil, prev is the new head"
+solution: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  type Node struct {
+      Val  int
+      Next *Node
+  }
+
+  func reverse(head *Node) *Node {
+      var prev *Node
+      curr := head
+      for curr != nil {
+          next := curr.Next
+          curr.Next = prev
+          prev = curr
+          curr = next
+      }
+      return prev
+  }
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      line1, _ := reader.ReadString('\n')
+      n, _ := strconv.Atoi(strings.TrimSpace(line1))
+      line2, _ := reader.ReadString('\n')
+      parts := strings.Fields(strings.TrimSpace(line2))
+
+      var head, tail *Node
+      for i := 0; i < n; i++ {
+          v, _ := strconv.Atoi(parts[i])
+          node := &Node{Val: v}
+          if head == nil {
+              head = node
+              tail = node
+          } else {
+              tail.Next = node
+              tail = node
+          }
+      }
+
+      head = reverse(head)
+      result := []string{}
+      for curr := head; curr != nil; curr = curr.Next {
+          result = append(result, strconv.Itoa(curr.Val))
+      }
+      fmt.Println(strings.Join(result, " "))
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: data-structures

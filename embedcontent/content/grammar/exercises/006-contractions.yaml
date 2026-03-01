@@ -1,0 +1,28 @@
+id: grammar-contractions-001
+title: "Missing Contractions"
+difficulty: 2
+tags: [contractions, apostrophes, informal-writing]
+description: |
+  The following text uses full forms where contractions are expected in informal writing.
+  Rewrite using the correct contractions.
+
+  ORIGINAL: "I cannot believe it does not work. She would not help and he did not try.
+  We are not done. They will not stop until it is finished."
+
+  Type the fully corrected version below.
+starter_code: "I cannot believe it does not work. She would not help and he did not try. We are not done. They will not stop until it is finished."
+hints:
+  - "cannot → can't"
+  - "does not → doesn't"
+  - "would not → wouldn't"
+  - "did not → didn't"
+  - "are not → aren't"
+  - "will not → won't"
+  - "it is → it's"
+solution: "I can't believe it doesn't work. She wouldn't help and he didn't try. We aren't done. They won't stop until it's finished."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: contractions

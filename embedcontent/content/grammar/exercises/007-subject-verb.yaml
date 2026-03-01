@@ -1,0 +1,25 @@
+id: grammar-subject-verb-001
+title: "Subject-Verb Agreement"
+difficulty: 2
+tags: [subject-verb, agreement, singular-plural]
+description: |
+  The following sentences have subject-verb agreement errors. The verb must match
+  the number (singular/plural) of the subject. Fix all errors.
+
+  ORIGINAL: "The list of requirements are long. Each of the modules need testing.
+  The team are working hard. Neither the client nor the developers was happy."
+
+  Type the fully corrected version below.
+starter_code: "The list of requirements are long. Each of the modules need testing. The team are working hard. Neither the client nor the developers was happy."
+hints:
+  - "'list' is the subject (singular), not 'requirements' → 'is long'"
+  - "'each' is always singular → 'needs testing'"
+  - "Collective noun 'team' takes singular verb in American English → 'is working'"
+  - "With 'neither...nor', verb agrees with the closer subject 'developers' (plural) → 'were happy'"
+solution: "The list of requirements is long. Each of the modules needs testing. The team is working hard. Neither the client nor the developers were happy."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: subject-verb

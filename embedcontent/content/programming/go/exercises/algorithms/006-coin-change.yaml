@@ -1,0 +1,119 @@
+id: go-algorithms-006
+title: "Coin Change"
+difficulty: 4
+tags: [dynamic-programming, arrays, dp]
+description: |
+  Given coin denominations and a target amount, find the minimum number of coins
+  needed to make exactly that amount. If impossible, print -1.
+
+  Input format:
+    Line 1: N (number of denominations)
+    Line 2: space-separated denominations
+    Line 3: target amount
+
+  Examples:
+    3 coins [1 5 10], target 11 → 2 (10+1)
+    1 coin  [2],       target 3  → -1 (impossible)
+    3 coins [1 2 5],   target 11 → 3 (5+5+1)
+starter_code: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  func coinChange(coins []int, amount int) int {
+      // Use bottom-up DP
+      // dp[i] = minimum coins to make amount i
+      return -1
+  }
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      line1, _ := reader.ReadString('\n')
+      n, _ := strconv.Atoi(strings.TrimSpace(line1))
+      line2, _ := reader.ReadString('\n')
+      parts := strings.Fields(strings.TrimSpace(line2))
+      coins := make([]int, n)
+      for i, p := range parts {
+          coins[i], _ = strconv.Atoi(p)
+      }
+      line3, _ := reader.ReadString('\n')
+      amount, _ := strconv.Atoi(strings.TrimSpace(line3))
+      fmt.Println(coinChange(coins, amount))
+  }
+test_cases:
+  - input: "3\n1 5 10\n11\n"
+    expected_output: "2\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1\n2\n3\n"
+    expected_output: "-1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "3\n1 2 5\n11\n"
+    expected_output: "3\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1\n1\n0\n"
+    expected_output: "0\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Initialize dp array of size amount+1 with a large value (amount+1 acts as ∞)"
+  - "dp[0] = 0 (base case: 0 coins to make amount 0)"
+  - "For each amount i from 1..amount: try each coin c where c<=i, dp[i] = min(dp[i], dp[i-c]+1)"
+  - "If dp[amount] > amount, return -1 (impossible)"
+solution: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  func coinChange(coins []int, amount int) int {
+      dp := make([]int, amount+1)
+      for i := 1; i <= amount; i++ {
+          dp[i] = amount + 1 // sentinel for "impossible"
+      }
+      for i := 1; i <= amount; i++ {
+          for _, c := range coins {
+              if c <= i && dp[i-c]+1 < dp[i] {
+                  dp[i] = dp[i-c] + 1
+              }
+          }
+      }
+      if dp[amount] > amount {
+          return -1
+      }
+      return dp[amount]
+  }
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      line1, _ := reader.ReadString('\n')
+      n, _ := strconv.Atoi(strings.TrimSpace(line1))
+      line2, _ := reader.ReadString('\n')
+      parts := strings.Fields(strings.TrimSpace(line2))
+      coins := make([]int, n)
+      for i, p := range parts {
+          coins[i], _ = strconv.Atoi(p)
+      }
+      line3, _ := reader.ReadString('\n')
+      amount, _ := strconv.Atoi(strings.TrimSpace(line3))
+      fmt.Println(coinChange(coins, amount))
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: algorithms

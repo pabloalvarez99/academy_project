@@ -1,0 +1,62 @@
+id: ts-algorithms-003
+title: "Climbing Stairs (DP)"
+difficulty: 3
+tags: [dynamic-programming, fibonacci-variant, algorithms]
+description: |
+  You are climbing a staircase with N steps. Each time you can climb 1 or 2 steps.
+  How many distinct ways can you climb to the top?
+
+  Read N and print the number of ways.
+
+  Examples:
+    N=2 → 2 (ways: [1+1], [2])
+    N=3 → 3 (ways: [1+1+1], [1+2], [2+1])
+    N=5 → 8
+starter_code: |
+  const lines: string[] = [];
+  process.stdin.on('data', (d) => lines.push(...d.toString().split('\n').filter(Boolean)));
+  process.stdin.on('end', () => {
+      const n = parseInt(lines[0]);
+      // Notice the pattern: ways(n) = ways(n-1) + ways(n-2)  (Fibonacci!)
+      console.log(0);
+  });
+test_cases:
+  - input: "2\n"
+    expected_output: "2\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+  - input: "3\n"
+    expected_output: "3\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+  - input: "5\n"
+    expected_output: "8\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+  - input: "10\n"
+    expected_output: "89\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+hints:
+  - "ways(1) = 1, ways(2) = 2"
+  - "ways(n) = ways(n-1) + ways(n-2) — you can arrive from one step below or two steps below"
+  - "This is exactly the Fibonacci sequence shifted by one"
+  - "Use an array dp[0..n] or just two variables (space optimization)"
+solution: |
+  const lines: string[] = [];
+  process.stdin.on('data', (d) => lines.push(...d.toString().split('\n').filter(Boolean)));
+  process.stdin.on('end', () => {
+      const n = parseInt(lines[0]);
+      if (n <= 2) { console.log(n); return; }
+      let a = 1, b = 2;
+      for (let i = 3; i <= n; i++) {
+          [a, b] = [b, a + b];
+      }
+      console.log(b);
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

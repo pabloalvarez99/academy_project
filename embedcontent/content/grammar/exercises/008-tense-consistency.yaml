@@ -1,0 +1,28 @@
+id: grammar-tense-001
+title: "Tense Consistency"
+difficulty: 3
+tags: [tense, consistency, past, present]
+description: |
+  The following paragraph inconsistently shifts between past and present tense.
+  Rewrite it entirely in simple past tense.
+
+  ORIGINAL: "The engineer opens the terminal and types the command. She waited for
+  the output and then checks the logs. The build fails so she fixes the error."
+
+  Type the fully corrected version (all simple past) below.
+starter_code: "The engineer opens the terminal and types the command. She waited for the output and then checks the logs. The build fails so she fixes the error."
+hints:
+  - "All verbs must be simple past tense"
+  - "opens → opened"
+  - "types → typed"
+  - "checks → checked"
+  - "fails → failed"
+  - "fixes → fixed"
+  - "'waited' is already past — keep it"
+solution: "The engineer opened the terminal and typed the command. She waited for the output and then checked the logs. The build failed so she fixed the error."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: tense

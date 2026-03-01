@@ -1,0 +1,70 @@
+id: rust-basics-006
+title: "Ownership and Borrowing"
+difficulty: 3
+tags: [ownership, borrowing, references, rust]
+description: |
+  Practice Rust's ownership model. Write a function longest(a: &str, b: &str) -> &str
+  that returns the longer of two string slices (borrowing, not taking ownership).
+  If equal length, return the first one.
+
+  Read two lines and print the longer string.
+
+  Example:
+    Input:
+      hello
+      world!
+    Output: world!
+starter_code: |
+  use std::io::{self, BufRead};
+
+  fn longest<'a>(a: &'a str, b: &'a str) -> &'a str {
+      // return the longer string slice
+      // use lifetime 'a to tell the compiler both inputs live long enough
+      todo!()
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines();
+      let a = lines.next().unwrap().unwrap();
+      let b = lines.next().unwrap().unwrap();
+      println!("{}", longest(&a, &b));
+  }
+test_cases:
+  - input: "hello\nworld!\n"
+    expected_output: "world!\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "rust\ngo\n"
+    expected_output: "rust\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "abc\ndef\n"
+    expected_output: "abc\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+hints:
+  - "The lifetime annotation 'a tells Rust the returned reference lives as long as the shorter of a or b"
+  - "if a.len() >= b.len() { a } else { b }"
+  - "We borrow both strings (&str) — no copying, no ownership transfer"
+  - "Lifetimes don't change runtime behavior, they're compile-time checks"
+solution: |
+  use std::io::{self, BufRead};
+
+  fn longest<'a>(a: &'a str, b: &'a str) -> &'a str {
+      if a.len() >= b.len() { a } else { b }
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines();
+      let a = lines.next().unwrap().unwrap();
+      let b = lines.next().unwrap().unwrap();
+      println!("{}", longest(&a, &b));
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: basics

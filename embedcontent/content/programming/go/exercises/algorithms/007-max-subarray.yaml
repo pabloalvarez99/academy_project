@@ -1,0 +1,111 @@
+id: go-algorithms-007
+title: "Maximum Subarray (Kadane's)"
+difficulty: 3
+tags: [dynamic-programming, arrays, greedy]
+description: |
+  Given an array of integers, find the contiguous subarray with the largest sum
+  and print that sum. The array has at least one element.
+
+  Input format:
+    Line 1: N (number of elements)
+    Line 2: space-separated integers
+
+  Examples:
+    [-2, 1, -3, 4, -1, 2, 1, -5, 4] → 6 (subarray [4,-1,2,1])
+    [1] → 1
+    [-1, -2, -3] → -1 (must pick at least one element)
+starter_code: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  func maxSubarray(nums []int) int {
+      // Kadane's algorithm: track current sum and global max
+      return 0
+  }
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      line1, _ := reader.ReadString('\n')
+      n, _ := strconv.Atoi(strings.TrimSpace(line1))
+      line2, _ := reader.ReadString('\n')
+      parts := strings.Fields(strings.TrimSpace(line2))
+      nums := make([]int, n)
+      for i, p := range parts {
+          nums[i], _ = strconv.Atoi(p)
+      }
+      fmt.Println(maxSubarray(nums))
+  }
+test_cases:
+  - input: "9\n-2 1 -3 4 -1 2 1 -5 4\n"
+    expected_output: "6\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1\n1\n"
+    expected_output: "1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "3\n-1 -2 -3\n"
+    expected_output: "-1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "5\n5 4 -1 7 8\n"
+    expected_output: "23\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Initialize maxSum = nums[0], currentSum = nums[0]"
+  - "For each subsequent element: currentSum = max(nums[i], currentSum + nums[i])"
+  - "Update maxSum = max(maxSum, currentSum)"
+  - "The key insight: if currentSum goes negative, start fresh from the current element"
+solution: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  func maxSubarray(nums []int) int {
+      maxSum := nums[0]
+      cur := nums[0]
+      for _, v := range nums[1:] {
+          if cur+v > v {
+              cur = cur + v
+          } else {
+              cur = v
+          }
+          if cur > maxSum {
+              maxSum = cur
+          }
+      }
+      return maxSum
+  }
+
+  func main() {
+      reader := bufio.NewReader(os.Stdin)
+      line1, _ := reader.ReadString('\n')
+      n, _ := strconv.Atoi(strings.TrimSpace(line1))
+      line2, _ := reader.ReadString('\n')
+      parts := strings.Fields(strings.TrimSpace(line2))
+      nums := make([]int, n)
+      for i, p := range parts {
+          nums[i], _ = strconv.Atoi(p)
+      }
+      fmt.Println(maxSubarray(nums))
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: algorithms

@@ -1,0 +1,83 @@
+id: py-data-structures-001
+title: "Stack and Queue Simulation"
+difficulty: 2
+tags: [data-structures, stack, queue, deque]
+description: |
+  Simulate a stack and a queue given a sequence of operations.
+  Operations: PUSH x, POP, ENQUEUE x, DEQUEUE, PRINT_STACK, PRINT_QUEUE
+
+  Input: lines of operations
+  For PRINT_STACK: print items top to bottom, space-separated (or "empty")
+  For PRINT_QUEUE: print items front to back, space-separated (or "empty")
+
+  Example:
+    PUSH 1
+    PUSH 2
+    ENQUEUE 3
+    ENQUEUE 4
+    PRINT_STACK  → 2 1
+    PRINT_QUEUE  → 3 4
+    POP
+    DEQUEUE
+    PRINT_STACK  → 1
+    PRINT_QUEUE  → 4
+starter_code: |
+  import sys
+  from collections import deque
+
+  stack = []
+  queue = deque()
+
+  for line in sys.stdin:
+      parts = line.split()
+      if not parts:
+          continue
+      op = parts[0]
+      # handle each operation
+
+test_cases:
+  - input: "PUSH 1\nPUSH 2\nENQUEUE 3\nENQUEUE 4\nPRINT_STACK\nPRINT_QUEUE\nPOP\nDEQUEUE\nPRINT_STACK\nPRINT_QUEUE\n"
+    expected_output: "2 1\n3 4\n1\n4\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "PRINT_STACK\nPRINT_QUEUE\n"
+    expected_output: "empty\nempty\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Use a Python list as stack: append() = push, pop() = pop"
+  - "Use collections.deque for queue: append() = enqueue, popleft() = dequeue"
+  - "PRINT_STACK: print stack reversed (top is last element)"
+  - "Check if empty before POP/DEQUEUE to avoid errors"
+solution: |
+  import sys
+  from collections import deque
+
+  stack = []
+  queue = deque()
+
+  for line in sys.stdin:
+      parts = line.split()
+      if not parts:
+          continue
+      op = parts[0]
+      if op == 'PUSH':
+          stack.append(int(parts[1]))
+      elif op == 'POP':
+          if stack:
+              stack.pop()
+      elif op == 'ENQUEUE':
+          queue.append(int(parts[1]))
+      elif op == 'DEQUEUE':
+          if queue:
+              queue.popleft()
+      elif op == 'PRINT_STACK':
+          print(' '.join(map(str, reversed(stack))) if stack else 'empty')
+      elif op == 'PRINT_QUEUE':
+          print(' '.join(map(str, queue)) if queue else 'empty')
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: algorithms

@@ -1,0 +1,109 @@
+id: rust-basics-005
+title: "Structs and Methods"
+difficulty: 2
+tags: [structs, methods, impl, rust]
+description: |
+  Define a Rectangle struct with width and height fields.
+  Implement methods:
+    - area() → returns width * height
+    - perimeter() → returns 2*(width+height)
+    - is_square() → returns true if width == height
+
+  Read two integers (width height) and print area, perimeter, and is_square on separate lines.
+
+  Example:
+    Input: 4 6
+    Output:
+      24
+      20
+      false
+starter_code: |
+  use std::io;
+
+  struct Rectangle {
+      width: u32,
+      height: u32,
+  }
+
+  impl Rectangle {
+      fn area(&self) -> u32 {
+          todo!()
+      }
+
+      fn perimeter(&self) -> u32 {
+          todo!()
+      }
+
+      fn is_square(&self) -> bool {
+          todo!()
+      }
+  }
+
+  fn main() {
+      let mut input = String::new();
+      io::stdin().read_line(&mut input).unwrap();
+      let parts: Vec<u32> = input.trim().split_whitespace()
+          .map(|x| x.parse().unwrap())
+          .collect();
+      let rect = Rectangle { width: parts[0], height: parts[1] };
+      println!("{}", rect.area());
+      println!("{}", rect.perimeter());
+      println!("{}", rect.is_square());
+  }
+test_cases:
+  - input: "4 6\n"
+    expected_output: "24\n20\nfalse\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "5 5\n"
+    expected_output: "25\n20\ntrue\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+  - input: "1 100\n"
+    expected_output: "100\n202\nfalse\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 65536
+hints:
+  - "Replace todo!() with actual implementations"
+  - "area: self.width * self.height"
+  - "perimeter: 2 * (self.width + self.height)"
+  - "is_square: self.width == self.height"
+solution: |
+  use std::io;
+
+  struct Rectangle {
+      width: u32,
+      height: u32,
+  }
+
+  impl Rectangle {
+      fn area(&self) -> u32 {
+          self.width * self.height
+      }
+
+      fn perimeter(&self) -> u32 {
+          2 * (self.width + self.height)
+      }
+
+      fn is_square(&self) -> bool {
+          self.width == self.height
+      }
+  }
+
+  fn main() {
+      let mut input = String::new();
+      io::stdin().read_line(&mut input).unwrap();
+      let parts: Vec<u32> = input.trim().split_whitespace()
+          .map(|x| x.parse().unwrap())
+          .collect();
+      let rect = Rectangle { width: parts[0], height: parts[1] };
+      println!("{}", rect.area());
+      println!("{}", rect.perimeter());
+      println!("{}", rect.is_square());
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: basics

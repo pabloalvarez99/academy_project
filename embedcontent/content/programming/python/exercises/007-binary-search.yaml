@@ -1,0 +1,73 @@
+id: py-algorithms-001
+title: "Binary Search"
+difficulty: 2
+tags: [algorithms, binary-search, sorted-arrays]
+description: |
+  Implement binary search on a sorted list. Given N integers (sorted ascending)
+  and a target T, print the index of T, or -1 if not found.
+
+  Input format:
+    Line 1: N
+    Line 2: space-separated sorted integers
+    Line 3: target T
+
+  Examples:
+    [1, 3, 5, 7, 9], T=7 → 3
+    [1, 3, 5, 7, 9], T=4 → -1
+starter_code: |
+  import sys
+
+  def binary_search(arr, target):
+      # implement binary search
+      return -1
+
+  lines = sys.stdin.read().split('\n')
+  n = int(lines[0])
+  arr = list(map(int, lines[1].split()))
+  target = int(lines[2])
+  print(binary_search(arr, target))
+test_cases:
+  - input: "5\n1 3 5 7 9\n7\n"
+    expected_output: "3\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "5\n1 3 5 7 9\n4\n"
+    expected_output: "-1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1\n42\n42\n"
+    expected_output: "0\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Maintain lo=0, hi=n-1 pointers"
+  - "mid = (lo + hi) // 2"
+  - "If arr[mid] == target, return mid"
+  - "If arr[mid] < target, search right half: lo = mid + 1"
+  - "If arr[mid] > target, search left half: hi = mid - 1"
+solution: |
+  import sys
+
+  def binary_search(arr, target):
+      lo, hi = 0, len(arr) - 1
+      while lo <= hi:
+          mid = (lo + hi) // 2
+          if arr[mid] == target:
+              return mid
+          elif arr[mid] < target:
+              lo = mid + 1
+          else:
+              hi = mid - 1
+      return -1
+
+  lines = sys.stdin.read().split('\n')
+  n = int(lines[0])
+  arr = list(map(int, lines[1].split()))
+  target = int(lines[2])
+  print(binary_search(arr, target))
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: algorithms

@@ -1,0 +1,77 @@
+id: ts-algorithms-002
+title: "Valid Parentheses"
+difficulty: 2
+tags: [stack, strings, algorithms]
+description: |
+  Given a string containing only '(', ')', '{', '}', '[', ']',
+  determine if the brackets are valid. Print "true" or "false".
+
+  Rules:
+  - Open brackets must close in the correct order
+  - Each open bracket has exactly one matching close bracket
+
+  Examples:
+    "()" → true
+    "()[]{}" → true
+    "(]" → false
+    "([)]" → false
+    "{[]}" → true
+starter_code: |
+  const lines: string[] = [];
+  process.stdin.on('data', (d) => lines.push(...d.toString().split('\n').filter(Boolean)));
+  process.stdin.on('end', () => {
+      const s = lines[0] ?? '';
+      // use a stack to validate brackets
+      console.log(false);
+  });
+test_cases:
+  - input: "()\n"
+    expected_output: "true\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+  - input: "()[]{}\n"
+    expected_output: "true\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+  - input: "(]\n"
+    expected_output: "false\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+  - input: "([)]\n"
+    expected_output: "false\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+  - input: "{[]}\n"
+    expected_output: "true\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+hints:
+  - "Use a stack (array) — push open brackets, pop and check on close brackets"
+  - "Create a map: ')' → '(', '}' → '{', ']' → '['"
+  - "If close bracket doesn't match top of stack → false"
+  - "At the end, stack must be empty → true"
+solution: |
+  const lines: string[] = [];
+  process.stdin.on('data', (d) => lines.push(...d.toString().split('\n').filter(Boolean)));
+  process.stdin.on('end', () => {
+      const s = lines[0] ?? '';
+      const stack: string[] = [];
+      const match: Record<string, string> = { ')': '(', '}': '{', ']': '[' };
+      for (const c of s) {
+          if ('({['.includes(c)) {
+              stack.push(c);
+          } else {
+              if (stack.pop() !== match[c]) {
+                  console.log(false);
+                  return;
+              }
+          }
+      }
+      console.log(stack.length === 0);
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

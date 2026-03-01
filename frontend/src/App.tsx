@@ -8,6 +8,7 @@ import { ProgrammingModule } from './modules/programming/ProgrammingModule'
 import { SQLModule } from './modules/sql/SQLModule'
 import { KnowledgeModule } from './modules/knowledge/KnowledgeModule'
 import { SearchModule } from './modules/search/SearchModule'
+import { SettingsModule } from './modules/settings/SettingsModule'
 
 function AppShell() {
   return (
@@ -21,6 +22,7 @@ function AppShell() {
           <Route path="/sql"         element={<SQLModule />} />
           <Route path="/knowledge"   element={<KnowledgeModule />} />
           <Route path="/search"      element={<SearchModule />} />
+          <Route path="/settings"    element={<SettingsModule />} />
           <Route path="*"            element={<Navigate to="/" replace />} />
         </Routes>
       </main>

@@ -9,6 +9,7 @@ const nav = [
   { to: '/sql',        label: 'SQL Lab',      icon: '⛃' },
   { to: '/knowledge',  label: 'Knowledge',    icon: '📖' },
   { to: '/search',     label: 'Search',       icon: '⌕' },
+  { to: '/settings',   label: 'Settings',     icon: '⚙' },
 ]
 
 export function Sidebar() {
