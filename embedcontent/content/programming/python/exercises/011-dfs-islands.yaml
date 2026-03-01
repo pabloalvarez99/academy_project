@@ -1,0 +1,99 @@
+id: py-algorithms-004
+title: "Number of Islands (DFS)"
+difficulty: 4
+tags: [graph, dfs, matrix, flood-fill]
+description: |
+  Given a 2D grid of '1' (land) and '0' (water), count the number of islands.
+  An island is surrounded by water and formed by connecting adjacent land cells
+  horizontally or vertically.
+
+  Input:
+    Line 1: R C (rows, cols)
+    Next R lines: C chars (1 or 0, space-separated)
+
+  Example:
+    4 5 grid:
+      1 1 0 0 0
+      1 1 0 0 0
+      0 0 1 0 0
+      0 0 0 1 1
+    Output: 3
+starter_code: |
+  import sys
+
+  def num_islands(grid):
+      if not grid:
+          return 0
+      rows, cols = len(grid), len(grid[0])
+      count = 0
+
+      def dfs(r, c):
+          # mark visited and explore neighbors
+          pass
+
+      for r in range(rows):
+          for c in range(cols):
+              if grid[r][c] == '1':
+                  count += 1
+                  dfs(r, c)
+      return count
+
+  data = sys.stdin.read().split('\n')
+  r, c = map(int, data[0].split())
+  grid = [data[i+1].split() for i in range(r)]
+  print(num_islands(grid))
+test_cases:
+  - input: "4 5\n1 1 0 0 0\n1 1 0 0 0\n0 0 1 0 0\n0 0 0 1 1\n"
+    expected_output: "3\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1 1\n1\n"
+    expected_output: "1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "2 2\n0 0\n0 0\n"
+    expected_output: "0\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "3 3\n1 0 1\n0 1 0\n1 0 1\n"
+    expected_output: "5\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "DFS flood fill: when you find a '1', mark it '0' and recursively mark all connected '1's"
+  - "Marking as '0' prevents revisiting — no separate visited set needed"
+  - "Four directions: up (-1,0), down (+1,0), left (0,-1), right (0,+1)"
+  - "Check bounds before recursing: 0 <= r < rows, 0 <= c < cols"
+solution: |
+  import sys
+  sys.setrecursionlimit(10000)
+
+  def num_islands(grid):
+      if not grid:
+          return 0
+      rows, cols = len(grid), len(grid[0])
+      count = 0
+
+      def dfs(r, c):
+          if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] != '1':
+              return
+          grid[r][c] = '0'  # mark visited
+          dfs(r+1, c); dfs(r-1, c); dfs(r, c+1); dfs(r, c-1)
+
+      for r in range(rows):
+          for c in range(cols):
+              if grid[r][c] == '1':
+                  count += 1
+                  dfs(r, c)
+      return count
+
+  data = sys.stdin.read().split('\n')
+  r, c = map(int, data[0].split())
+  grid = [data[i+1].split() for i in range(r)]
+  print(num_islands(grid))
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: algorithms

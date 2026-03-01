@@ -1,0 +1,108 @@
+id: c-basics-006
+title: "String Reversal and Palindrome"
+difficulty: 2
+tags: [strings, pointers, palindrome, c]
+description: |
+  Implement two functions:
+  1. reverseStr(char *s): reverses a string in-place
+  2. isPalindrome(const char *s): returns 1 if palindrome (ignoring case and spaces), 0 otherwise
+
+  Read two lines:
+    Line 1: a string to reverse
+    Line 2: a string to check for palindrome
+  Print the reversed string, then "true" or "false".
+
+  Example:
+    Input:
+      hello
+      A man a plan a canal Panama
+    Output:
+      olleh
+      true
+starter_code: |
+  #include <stdio.h>
+  #include <string.h>
+  #include <ctype.h>
+
+  void reverseStr(char *s) {
+      // in-place reversal with two pointers
+  }
+
+  int isPalindrome(const char *s) {
+      // ignore case and spaces, compare from both ends
+      return 0;
+  }
+
+  int main() {
+      char a[256], b[256];
+      fgets(a, sizeof(a), stdin);
+      fgets(b, sizeof(b), stdin);
+      // remove newlines
+      a[strcspn(a, "\n")] = '\0';
+      b[strcspn(b, "\n")] = '\0';
+
+      reverseStr(a);
+      printf("%s\n", a);
+      printf("%s\n", isPalindrome(b) ? "true" : "false");
+      return 0;
+  }
+test_cases:
+  - input: "hello\nA man a plan a canal Panama\n"
+    expected_output: "olleh\ntrue\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "world\nhello\n"
+    expected_output: "dlrow\nfalse\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "abcdef\nRacecar\n"
+    expected_output: "fedcba\ntrue\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "reverseStr: lo=0, hi=strlen-1; swap s[lo] and s[hi] while lo < hi"
+  - "isPalindrome: collect only alpha chars (tolower), then compare from both ends"
+  - "Or: filter into a temporary array, then check if array equals its reverse"
+solution: |
+  #include <stdio.h>
+  #include <string.h>
+  #include <ctype.h>
+
+  void reverseStr(char *s) {
+      int lo = 0, hi = strlen(s) - 1;
+      while (lo < hi) {
+          char tmp = s[lo]; s[lo] = s[hi]; s[hi] = tmp;
+          lo++; hi--;
+      }
+  }
+
+  int isPalindrome(const char *s) {
+      char buf[256];
+      int n = 0;
+      for (int i = 0; s[i]; i++) {
+          if (!isspace((unsigned char)s[i]))
+              buf[n++] = tolower((unsigned char)s[i]);
+      }
+      for (int i = 0; i < n/2; i++) {
+          if (buf[i] != buf[n-1-i]) return 0;
+      }
+      return 1;
+  }
+
+  int main() {
+      char a[256], b[256];
+      fgets(a, sizeof(a), stdin);
+      fgets(b, sizeof(b), stdin);
+      a[strcspn(a, "\n")] = '\0';
+      b[strcspn(b, "\n")] = '\0';
+      reverseStr(a);
+      printf("%s\n", a);
+      printf("%s\n", isPalindrome(b) ? "true" : "false");
+      return 0;
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: c
+  category: basics

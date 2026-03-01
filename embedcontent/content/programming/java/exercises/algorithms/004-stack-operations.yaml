@@ -1,0 +1,84 @@
+id: java-algorithms-004
+title: "Stack-Based Expression Evaluator"
+difficulty: 3
+tags: [stack, algorithms, expressions]
+description: |
+  Evaluate a Reverse Polish Notation (RPN) expression. Operands are integers,
+  operators are +, -, *, /. Division is integer division (truncate toward zero).
+
+  Input: space-separated tokens on one line.
+
+  Examples:
+    "2 1 + 3 *" → 9  ((2+1)*3)
+    "4 13 5 / +" → 6  (4+(13/5))
+    "10 6 9 3 + -11 * / * 17 + 5 +" → 22
+starter_code: |
+  import java.util.*;
+
+  public class Main {
+      public static int evalRPN(String[] tokens) {
+          Deque<Integer> stack = new ArrayDeque<>();
+          // process each token
+          return stack.peek();
+      }
+
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          String line = sc.nextLine().trim();
+          String[] tokens = line.split("\\s+");
+          System.out.println(evalRPN(tokens));
+      }
+  }
+test_cases:
+  - input: "2 1 + 3 *\n"
+    expected_output: "9\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "4 13 5 / +\n"
+    expected_output: "6\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: "3\n"
+    expected_output: "3\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+hints:
+  - "If token is an operator: pop two operands, apply, push result"
+  - "If token is a number: parse and push"
+  - "Order matters: b=pop(), a=pop(), result=a OP b (first popped is second operand)"
+  - "Check if token is one of +,-,*,/ before parsing as int"
+solution: |
+  import java.util.*;
+
+  public class Main {
+      public static int evalRPN(String[] tokens) {
+          Deque<Integer> stack = new ArrayDeque<>();
+          for (String t : tokens) {
+              if (t.equals("+") || t.equals("-") || t.equals("*") || t.equals("/")) {
+                  int b = stack.pop(), a = stack.pop();
+                  switch (t) {
+                      case "+": stack.push(a + b); break;
+                      case "-": stack.push(a - b); break;
+                      case "*": stack.push(a * b); break;
+                      case "/": stack.push(a / b); break;
+                  }
+              } else {
+                  stack.push(Integer.parseInt(t));
+              }
+          }
+          return stack.peek();
+      }
+
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          String line = sc.nextLine().trim();
+          String[] tokens = line.split("\\s+");
+          System.out.println(evalRPN(tokens));
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: java
+  category: algorithms

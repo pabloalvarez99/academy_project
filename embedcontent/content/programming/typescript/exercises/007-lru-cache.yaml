@@ -1,0 +1,87 @@
+id: ts-algorithms-005
+title: "LRU Cache"
+difficulty: 4
+tags: [data-structures, cache, design, map]
+description: |
+  Implement an LRU (Least Recently Used) cache with capacity C.
+  Operations: GET key, PUT key value
+
+  GET: return value (or -1 if not found); marks key as recently used
+  PUT: insert/update key-value; if at capacity, evict LRU item first
+
+  Input:
+    Line 1: capacity C
+    Remaining lines: GET <key> or PUT <key> <value>
+  Print result of each GET (one per line).
+
+  Example:
+    2
+    PUT 1 1
+    PUT 2 2
+    GET 1   → 1
+    PUT 3 3  (evicts key 2)
+    GET 2   → -1
+    GET 3   → 3
+starter_code: |
+  const lines: string[] = [];
+  process.stdin.on('data', (d) => lines.push(...d.toString().split('\n').filter(Boolean)));
+  process.stdin.on('end', () => {
+      const capacity = parseInt(lines[0]);
+      // Use Map (insertion-order preserved in JS) as an ordered cache
+      const cache = new Map<number, number>();
+
+      for (let i = 1; i < lines.length; i++) {
+          const parts = lines[i].split(' ');
+          // implement GET and PUT
+      }
+  });
+test_cases:
+  - input: "2\nPUT 1 1\nPUT 2 2\nGET 1\nPUT 3 3\nGET 2\nGET 3\n"
+    expected_output: "1\n-1\n3\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+  - input: "1\nPUT 1 10\nGET 1\nPUT 2 20\nGET 1\nGET 2\n"
+    expected_output: "10\n-1\n20\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+hints:
+  - "JavaScript Map preserves insertion order — first inserted is oldest"
+  - "For GET: delete and re-insert to make it 'most recently used'"
+  - "For PUT: if key exists, delete first; if at capacity, delete oldest (map.keys().next().value)"
+  - "This gives O(1) average for both operations"
+solution: |
+  const lines: string[] = [];
+  process.stdin.on('data', (d) => lines.push(...d.toString().split('\n').filter(Boolean)));
+  process.stdin.on('end', () => {
+      const capacity = parseInt(lines[0]);
+      const cache = new Map<number, number>();
+
+      for (let i = 1; i < lines.length; i++) {
+          const parts = lines[i].split(' ');
+          if (parts[0] === 'GET') {
+              const key = parseInt(parts[1]);
+              if (cache.has(key)) {
+                  const val = cache.get(key)!;
+                  cache.delete(key);
+                  cache.set(key, val);
+                  console.log(val);
+              } else {
+                  console.log(-1);
+              }
+          } else {  // PUT
+              const key = parseInt(parts[1]);
+              const val = parseInt(parts[2]);
+              if (cache.has(key)) cache.delete(key);
+              else if (cache.size >= capacity) {
+                  cache.delete(cache.keys().next().value!);
+              }
+              cache.set(key, val);
+          }
+      }
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms
