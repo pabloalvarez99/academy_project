@@ -1,0 +1,161 @@
+id: go-ds-004
+title: "Generic Stack (Go 1.18+)"
+difficulty: 3
+tags: [generics, type-parameters, data-structures, go]
+description: |
+  Implement a generic Stack[T any] using Go generics (1.18+).
+  Supports: Push(T), Pop() (T, bool), Peek() (T, bool), Len() int, IsEmpty() bool.
+
+  Read N operations and print results for POP and PEEK operations.
+  Operations: PUSH x, POP, PEEK, LEN, ISEMPTY
+
+  Example:
+    PUSH 10
+    PUSH 20
+    PEEK → 20
+    LEN  → 2
+    POP  → 20
+    POP  → 10
+    ISEMPTY → true
+starter_code: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  type Stack[T any] struct {
+      items []T
+  }
+
+  func (s *Stack[T]) Push(v T) {
+      s.items = append(s.items, v)
+  }
+
+  func (s *Stack[T]) Pop() (T, bool) {
+      var zero T
+      if len(s.items) == 0 {
+          return zero, false
+      }
+      // implement
+      return zero, false
+  }
+
+  func (s *Stack[T]) Peek() (T, bool) {
+      var zero T
+      if len(s.items) == 0 {
+          return zero, false
+      }
+      // implement
+      return zero, false
+  }
+
+  func (s *Stack[T]) Len() int   { return len(s.items) }
+  func (s *Stack[T]) IsEmpty() bool { return len(s.items) == 0 }
+
+  func main() {
+      scanner := bufio.NewScanner(os.Stdin)
+      st := &Stack[int]{}
+      for scanner.Scan() {
+          parts := strings.Fields(scanner.Text())
+          if len(parts) == 0 { continue }
+          switch parts[0] {
+          case "PUSH":
+              v, _ := strconv.Atoi(parts[1])
+              st.Push(v)
+          case "POP":
+              if v, ok := st.Pop(); ok { fmt.Println(v) } else { fmt.Println("empty") }
+          case "PEEK":
+              if v, ok := st.Peek(); ok { fmt.Println(v) } else { fmt.Println("empty") }
+          case "LEN":
+              fmt.Println(st.Len())
+          case "ISEMPTY":
+              fmt.Println(st.IsEmpty())
+          }
+      }
+  }
+test_cases:
+  - input: "PUSH 10\nPUSH 20\nPEEK\nLEN\nPOP\nPOP\nISEMPTY\n"
+    expected_output: "20\n2\n20\n10\ntrue\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "POP\nPEEK\nISEMPTY\n"
+    expected_output: "empty\nempty\ntrue\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Pop: top := s.items[len-1]; s.items = s.items[:len-1]; return top, true"
+  - "Peek: return s.items[len(s.items)-1], true — don't remove"
+  - "Stack[T any] means T can be any type — the compiler generates code for each instantiation"
+  - "Generics are specified at instantiation: &Stack[int]{} or &Stack[string]{}"
+solution: |
+  package main
+
+  import (
+      "bufio"
+      "fmt"
+      "os"
+      "strconv"
+      "strings"
+  )
+
+  type Stack[T any] struct {
+      items []T
+  }
+
+  func (s *Stack[T]) Push(v T) {
+      s.items = append(s.items, v)
+  }
+
+  func (s *Stack[T]) Pop() (T, bool) {
+      var zero T
+      if len(s.items) == 0 {
+          return zero, false
+      }
+      top := s.items[len(s.items)-1]
+      s.items = s.items[:len(s.items)-1]
+      return top, true
+  }
+
+  func (s *Stack[T]) Peek() (T, bool) {
+      var zero T
+      if len(s.items) == 0 {
+          return zero, false
+      }
+      return s.items[len(s.items)-1], true
+  }
+
+  func (s *Stack[T]) Len() int      { return len(s.items) }
+  func (s *Stack[T]) IsEmpty() bool { return len(s.items) == 0 }
+
+  func main() {
+      scanner := bufio.NewScanner(os.Stdin)
+      st := &Stack[int]{}
+      for scanner.Scan() {
+          parts := strings.Fields(scanner.Text())
+          if len(parts) == 0 { continue }
+          switch parts[0] {
+          case "PUSH":
+              v, _ := strconv.Atoi(parts[1])
+              st.Push(v)
+          case "POP":
+              if v, ok := st.Pop(); ok { fmt.Println(v) } else { fmt.Println("empty") }
+          case "PEEK":
+              if v, ok := st.Peek(); ok { fmt.Println(v) } else { fmt.Println("empty") }
+          case "LEN":
+              fmt.Println(st.Len())
+          case "ISEMPTY":
+              fmt.Println(st.IsEmpty())
+          }
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: data-structures

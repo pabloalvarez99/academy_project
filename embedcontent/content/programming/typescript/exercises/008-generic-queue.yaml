@@ -1,0 +1,103 @@
+id: ts-algorithms-006
+title: "Generic Queue with TypeScript Generics"
+difficulty: 3
+tags: [generics, data-structures, typescript, queue]
+description: |
+  Implement a generic Queue<T> class with:
+  - enqueue(item: T): void
+  - dequeue(): T | undefined
+  - peek(): T | undefined
+  - size: number
+  - isEmpty(): boolean
+
+  Read N operations, print output for DEQUEUE and PEEK.
+  Operations: ENQUEUE x, DEQUEUE, PEEK, SIZE, ISEMPTY
+
+  Example:
+    ENQUEUE 1
+    ENQUEUE 2
+    PEEK → 1
+    SIZE → 2
+    DEQUEUE → 1
+    ISEMPTY → false
+starter_code: |
+  const lines: string[] = [];
+  process.stdin.on('data', (d) => lines.push(...d.toString().split('\n').filter(Boolean)));
+  process.stdin.on('end', () => {
+      class Queue<T> {
+          private items: T[] = [];
+
+          enqueue(item: T): void {
+              this.items.push(item);
+          }
+
+          dequeue(): T | undefined {
+              return undefined; // TODO
+          }
+
+          peek(): T | undefined {
+              return undefined; // TODO
+          }
+
+          get size(): number { return this.items.length; }
+          isEmpty(): boolean { return this.items.length === 0; }
+      }
+
+      const q = new Queue<number>();
+      for (const line of lines) {
+          const parts = line.split(' ');
+          switch (parts[0]) {
+              case 'ENQUEUE': q.enqueue(parseInt(parts[1])); break;
+              case 'DEQUEUE': console.log(q.dequeue() ?? 'empty'); break;
+              case 'PEEK':    console.log(q.peek() ?? 'empty'); break;
+              case 'SIZE':    console.log(q.size); break;
+              case 'ISEMPTY': console.log(q.isEmpty()); break;
+          }
+      }
+  });
+test_cases:
+  - input: "ENQUEUE 1\nENQUEUE 2\nPEEK\nSIZE\nDEQUEUE\nISEMPTY\n"
+    expected_output: "1\n2\n1\nfalse\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+  - input: "DEQUEUE\nPEEK\nISEMPTY\n"
+    expected_output: "empty\nempty\ntrue\n"
+    time_limit_ms: 8000
+    memory_limit_kb: 131072
+hints:
+  - "dequeue: return this.items.shift() — removes and returns first element"
+  - "peek: return this.items[0] — returns first without removing"
+  - "For high-performance queue, use a circular buffer — but shift() is fine here"
+  - "Generic class Queue<T> means TypeScript infers T from usage"
+solution: |
+  const lines: string[] = [];
+  process.stdin.on('data', (d) => lines.push(...d.toString().split('\n').filter(Boolean)));
+  process.stdin.on('end', () => {
+      class Queue<T> {
+          private items: T[] = [];
+
+          enqueue(item: T): void { this.items.push(item); }
+          dequeue(): T | undefined { return this.items.shift(); }
+          peek(): T | undefined { return this.items[0]; }
+          get size(): number { return this.items.length; }
+          isEmpty(): boolean { return this.items.length === 0; }
+      }
+
+      const q = new Queue<number>();
+      for (const line of lines) {
+          const parts = line.split(' ');
+          switch (parts[0]) {
+              case 'ENQUEUE': q.enqueue(parseInt(parts[1])); break;
+              case 'DEQUEUE': console.log(q.dequeue() ?? 'empty'); break;
+              case 'PEEK':    console.log(q.peek() ?? 'empty'); break;
+              case 'SIZE':    console.log(q.size); break;
+              case 'ISEMPTY': console.log(q.isEmpty()); break;
+          }
+      }
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

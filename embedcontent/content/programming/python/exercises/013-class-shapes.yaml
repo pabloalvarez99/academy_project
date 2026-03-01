@@ -1,0 +1,123 @@
+id: py-oop-001
+title: "OOP: Shape Hierarchy"
+difficulty: 3
+tags: [oop, classes, inheritance, polymorphism]
+description: |
+  Implement a shape hierarchy using Python OOP:
+  - Abstract base class Shape with method area() and perimeter()
+  - Circle(radius): area=π*r², perimeter=2*π*r
+  - Rectangle(width, height): area=w*h, perimeter=2*(w+h)
+  - Triangle(a, b, c): area via Heron's formula, perimeter=a+b+c
+
+  Read N shapes, print area and perimeter for each (2 decimal places).
+
+  Input format:
+    Line 1: N
+    Next N lines: circle r | rect w h | tri a b c
+
+  Example:
+    3
+    circle 5
+    rect 4 6
+    tri 3 4 5
+    Output:
+      78.54 31.42
+      24.00 20.00
+      6.00 12.00
+starter_code: |
+  import sys
+  import math
+  from abc import ABC, abstractmethod
+
+  class Shape(ABC):
+      @abstractmethod
+      def area(self) -> float: ...
+
+      @abstractmethod
+      def perimeter(self) -> float: ...
+
+  class Circle(Shape):
+      def __init__(self, r): self.r = r
+      def area(self): return 0.0       # TODO
+      def perimeter(self): return 0.0  # TODO
+
+  class Rectangle(Shape):
+      def __init__(self, w, h): self.w, self.h = w, h
+      def area(self): return 0.0       # TODO
+      def perimeter(self): return 0.0  # TODO
+
+  class Triangle(Shape):
+      def __init__(self, a, b, c): self.a, self.b, self.c = a, b, c
+      def area(self): return 0.0       # TODO (Heron's formula)
+      def perimeter(self): return 0.0  # TODO
+
+  lines = sys.stdin.read().split('\n')
+  n = int(lines[0])
+  for i in range(1, n+1):
+      parts = lines[i].split()
+      if parts[0] == 'circle':
+          s = Circle(float(parts[1]))
+      elif parts[0] == 'rect':
+          s = Rectangle(float(parts[1]), float(parts[2]))
+      else:
+          s = Triangle(float(parts[1]), float(parts[2]), float(parts[3]))
+      print(f"{s.area():.2f} {s.perimeter():.2f}")
+test_cases:
+  - input: "3\ncircle 5\nrect 4 6\ntri 3 4 5\n"
+    expected_output: "78.54 31.42\n24.00 20.00\n6.00 12.00\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1\ncircle 1\n"
+    expected_output: "3.14 6.28\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Circle area: math.pi * r * r; perimeter: 2 * math.pi * r"
+  - "Rectangle area: w * h; perimeter: 2 * (w + h)"
+  - "Heron's formula: s=(a+b+c)/2; area=sqrt(s*(s-a)*(s-b)*(s-c))"
+  - "Triangle perimeter: a+b+c"
+solution: |
+  import sys
+  import math
+  from abc import ABC, abstractmethod
+
+  class Shape(ABC):
+      @abstractmethod
+      def area(self) -> float: ...
+      @abstractmethod
+      def perimeter(self) -> float: ...
+
+  class Circle(Shape):
+      def __init__(self, r): self.r = r
+      def area(self): return math.pi * self.r ** 2
+      def perimeter(self): return 2 * math.pi * self.r
+
+  class Rectangle(Shape):
+      def __init__(self, w, h): self.w, self.h = w, h
+      def area(self): return self.w * self.h
+      def perimeter(self): return 2 * (self.w + self.h)
+
+  class Triangle(Shape):
+      def __init__(self, a, b, c): self.a, self.b, self.c = a, b, c
+      def area(self):
+          s = (self.a + self.b + self.c) / 2
+          return math.sqrt(s * (s-self.a) * (s-self.b) * (s-self.c))
+      def perimeter(self): return self.a + self.b + self.c
+
+  lines = sys.stdin.read().split('\n')
+  n = int(lines[0])
+  for i in range(1, n+1):
+      parts = lines[i].split()
+      if parts[0] == 'circle':
+          s = Circle(float(parts[1]))
+      elif parts[0] == 'rect':
+          s = Rectangle(float(parts[1]), float(parts[2]))
+      else:
+          s = Triangle(float(parts[1]), float(parts[2]), float(parts[3]))
+      print(f"{s.area():.2f} {s.perimeter():.2f}")
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: algorithms

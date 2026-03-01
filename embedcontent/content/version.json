@@ -1,9 +1,9 @@
 {
   "version": "1.0.0",
-  "build": 15,
+  "build": 16,
   "modules": {
     "grammar":     { "version": "1.3.0", "exercise_count": 12 },
-    "programming": { "version": "2.0.0", "exercise_count": 68 },
+    "programming": { "version": "2.1.0", "exercise_count": 73 },
     "sql":         { "version": "1.8.0", "exercise_count": 23 },
     "knowledge":   { "version": "2.0.0", "article_count": 21 }
   }

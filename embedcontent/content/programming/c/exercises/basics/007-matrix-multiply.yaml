@@ -1,0 +1,105 @@
+id: c-basics-007
+title: "Matrix Multiplication"
+difficulty: 3
+tags: [matrix, arrays, nested-loops, c]
+description: |
+  Multiply two matrices A (M×K) and B (K×N), producing result C (M×N).
+  Print the resulting matrix, elements space-separated per row.
+
+  Input:
+    Line 1: M K N
+    Next M lines: K integers each (matrix A)
+    Next K lines: N integers each (matrix B)
+
+  Example:
+    2 3 2
+    A: 1 2 3 / 4 5 6
+    B: 7 8 / 9 10 / 11 12
+    Output:
+      58 64
+      139 154
+starter_code: |
+  #include <stdio.h>
+
+  int main() {
+      int M, K, N;
+      scanf("%d %d %d", &M, &K, &N);
+
+      int A[50][50], B[50][50], C[50][50] = {0};
+
+      for (int i = 0; i < M; i++)
+          for (int j = 0; j < K; j++)
+              scanf("%d", &A[i][j]);
+
+      for (int i = 0; i < K; i++)
+          for (int j = 0; j < N; j++)
+              scanf("%d", &B[i][j]);
+
+      // compute C = A × B using three nested loops
+
+      for (int i = 0; i < M; i++) {
+          for (int j = 0; j < N; j++) {
+              if (j) printf(" ");
+              printf("%d", C[i][j]);
+          }
+          printf("\n");
+      }
+      return 0;
+  }
+test_cases:
+  - input: "2 3 2\n1 2 3\n4 5 6\n7 8\n9 10\n11 12\n"
+    expected_output: "58 64\n139 154\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1 1 1\n5\n3\n"
+    expected_output: "15\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "2 2 2\n1 0\n0 1\n5 6\n7 8\n"
+    expected_output: "5 6\n7 8\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "C[i][j] = sum over k of A[i][k] * B[k][j]"
+  - "Three loops: for i in M, for j in N, for k in K: C[i][j] += A[i][k]*B[k][j]"
+  - "Initialize C to 0 before the multiplication (done in declaration with = {0})"
+solution: |
+  #include <stdio.h>
+
+  int main() {
+      int M, K, N;
+      scanf("%d %d %d", &M, &K, &N);
+
+      int A[50][50], B[50][50], C[50][50];
+      for (int i = 0; i < M; i++)
+          for (int j = 0; j < N; j++)
+              C[i][j] = 0;
+
+      for (int i = 0; i < M; i++)
+          for (int j = 0; j < K; j++)
+              scanf("%d", &A[i][j]);
+
+      for (int i = 0; i < K; i++)
+          for (int j = 0; j < N; j++)
+              scanf("%d", &B[i][j]);
+
+      for (int i = 0; i < M; i++)
+          for (int k = 0; k < K; k++)
+              for (int j = 0; j < N; j++)
+                  C[i][j] += A[i][k] * B[k][j];
+
+      for (int i = 0; i < M; i++) {
+          for (int j = 0; j < N; j++) {
+              if (j) printf(" ");
+              printf("%d", C[i][j]);
+          }
+          printf("\n");
+      }
+      return 0;
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: c
+  category: basics
