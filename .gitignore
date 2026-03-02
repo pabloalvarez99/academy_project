@@ -1,9 +1,8 @@
-build/bin/
 node_modules/
-frontend/dist/
-frontend/node_modules/
+out/
+dist/
+.eks-dev-data/
 *.exe
 *.dll
-.DS_Store
 *.log
-.eks/
+.DS_Store
