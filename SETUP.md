@@ -39,48 +39,75 @@ This installs the following plugins automatically on next `claude` run:
 - `code-review` — pre-commit review
 - `commit-commands` — commit/push/PR workflow
 - `code-simplifier` — refactor cleanup
-- `github`, `supabase`, `vercel` — integrations
-- `typescript-lsp`, `rust-analyzer-lsp` — language servers
 
-## 4. Install Go toolchain (for building eks.exe)
+## 4. Install Node.js
+
+Requires **Node.js 18+**. Download from https://nodejs.org or use a version manager:
 
 ```bash
-# Go 1.21+
-https://go.dev/dl/
+# With nvm (Linux/Mac)
+nvm install 22 && nvm use 22
 
-# Wails CLI
-go install github.com/wailsapp/wails/v2/cmd/wails@latest
+# With fnm (cross-platform)
+fnm install 22 && fnm use 22
 ```
 
-## 5. Install frontend dependencies
+## 5. Install dependencies
 
 ```bash
-cd frontend
 npm install
-cd ..
 ```
 
-## 6. Build the app
+> No native compilation required — the app uses `sql.js` (WASM) instead of native SQLite.
+
+## 6. Run in dev mode
 
 ```bash
-wails build
+npm run dev
 ```
 
-Binary output: `build/bin/eks.exe` (Windows) or `build/bin/eks` (Linux/Mac)
+Opens the Electron app with hot-reload. Changes to `src/` and `electron/` are picked up automatically.
 
-## 7. Run in dev mode
+## 7. Build for production
 
 ```bash
-wails dev
+# TypeScript check
+npx tsc --noEmit
+
+# Build renderer + main bundles
+npm run build
+
+# Package into installer (dist/)
+npm run package
 ```
+
+Output: `dist/EKS Setup 1.0.0.exe` (Windows), `dist/EKS-1.0.0.dmg` (Mac), `dist/EKS-1.0.0.AppImage` (Linux)
 
 ## Runtime requirements
 
+These are needed at runtime to execute exercises (not for building the app itself):
+
 | Language | Required for |
 |----------|-------------|
-| Go 1.21+ | Building + running Go exercises |
-| Node.js 18+ | TypeScript exercises |
+| Node.js 18+ | TypeScript/JavaScript exercises |
 | Python 3.10+ | Python exercises |
 | Java 17+ | Java exercises |
 | Rust (rustc) | Rust exercises |
 | gcc/clang | C and C++ exercises |
+| Go 1.21+ | Go exercises |
+
+## Project structure
+
+```
+ACADEMY/
+├── electron/
+│   ├── main/          — Electron main process (IPC handlers)
+│   └── preload/       — contextBridge API exposed to renderer
+├── src/               — React renderer (TypeScript)
+│   ├── modules/       — Feature modules (dashboard, grammar, sql, programming…)
+│   ├── lib/           — IPC client, types, utils
+│   └── stores/        — Zustand state stores
+├── resources/
+│   └── content/       — Exercise YAML files + SQL schemas
+└── electron-builder.config.ts
+```

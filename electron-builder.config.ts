@@ -14,7 +14,8 @@ const config: Configuration = {
     '!resources/content/**/*'
   ],
   extraResources: [
-    { from: 'resources/content', to: 'content', filter: ['**/*'] }
+    { from: 'resources/content', to: 'content', filter: ['**/*'] },
+    { from: 'node_modules/sql.js/dist/sql-wasm.wasm', to: 'sql-js/sql-wasm.wasm' }
   ],
   win: {
     target: [{ target: 'nsis', arch: ['x64'] }],
