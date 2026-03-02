@@ -1,0 +1,159 @@
+id: ts-advanced-011
+title: "Observer Pattern"
+difficulty: 3
+tags: [observer, design-patterns, events, pub-sub, typescript]
+description: |
+  Implement the Observer (Pub/Sub) design pattern in TypeScript.
+
+  Define:
+    interface Observer<T> { update(event: T): void }
+    class EventEmitter<T> {
+      subscribe(observer: Observer<T>): void
+      unsubscribe(observer: Observer<T>): void
+      emit(event: T): void
+    }
+
+  Use it to build a simple price alert system:
+    PriceAlert: Observer that fires when price crosses a threshold.
+
+  Input format (one command per line):
+    watch SYMBOL THRESHOLD   → create PriceAlert for SYMBOL at THRESHOLD
+    price SYMBOL VALUE       → emit price update, trigger alerts if threshold crossed
+    unwatch SYMBOL           → remove the price alert for SYMBOL
+
+  When alert fires: print "ALERT: SYMBOL crossed THRESHOLD (current: VALUE)"
+starter_code: |
+  import * as readline from 'readline'
+
+  interface Observer<T> {
+    update(event: T): void
+  }
+
+  class EventEmitter<T> {
+    private observers: Observer<T>[] = []
+
+    subscribe(observer: Observer<T>): void {
+      this.observers.push(observer)
+    }
+
+    unsubscribe(observer: Observer<T>): void {
+      this.observers = this.observers.filter(o => o !== observer)
+    }
+
+    emit(event: T): void {
+      this.observers.forEach(o => o.update(event))
+    }
+  }
+
+  interface PriceEvent {
+    symbol: string
+    price: number
+  }
+
+  class PriceAlert implements Observer<PriceEvent> {
+    constructor(private symbol: string, private threshold: number) {}
+
+    update(event: PriceEvent): void {
+      if (event.symbol === this.symbol && event.price >= this.threshold) {
+        console.log(`ALERT: ${this.symbol} crossed ${this.threshold} (current: ${event.price})`)
+      }
+    }
+  }
+
+  const emitter = new EventEmitter<PriceEvent>()
+  const alerts = new Map<string, PriceAlert>()
+
+  const rl = readline.createInterface({ input: process.stdin })
+  rl.on('line', line => {
+    const parts = line.trim().split(' ')
+    if (parts[0] === 'watch') {
+      const alert = new PriceAlert(parts[1], parseFloat(parts[2]))
+      alerts.set(parts[1], alert)
+      emitter.subscribe(alert)
+    } else if (parts[0] === 'price') {
+      emitter.emit({ symbol: parts[1], price: parseFloat(parts[2]) })
+    } else if (parts[0] === 'unwatch') {
+      const alert = alerts.get(parts[1])
+      if (alert) { emitter.unsubscribe(alert); alerts.delete(parts[1]) }
+    }
+  })
+test_cases:
+  - input: "watch AAPL 150\nprice AAPL 145\nprice AAPL 152\n"
+    expected_output: "ALERT: AAPL crossed 150 (current: 152)\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "watch GOOG 100\nwatch TSLA 200\nprice GOOG 110\nprice TSLA 190\nprice TSLA 205\n"
+    expected_output: "ALERT: GOOG crossed 100 (current: 110)\nALERT: TSLA crossed 200 (current: 205)\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "watch BTC 50000\nprice BTC 55000\nunwatch BTC\nprice BTC 60000\n"
+    expected_output: "ALERT: BTC crossed 50000 (current: 55000)\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "EventEmitter stores a list of observers; emit() calls update() on each"
+  - "unsubscribe() filters out the specific observer instance by reference (===)"
+  - "Generic <T> makes EventEmitter reusable for any event type"
+  - "PriceAlert only fires when event.symbol matches AND price crosses threshold"
+  - "Observer pattern decouples emitter from observers — neither knows the other's type"
+solution: |
+  import * as readline from 'readline'
+
+  interface Observer<T> {
+    update(event: T): void
+  }
+
+  class EventEmitter<T> {
+    private observers: Observer<T>[] = []
+
+    subscribe(observer: Observer<T>): void {
+      this.observers.push(observer)
+    }
+
+    unsubscribe(observer: Observer<T>): void {
+      this.observers = this.observers.filter(o => o !== observer)
+    }
+
+    emit(event: T): void {
+      this.observers.forEach(o => o.update(event))
+    }
+  }
+
+  interface PriceEvent {
+    symbol: string
+    price: number
+  }
+
+  class PriceAlert implements Observer<PriceEvent> {
+    constructor(private symbol: string, private threshold: number) {}
+
+    update(event: PriceEvent): void {
+      if (event.symbol === this.symbol && event.price >= this.threshold) {
+        console.log(`ALERT: ${this.symbol} crossed ${this.threshold} (current: ${event.price})`)
+      }
+    }
+  }
+
+  const emitter = new EventEmitter<PriceEvent>()
+  const alerts = new Map<string, PriceAlert>()
+
+  const rl = readline.createInterface({ input: process.stdin })
+  rl.on('line', line => {
+    const parts = line.trim().split(' ')
+    if (parts[0] === 'watch') {
+      const alert = new PriceAlert(parts[1], parseFloat(parts[2]))
+      alerts.set(parts[1], alert)
+      emitter.subscribe(alert)
+    } else if (parts[0] === 'price') {
+      emitter.emit({ symbol: parts[1], price: parseFloat(parts[2]) })
+    } else if (parts[0] === 'unwatch') {
+      const alert = alerts.get(parts[1])
+      if (alert) { emitter.unsubscribe(alert); alerts.delete(parts[1]) }
+    }
+  })
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

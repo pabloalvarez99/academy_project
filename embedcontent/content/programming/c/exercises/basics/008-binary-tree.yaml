@@ -1,0 +1,170 @@
+id: c-basics-008
+title: "Binary Search Tree"
+difficulty: 4
+tags: [binary-tree, bst, recursion, memory, pointers]
+description: |
+  Implement a Binary Search Tree (BST) in C with dynamic memory.
+
+  Operations:
+    insert(root, value)  — insert value, return new root
+    search(root, value)  — return 1 if found, 0 if not
+    inorder(root)        — print values in sorted order (space-separated)
+    free_tree(root)      — free all nodes (post-order traversal)
+
+  Read commands until EOF:
+    insert N  → insert N
+    search N  → print "found" or "not found"
+    inorder   → print all values space-separated
+starter_code: |
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+
+  typedef struct Node {
+      int value;
+      struct Node *left, *right;
+  } Node;
+
+  Node* new_node(int val) {
+      Node *n = malloc(sizeof(Node));
+      n->value = val;
+      n->left = n->right = NULL;
+      return n;
+  }
+
+  Node* insert(Node *root, int val) {
+      if (!root) return new_node(val);
+      if (val < root->value) root->left  = insert(root->left,  val);
+      else if (val > root->value) root->right = insert(root->right, val);
+      return root;
+  }
+
+  int search(Node *root, int val) {
+      if (!root) return 0;
+      if (val == root->value) return 1;
+      if (val < root->value) return search(root->left, val);
+      return search(root->right, val);
+  }
+
+  int first_printed;
+  void inorder(Node *root) {
+      if (!root) return;
+      inorder(root->left);
+      if (!first_printed) { first_printed = 1; }
+      else printf(" ");
+      printf("%d", root->value);
+      inorder(root->right);
+  }
+
+  void free_tree(Node *root) {
+      if (!root) return;
+      free_tree(root->left);
+      free_tree(root->right);
+      free(root);
+  }
+
+  int main() {
+      Node *root = NULL;
+      char cmd[16];
+      while (scanf("%15s", cmd) == 1) {
+          if (strcmp(cmd, "insert") == 0) {
+              int val; scanf("%d", &val);
+              root = insert(root, val);
+          } else if (strcmp(cmd, "search") == 0) {
+              int val; scanf("%d", &val);
+              puts(search(root, val) ? "found" : "not found");
+          } else if (strcmp(cmd, "inorder") == 0) {
+              first_printed = 0;
+              inorder(root);
+              puts("");
+          }
+      }
+      free_tree(root);
+      return 0;
+  }
+test_cases:
+  - input: "insert 5\ninsert 3\ninsert 7\ninsert 1\ninsert 4\ninorder\n"
+    expected_output: "1 3 4 5 7\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "insert 10\ninsert 5\ninsert 15\nsearch 5\nsearch 8\n"
+    expected_output: "found\nnot found\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "insert 3\ninsert 1\ninsert 2\ninorder\nsearch 2\n"
+    expected_output: "1 2 3\nfound\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "BST property: left subtree < node < right subtree — enables O(log n) search"
+  - "insert returns Node* so recursive calls can update left/right pointers"
+  - "inorder traversal (left, root, right) visits BST nodes in sorted order"
+  - "free_tree must visit children BEFORE freeing the node (post-order)"
+  - "Track 'first_printed' to avoid a leading space in inorder output"
+solution: |
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+
+  typedef struct Node {
+      int value;
+      struct Node *left, *right;
+  } Node;
+
+  Node* new_node(int val) {
+      Node *n = malloc(sizeof(Node));
+      n->value = val; n->left = n->right = NULL;
+      return n;
+  }
+
+  Node* insert(Node *root, int val) {
+      if (!root) return new_node(val);
+      if (val < root->value) root->left  = insert(root->left,  val);
+      else if (val > root->value) root->right = insert(root->right, val);
+      return root;
+  }
+
+  int search(Node *root, int val) {
+      if (!root) return 0;
+      if (val == root->value) return 1;
+      return val < root->value ? search(root->left, val) : search(root->right, val);
+  }
+
+  int first_printed;
+  void inorder(Node *root) {
+      if (!root) return;
+      inorder(root->left);
+      if (!first_printed) first_printed = 1;
+      else printf(" ");
+      printf("%d", root->value);
+      inorder(root->right);
+  }
+
+  void free_tree(Node *root) {
+      if (!root) return;
+      free_tree(root->left); free_tree(root->right); free(root);
+  }
+
+  int main() {
+      Node *root = NULL;
+      char cmd[16];
+      while (scanf("%15s", cmd) == 1) {
+          if (strcmp(cmd, "insert") == 0) {
+              int val; scanf("%d", &val);
+              root = insert(root, val);
+          } else if (strcmp(cmd, "search") == 0) {
+              int val; scanf("%d", &val);
+              puts(search(root, val) ? "found" : "not found");
+          } else if (strcmp(cmd, "inorder") == 0) {
+              first_printed = 0; inorder(root); puts("");
+          }
+      }
+      free_tree(root);
+      return 0;
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: c
+  category: basics

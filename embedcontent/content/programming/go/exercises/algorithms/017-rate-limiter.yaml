@@ -1,0 +1,142 @@
+id: go-algorithms-017
+title: "Token Bucket Rate Limiter (Simulation)"
+difficulty: 4
+tags: [rate-limiting, token-bucket, simulation, algorithms]
+description: |
+  Simulate a token bucket rate limiter given a list of request timestamps.
+
+  Token Bucket rules:
+    - Initial tokens = capacity C
+    - Tokens refill at R per second (fractional allowed)
+    - Each Allow(t) call: refill tokens based on elapsed time since last call,
+      cap at capacity, consume 1 token if available
+    - Returns "allow" or "deny"
+
+  Input:
+    capacity refillRate
+    N
+    N lines of timestamps (floating-point seconds from start)
+
+  Output: "allow" or "deny" for each request, one per line.
+starter_code: |
+  package main
+
+  import (
+      "fmt"
+      "math"
+      "os"
+  )
+
+  type Bucket struct {
+      capacity   float64
+      tokens     float64
+      refillRate float64
+      lastTime   float64
+  }
+
+  func NewBucket(capacity, refillRate float64) *Bucket {
+      return &Bucket{
+          capacity:   capacity,
+          tokens:     capacity,
+          refillRate: refillRate,
+          lastTime:   0,
+      }
+  }
+
+  func (b *Bucket) Allow(t float64) bool {
+      elapsed := t - b.lastTime
+      b.tokens = math.Min(b.capacity, b.tokens+elapsed*b.refillRate)
+      b.lastTime = t
+      if b.tokens >= 1 {
+          b.tokens--
+          return true
+      }
+      return false
+  }
+
+  func main() {
+      var capacity, refillRate float64
+      fmt.Fscan(os.Stdin, &capacity, &refillRate)
+      var n int
+      fmt.Fscan(os.Stdin, &n)
+
+      b := NewBucket(capacity, refillRate)
+      for i := 0; i < n; i++ {
+          var t float64
+          fmt.Fscan(os.Stdin, &t)
+          if b.Allow(t) {
+              fmt.Println("allow")
+          } else {
+              fmt.Println("deny")
+          }
+      }
+  }
+test_cases:
+  - input: "3 1\n5\n0.0\n0.1\n0.2\n0.3\n1.0\n"
+    expected_output: "allow\nallow\nallow\ndeny\nallow\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "1 2\n4\n0.0\n0.4\n0.8\n1.2\n"
+    expected_output: "allow\ndeny\nallow\ndeny\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "2 1\n6\n0.0\n0.0\n0.0\n1.0\n1.0\n2.0\n"
+    expected_output: "allow\nallow\ndeny\nallow\ndeny\nallow\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Refill on each Allow: tokens = min(capacity, tokens + elapsed * refillRate)"
+  - "elapsed = current_time - last_time; update last_time after refill"
+  - "Test 1: cap=3. t=0,0.1,0.2 use all 3. t=0.3 only 0.1 refilled (0.3 < 1 → deny). t=1.0 refill 0.7 more → 1.0 → allow."
+  - "Test 2: cap=1, rate=2. t=0 allow. t=0.4: 0+0.8=0.8 < 1 → deny. t=0.8: 0.8+0.8→cap=1 → allow. t=1.2: 0+0.8=0.8 → deny."
+  - "math.Min ensures tokens never exceed capacity"
+solution: |
+  package main
+
+  import (
+      "fmt"
+      "math"
+      "os"
+  )
+
+  type Bucket struct {
+      capacity, tokens, refillRate, lastTime float64
+  }
+
+  func NewBucket(capacity, refillRate float64) *Bucket {
+      return &Bucket{capacity: capacity, tokens: capacity, refillRate: refillRate}
+  }
+
+  func (b *Bucket) Allow(t float64) bool {
+      elapsed := t - b.lastTime
+      b.tokens = math.Min(b.capacity, b.tokens+elapsed*b.refillRate)
+      b.lastTime = t
+      if b.tokens >= 1 {
+          b.tokens--
+          return true
+      }
+      return false
+  }
+
+  func main() {
+      var capacity, refillRate float64
+      fmt.Fscan(os.Stdin, &capacity, &refillRate)
+      var n int
+      fmt.Fscan(os.Stdin, &n)
+      b := NewBucket(capacity, refillRate)
+      for i := 0; i < n; i++ {
+          var t float64
+          fmt.Fscan(os.Stdin, &t)
+          if b.Allow(t) {
+              fmt.Println("allow")
+          } else {
+              fmt.Println("deny")
+          }
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: go
+  category: algorithms

@@ -1,0 +1,134 @@
+id: cpp-basics-009
+title: "Smart Pointers"
+difficulty: 3
+tags: [smart-pointers, unique-ptr, shared-ptr, raii, memory-safety, cpp]
+description: |
+  Smart pointers automate memory management in C++ through RAII (Resource Acquisition Is Initialization).
+
+  Implement a simple resource management system:
+
+  1. Resource class: constructor prints "Resource N acquired", destructor prints "Resource N released"
+  2. Use unique_ptr<Resource> for exclusive ownership (no copy, only move)
+  3. Use shared_ptr<Resource> for shared ownership (reference counted)
+  4. Demonstrate weak_ptr to break circular references
+
+  Read commands:
+    unique N    → create unique_ptr<Resource>(N), print owner count
+    shared N    → create two shared_ptr to same Resource(N), print use_count
+    transfer N  → create unique_ptr, move it to another unique_ptr, check original is null
+    weak N      → create shared_ptr + weak_ptr, expire the shared_ptr, check weak_ptr
+starter_code: |
+  #include <iostream>
+  #include <memory>
+  #include <string>
+
+  class Resource {
+  public:
+      int id;
+      Resource(int n) : id(n) { std::cout << "Resource " << n << " acquired\n"; }
+      ~Resource() { std::cout << "Resource " << id << " released\n"; }
+  };
+
+  int main() {
+      std::string cmd;
+      while (std::cin >> cmd) {
+          int n; std::cin >> n;
+
+          if (cmd == "unique") {
+              auto p = std::make_unique<Resource>(n);
+              std::cout << "owner: 1\n";
+              // p released here (end of scope)
+
+          } else if (cmd == "shared") {
+              auto p1 = std::make_shared<Resource>(n);
+              auto p2 = p1;  // shared ownership
+              std::cout << "use_count: " << p1.use_count() << "\n";
+              // both released when scope ends
+
+          } else if (cmd == "transfer") {
+              auto p1 = std::make_unique<Resource>(n);
+              auto p2 = std::move(p1);
+              std::cout << "p1 null: " << (p1 == nullptr ? "true" : "false") << "\n";
+              // p2 released here
+
+          } else if (cmd == "weak") {
+              std::weak_ptr<Resource> wp;
+              {
+                  auto sp = std::make_shared<Resource>(n);
+                  wp = sp;
+                  std::cout << "expired before: " << (wp.expired() ? "true" : "false") << "\n";
+              } // sp destroyed here
+              std::cout << "expired after: " << (wp.expired() ? "true" : "false") << "\n";
+          }
+      }
+      return 0;
+  }
+test_cases:
+  - input: "unique 1\n"
+    expected_output: "Resource 1 acquired\nowner: 1\nResource 1 released\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "shared 2\n"
+    expected_output: "Resource 2 acquired\nuse_count: 2\nResource 2 released\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "transfer 3\n"
+    expected_output: "Resource 3 acquired\np1 null: true\nResource 3 released\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "weak 4\n"
+    expected_output: "Resource 4 acquired\nexpired before: false\nResource 4 released\nexpired after: true\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "unique_ptr: exclusive ownership, not copyable, only movable. Freed when it goes out of scope."
+  - "shared_ptr: reference counted. Copying increments use_count; zero → freed."
+  - "std::move(p1) transfers ownership — p1 becomes nullptr"
+  - "weak_ptr: doesn't participate in reference counting. Use .expired() or .lock() to check validity."
+  - "RAII: constructor acquires resource, destructor releases it — works with exceptions too"
+solution: |
+  #include <iostream>
+  #include <memory>
+  #include <string>
+
+  class Resource {
+  public:
+      int id;
+      Resource(int n) : id(n) { std::cout << "Resource " << n << " acquired\n"; }
+      ~Resource() { std::cout << "Resource " << id << " released\n"; }
+  };
+
+  int main() {
+      std::string cmd;
+      while (std::cin >> cmd) {
+          int n; std::cin >> n;
+
+          if (cmd == "unique") {
+              auto p = std::make_unique<Resource>(n);
+              std::cout << "owner: 1\n";
+          } else if (cmd == "shared") {
+              auto p1 = std::make_shared<Resource>(n);
+              auto p2 = p1;
+              std::cout << "use_count: " << p1.use_count() << "\n";
+          } else if (cmd == "transfer") {
+              auto p1 = std::make_unique<Resource>(n);
+              auto p2 = std::move(p1);
+              std::cout << "p1 null: " << (p1 == nullptr ? "true" : "false") << "\n";
+          } else if (cmd == "weak") {
+              std::weak_ptr<Resource> wp;
+              {
+                  auto sp = std::make_shared<Resource>(n);
+                  wp = sp;
+                  std::cout << "expired before: " << (wp.expired() ? "true" : "false") << "\n";
+              }
+              std::cout << "expired after: " << (wp.expired() ? "true" : "false") << "\n";
+          }
+      }
+      return 0;
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: cpp
+  category: basics
