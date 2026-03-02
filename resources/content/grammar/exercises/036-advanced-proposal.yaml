@@ -1,0 +1,26 @@
+id: grammar-advanced-036
+title: "Advanced Mixed: Technical Proposal"
+difficulty: 3
+tags: [advanced, mixed, proposal]
+description: |
+  This technical proposal excerpt needs thorough proofreading. Fix every error.
+
+  ORIGINAL: "we propose an migration to microservices. the the current monolith cant scale. we cant afford more downtime. each service will have an own database. we shouldnt delay this decision."
+
+  Type the corrected version.
+starter_code: "we propose an migration to microservices. the the current monolith cant scale. we cant afford more downtime. each service will have an own database. we shouldnt delay this decision."
+hints:
+  - "'we' → 'We'"
+  - "'an migration' → 'a migration' (consonant sound)"
+  - "'the the' → 'The' (duplicate + capitalize)"
+  - "'cant scale' → 'can't scale'"
+  - "'we cant' → 'We can't' (new sentence)"
+  - "'an own' → 'its own' (or just 'a')"
+  - "'shouldnt' → 'shouldn't'"
+solution: "We propose a migration to microservices. The current monolith can't scale. We can't afford more downtime. Each service will have its own database. We shouldn't delay this decision."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: mixed

@@ -1,0 +1,24 @@
+id: grammar-articles-022
+title: "Articles with APIs and Protocols"
+difficulty: 2
+tags: [articles, api, technical]
+description: |
+  Technical acronyms and protocols often trip people up with articles. Fix the errors.
+
+  ORIGINAL: "We built a HTTP server with an REST API. It accepts an JSON payload and returns a XML response. We use an SDK to simplify integration."
+
+  Type the corrected version.
+starter_code: "We built a HTTP server with an REST API. It accepts an JSON payload and returns a XML response. We use an SDK to simplify integration."
+hints:
+  - "'HTTP' is pronounced 'aitch-tee-tee-pee' — starts with vowel sound → 'an HTTP'"
+  - "'REST' is pronounced 'rest' — starts with consonant → 'a REST'"
+  - "'JSON' is pronounced 'jay-son' — starts with consonant → 'a JSON'"
+  - "'XML' is pronounced 'ex-em-el' — starts with vowel sound → 'an XML'"
+  - "'SDK' is pronounced 'es-dee-kay' — starts with vowel sound → 'an SDK'"
+solution: "We built an HTTP server with a REST API. It accepts a JSON payload and returns an XML response. We use an SDK to simplify integration."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: articles

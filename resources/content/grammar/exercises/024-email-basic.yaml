@@ -1,0 +1,25 @@
+id: grammar-email-024
+title: "Professional Email: Basic"
+difficulty: 2
+tags: [email, professional, contractions, capitalization]
+description: |
+  This professional email has grammar errors. Polish it.
+
+  ORIGINAL: "hi Sarah, ive attached the report. we cant meet tomorrow but ill reschedule. let me know if thats ok."
+
+  Type the corrected version.
+starter_code: "hi Sarah, ive attached the report. we cant meet tomorrow but ill reschedule. let me know if thats ok."
+hints:
+  - "'hi' → 'Hi' (capitalize greeting)"
+  - "'ive' → 'I've'"
+  - "'cant' → 'can't'"
+  - "'ill' → 'I'll'"
+  - "'let' → 'Let' (new sentence)"
+  - "'thats' → 'that's'"
+solution: "Hi Sarah, I've attached the report. We can't meet tomorrow but I'll reschedule. Let me know if that's ok."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: professional

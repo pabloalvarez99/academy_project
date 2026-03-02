@@ -1,0 +1,23 @@
+id: grammar-tense-027
+title: "Tense in Git Commit Messages"
+difficulty: 2
+tags: [tense, git, commits]
+description: |
+  Git commit messages use the imperative mood (present tense): "Fix bug" not "Fixed bug".
+  Also fix any grammar errors in this commit message.
+
+  ORIGINAL: "fixed the the login bug. added an new validation. updated the the tests."
+
+  Type the corrected version (use imperative: "Fix", "Add", "Update").
+starter_code: "fixed the the login bug. added an new validation. updated the the tests."
+hints:
+  - "Use imperative: 'Fixed' → 'Fix', 'added' → 'Add', 'updated' → 'Update'"
+  - "'the the' → 'the' (duplicate word x2)"
+  - "'an new' → 'a new' ('new' starts with consonant)"
+solution: "Fix the login bug. Add a new validation. Update the tests."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: tense

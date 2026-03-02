@@ -1,0 +1,26 @@
+id: grammar-tense-028
+title: "Tense Consistency in Documentation"
+difficulty: 3
+tags: [tense, documentation]
+description: |
+  This documentation mixes past and present tense. Fix it to use present tense throughout.
+  Also fix the grammar errors.
+
+  ORIGINAL: "the function accepted an request and returned a response. it validates the input and checked for errors. we dont store the result."
+
+  Type the corrected version (all present tense + fix grammar errors).
+starter_code: "the function accepted an request and returned a response. it validates the input and checked for errors. we dont store the result."
+hints:
+  - "'the' → 'The' (start of sentence)"
+  - "'accepted' → 'accepts', 'returned' → 'returns' (present tense)"
+  - "'an request' → 'a request' (consonant sound)"
+  - "'it validates' → 'It validates' (new sentence, capitalize)"
+  - "'checked' → 'checks' (keep present tense consistent)"
+  - "'dont' → 'don't'"
+solution: "The function accepts a request and returns a response. It validates the input and checks for errors. We don't store the result."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: tense

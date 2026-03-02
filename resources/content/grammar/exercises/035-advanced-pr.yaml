@@ -1,0 +1,26 @@
+id: grammar-advanced-035
+title: "Advanced Mixed: PR Description"
+difficulty: 3
+tags: [advanced, mixed, pull-request]
+description: |
+  This PR description has many grammar errors. Find and fix ALL of them.
+
+  ORIGINAL: "this PR adds an new caching layer. it it reduces latency by 40%. we we also added an HTTP endpoint that doesnt require authentication. the the old endpoints are still supported."
+
+  Type the corrected version.
+starter_code: "this PR adds an new caching layer. it it reduces latency by 40%. we we also added an HTTP endpoint that doesnt require authentication. the the old endpoints are still supported."
+hints:
+  - "'this' → 'This'"
+  - "'an new' → 'a new' (consonant sound)"
+  - "'it it' → 'It' (duplicate + capitalize new sentence)"
+  - "'we we' → 'We' (duplicate + capitalize new sentence)"
+  - "'an HTTP' → 'an HTTP' (correct — H is silent, vowel sound)"
+  - "'doesnt' → 'doesn't'"
+  - "'the the' → 'The' (duplicate + capitalize new sentence)"
+solution: "This PR adds a new caching layer. It reduces latency by 40%. We also added an HTTP endpoint that doesn't require authentication. The old endpoints are still supported."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: mixed

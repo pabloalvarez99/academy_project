@@ -1,0 +1,24 @@
+id: grammar-readme-038
+title: "README Section"
+difficulty: 2
+tags: [code-docs, readme, technical]
+description: |
+  This README introduction has grammar errors. READMEs are the first thing new contributors read.
+
+  ORIGINAL: "this library provides an unified interface for database access. it doesnt support transactions yet. we we plan to add it in an future release. contributions are welcome."
+
+  Type the corrected version.
+starter_code: "this library provides an unified interface for database access. it doesnt support transactions yet. we we plan to add it in an future release. contributions are welcome."
+hints:
+  - "'this' → 'This'"
+  - "'an unified' → 'a unified' ('unified' starts with 'y' sound — consonant)"
+  - "'it doesnt' → 'It doesn't' (new sentence)"
+  - "'we we' → 'We' (duplicate + capitalize)"
+  - "'an future' → 'a future' (consonant sound)"
+solution: "This library provides a unified interface for database access. It doesn't support transactions yet. We plan to add it in a future release. Contributions are welcome."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: code-docs

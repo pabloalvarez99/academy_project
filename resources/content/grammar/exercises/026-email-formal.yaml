@@ -1,0 +1,26 @@
+id: grammar-email-026
+title: "Formal Email: Bug Report"
+difficulty: 3
+tags: [email, formal, mixed]
+description: |
+  Polish this formal bug report email.
+
+  ORIGINAL: "dear team, weve identified an issue. the the error occurs when a user submits an form. it isnt blocking production but we cant ignore it. well patch it in an upcoming release."
+
+  Type the corrected version.
+starter_code: "dear team, weve identified an issue. the the error occurs when a user submits an form. it isnt blocking production but we cant ignore it. well patch it in an upcoming release."
+hints:
+  - "'dear' → 'Dear'"
+  - "'weve' → 'we've'"
+  - "'the the' → 'the' (duplicate)"
+  - "'an form' → 'a form' (consonant sound)"
+  - "'it isnt' → 'It isn't' (new sentence)"
+  - "'cant' → 'can't'"
+  - "'well' → 'We'll' (new sentence + contraction)"
+solution: "Dear team, we've identified an issue. The error occurs when a user submits a form. It isn't blocking production but we can't ignore it. We'll patch it in an upcoming release."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: professional

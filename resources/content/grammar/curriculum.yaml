@@ -1,0 +1,146 @@
+levels:
+  - level: 1
+    name: "Foundations"
+    description: "Core rules every English writer must know"
+    concepts:
+      - id: articles
+        name: "Articles: a / an"
+        description: |
+          Use "a" before consonant SOUNDS and "an" before vowel SOUNDS.
+          Not the letter — the sound: "an hour" (h is silent), "a university" (sounds like 'yoo').
+        exercises:
+          - "001-articles-basic"
+          - "002-articles-advanced"
+          - "013-articles-tech"
+
+      - id: capitalization
+        name: "Capitalization"
+        description: |
+          Every sentence starts with a capital letter.
+          This applies to messages, commit messages, comments, and documentation.
+        exercises:
+          - "004-capitalization"
+          - "014-cap-sentences"
+          - "015-cap-messages"
+
+      - id: contractions
+        name: "Contractions"
+        description: |
+          Contractions need apostrophes: can't, don't, won't, it's, I'm, we're.
+          Missing apostrophes are one of the most common typos in professional writing.
+        exercises:
+          - "006-contractions"
+          - "016-contractions-work"
+          - "017-contractions-review"
+
+  - level: 2
+    name: "Word Patterns"
+    description: "Avoid repeating words and mixing up basic rules"
+    concepts:
+      - id: double-words
+        name: "Duplicate Words"
+        description: |
+          Never write the same word twice in a row: "the the", "is is", "in in".
+          This often happens when editing — you delete a word but leave a duplicate.
+        exercises:
+          - "003-double-words"
+          - "018-double-email"
+          - "019-double-code"
+
+      - id: mixed-basics
+        name: "Mixed: Foundations"
+        description: |
+          Practice all four foundational rules at once:
+          articles, capitalization, contractions, and duplicate words.
+        exercises:
+          - "005-mixed-errors"
+          - "020-mixed-slack"
+          - "021-mixed-report"
+
+      - id: articles-context
+        name: "Articles in Technical Text"
+        description: |
+          Apply a/an rules in technical contexts: APIs, acronyms, and jargon.
+          "an API", "an HTTP request", "a URL", "an SQL query".
+        exercises:
+          - "011-technical-terms"
+          - "022-articles-api"
+          - "023-articles-infra"
+
+  - level: 3
+    name: "Professional Writing"
+    description: "Write clearly in emails, docs, and pull requests"
+    concepts:
+      - id: email-writing
+        name: "Email & Slack"
+        description: |
+          Professional messages must be grammatically clean.
+          Grammar errors in work communication reduce perceived credibility.
+        exercises:
+          - "024-email-basic"
+          - "025-slack-update"
+          - "026-email-formal"
+
+      - id: tense
+        name: "Tense Consistency"
+        description: |
+          Don't mix past and present tense in the same passage.
+          Pick one tense and stay consistent throughout a paragraph or commit message.
+        exercises:
+          - "008-tense-consistency"
+          - "027-tense-git"
+          - "028-tense-docs"
+
+      - id: passive-voice
+        name: "Passive → Active Voice"
+        description: |
+          Prefer active voice: "The team fixed the bug" vs "The bug was fixed by the team".
+          Active voice is clearer, shorter, and more direct.
+        exercises:
+          - "012-passive-voice"
+          - "029-passive-pr"
+          - "030-passive-docs"
+
+      - id: prepositions
+        name: "Prepositions"
+        description: |
+          Common preposition rules: "depends on", "results in", "responsible for",
+          "integration with", "different from" (not "different than").
+        exercises:
+          - "009-prepositions"
+          - "031-prep-tech"
+          - "032-prep-email"
+
+  - level: 4
+    name: "Mastery"
+    description: "Complex passages, senior-level writing, and full-document review"
+    concepts:
+      - id: subject-verb
+        name: "Subject-Verb Agreement"
+        description: |
+          The verb must match its subject in number.
+          "The list of errors is long" — subject is "list" (singular), not "errors".
+        exercises:
+          - "007-subject-verb"
+          - "033-sv-technical"
+          - "034-sv-complex"
+
+      - id: advanced-mixed
+        name: "Advanced Mixed"
+        description: |
+          Long technical passages with multiple error types hidden inside.
+          This is closest to real-world proofreading.
+        exercises:
+          - "010-advanced-mixed"
+          - "035-advanced-pr"
+          - "036-advanced-proposal"
+
+      - id: code-docs
+        name: "Code Documentation"
+        description: |
+          Clean docstrings, README sections, and API docs require perfect grammar.
+          These are public-facing and reflect directly on the project quality.
+        exercises:
+          - "037-docstring"
+          - "038-readme-section"
+          - "039-api-docs"

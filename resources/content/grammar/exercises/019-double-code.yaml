@@ -1,0 +1,23 @@
+id: grammar-double-019
+title: "Duplicate Words in Code Comments"
+difficulty: 2
+tags: [double-words, code-comments]
+description: |
+  These code comments were edited carelessly and now have duplicate words. Fix them.
+
+  ORIGINAL: "// This function handles the the authentication flow. It it returns a token on success. We dont check for for expired tokens yet."
+
+  Type the corrected version.
+starter_code: "// This function handles the the authentication flow. It it returns a token on success. We dont check for for expired tokens yet."
+hints:
+  - "'the the' → 'the'"
+  - "'It it' → 'It'"
+  - "'dont' → 'don't'"
+  - "'for for' → 'for'"
+solution: "// This function handles the authentication flow. It returns a token on success. We don't check for expired tokens yet."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: double-words

@@ -1,0 +1,25 @@
+id: grammar-passive-030
+title: "Active Voice in Technical Docs"
+difficulty: 3
+tags: [passive-voice, documentation]
+description: |
+  Technical docs should use active voice where possible. Rewrite these sentences actively
+  and fix grammar errors.
+
+  ORIGINAL: "the the cache is invalidated by a background job. an new index is created when data is inserted. errors are logged by the monitoring system."
+
+  Type the active-voice version with grammar fixes.
+starter_code: "the the cache is invalidated by a background job. an new index is created when data is inserted. errors are logged by the monitoring system."
+hints:
+  - "'the the' → 'the' (duplicate)"
+  - "Active: 'A background job invalidates the cache'"
+  - "'an new' → 'a new' (consonant sound)"
+  - "Active: 'The system creates a new index when data is inserted'"
+  - "Active: 'The monitoring system logs errors'"
+solution: "A background job invalidates the cache. The system creates a new index when data is inserted. The monitoring system logs errors."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: passive-voice

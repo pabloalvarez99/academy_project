@@ -1,0 +1,24 @@
+id: grammar-prep-032
+title: "Prepositions in Professional Emails"
+difficulty: 2
+tags: [prepositions, email]
+description: |
+  Fix the prepositions and grammar errors in this email.
+
+  ORIGINAL: "im reaching out in regards of the deployment. we are waiting on feedback from regards the client. ill follow up in monday."
+
+  Type the corrected version.
+starter_code: "im reaching out in regards of the deployment. we are waiting on feedback from regards the client. ill follow up in monday."
+hints:
+  - "'im' → 'I'm'"
+  - "'in regards of' → 'regarding' or 'about'"
+  - "'from regards the' → 'from the' (remove 'regards')"
+  - "'ill' → 'I'll'"
+  - "'in monday' → 'on Monday'"
+solution: "I'm reaching out regarding the deployment. We are waiting on feedback from the client. I'll follow up on Monday."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: prepositions

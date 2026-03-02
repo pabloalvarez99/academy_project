@@ -1,0 +1,23 @@
+id: grammar-contractions-016
+title: "Contractions at Work"
+difficulty: 1
+tags: [contractions, workplace, messaging]
+description: |
+  These work messages have missing apostrophes in contractions. Fix them.
+
+  ORIGINAL: "Weve been working on this for hours. It isnt finished yet. Dont worry, well get it done."
+
+  Type the corrected version.
+starter_code: "Weve been working on this for hours. It isnt finished yet. Dont worry, well get it done."
+hints:
+  - "'Weve' → 'We've'"
+  - "'isnt' → 'isn't'"
+  - "'Dont' → 'Don't'"
+  - "'well' (as contraction) → 'we'll'"
+solution: "We've been working on this for hours. It isn't finished yet. Don't worry, we'll get it done."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: contractions

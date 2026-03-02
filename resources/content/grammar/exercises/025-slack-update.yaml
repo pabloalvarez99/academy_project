@@ -1,0 +1,24 @@
+id: grammar-slack-025
+title: "Slack Update Message"
+difficulty: 2
+tags: [slack, update, contractions]
+description: |
+  Fix this project update Slack message.
+
+  ORIGINAL: "update: weve merged the PR. it doesnt break any tests. we shouldnt have any issues with the the release tonight."
+
+  Type the corrected version.
+starter_code: "update: weve merged the PR. it doesnt break any tests. we shouldnt have any issues with the the release tonight."
+hints:
+  - "'update:' → capitalize: 'Update:'"
+  - "'weve' → 'we've'"
+  - "'it doesnt' → 'It doesn't' (new sentence + apostrophe)"
+  - "'shouldnt' → 'shouldn't'"
+  - "'the the' → 'the' (duplicate)"
+solution: "Update: we've merged the PR. It doesn't break any tests. We shouldn't have any issues with the release tonight."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: professional

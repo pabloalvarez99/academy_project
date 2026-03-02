@@ -1,0 +1,26 @@
+id: grammar-docstring-037
+title: "Code Docstring"
+difficulty: 2
+tags: [code-docs, docstring, technical]
+description: |
+  This Python docstring has grammar errors. Docstrings are read by other developers
+  and often published in API documentation — they must be correct.
+
+  ORIGINAL: "authenticates an user and returns a access token. it doesnt validate the the token expiry. raises an ValueError if credentials are invalid."
+
+  Type the corrected version.
+starter_code: "authenticates an user and returns a access token. it doesnt validate the the token expiry. raises an ValueError if credentials are invalid."
+hints:
+  - "'authenticates' → 'Authenticates' (docstrings start with capital)"
+  - "'an user' → 'a user' (consonant sound)"
+  - "'a access' → 'an access' (vowel sound)"
+  - "'it doesnt' → 'It doesn't' (new sentence)"
+  - "'the the' → 'the' (duplicate)"
+  - "'an ValueError' → 'a ValueError' (consonant sound)"
+solution: "Authenticates a user and returns an access token. It doesn't validate the token expiry. Raises a ValueError if credentials are invalid."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: code-docs

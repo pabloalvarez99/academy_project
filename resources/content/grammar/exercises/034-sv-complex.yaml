@@ -1,0 +1,24 @@
+id: grammar-sv-034
+title: "Subject-Verb: Complex Sentences"
+difficulty: 3
+tags: [subject-verb, complex, advanced]
+description: |
+  These sentences have complex subject structures. Fix subject-verb agreement and all grammar errors.
+
+  ORIGINAL: "neither the frontend nor the backend were ready. the number of bugs are increasing. everyone on the teams are responsible. we shouldnt ignore this."
+
+  Type the corrected version.
+starter_code: "neither the frontend nor the backend were ready. the number of bugs are increasing. everyone on the teams are responsible. we shouldnt ignore this."
+hints:
+  - "With 'neither...nor', verb agrees with the closer subject 'backend' (singular) → 'was ready'"
+  - "'the number' (singular) → 'is increasing'"
+  - "'everyone' is always singular → 'is responsible'"
+  - "'shouldnt' → 'shouldn't'"
+  - "First word 'neither' → 'Neither'"
+solution: "Neither the frontend nor the backend was ready. The number of bugs is increasing. Everyone on the teams is responsible. We shouldn't ignore this."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: subject-verb

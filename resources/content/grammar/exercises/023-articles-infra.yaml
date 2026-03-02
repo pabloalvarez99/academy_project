@@ -1,0 +1,25 @@
+id: grammar-articles-023
+title: "Articles in Infrastructure Descriptions"
+difficulty: 2
+tags: [articles, infrastructure, cloud]
+description: |
+  Fix article errors in this infrastructure description.
+
+  ORIGINAL: "We run a EKS cluster with an Kubernetes operator. There is a EC2 instance acting as an bastion host. We also have an S3 bucket and a IAM role for access."
+
+  Type the corrected version.
+starter_code: "We run a EKS cluster with an Kubernetes operator. There is a EC2 instance acting as an bastion host. We also have an S3 bucket and a IAM role for access."
+hints:
+  - "'EKS' → 'ay-kay-es' (vowel) → 'an EKS'"
+  - "'Kubernetes' → starts with 'k' (consonant) → 'a Kubernetes'"
+  - "'EC2' → 'ee-see-two' (vowel) → 'an EC2'"
+  - "'bastion' → starts with 'b' (consonant) → 'a bastion'"
+  - "'S3' → 'es-three' (vowel) → 'an S3'"
+  - "'IAM' → 'eye-ay-em' (vowel) → 'an IAM'"
+solution: "We run an EKS cluster with a Kubernetes operator. There is an EC2 instance acting as a bastion host. We also have an S3 bucket and an IAM role for access."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: articles

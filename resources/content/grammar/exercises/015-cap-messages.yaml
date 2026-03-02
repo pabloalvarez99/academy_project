@@ -1,0 +1,22 @@
+id: grammar-cap-015
+title: "Capitalization in Work Messages"
+difficulty: 1
+tags: [capitalization, messages, professional]
+description: |
+  Even quick Slack messages need proper capitalization. Fix the errors below.
+
+  ORIGINAL: "cant attend the meeting. the server is down. ill send an update."
+
+  Type the corrected version.
+starter_code: "cant attend the meeting. the server is down. ill send an update."
+hints:
+  - "First word needs a capital: 'cant' → 'Can't'"
+  - "'cant' is also a contraction error — needs apostrophe: 'can't'"
+  - "'ill' is a contraction: 'I'll'"
+solution: "Can't attend the meeting. The server is down. I'll send an update."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: capitalization

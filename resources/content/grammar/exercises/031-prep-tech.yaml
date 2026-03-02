@@ -1,0 +1,26 @@
+id: grammar-prep-031
+title: "Prepositions in Technical Writing"
+difficulty: 2
+tags: [prepositions, technical]
+description: |
+  Common tech preposition pairs: "depends on", "responsible for", "integrate with",
+  "results in", "different from". Fix the prepositions AND grammar errors below.
+
+  ORIGINAL: "the service depends of the database. it is responsible of sending emails. the result is different than expected. we cant integrate to the legacy system."
+
+  Type the corrected version.
+starter_code: "the service depends of the database. it is responsible of sending emails. the result is different than expected. we cant integrate to the legacy system."
+hints:
+  - "'the' → 'The' (first word)"
+  - "'depends of' → 'depends on'"
+  - "'responsible of' → 'responsible for'"
+  - "'different than' → 'different from'"
+  - "'cant' → 'can't'"
+  - "'integrate to' → 'integrate with'"
+solution: "The service depends on the database. It is responsible for sending emails. The result is different from expected. We can't integrate with the legacy system."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: prepositions

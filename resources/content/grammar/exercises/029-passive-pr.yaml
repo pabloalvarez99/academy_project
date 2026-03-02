@@ -1,0 +1,24 @@
+id: grammar-passive-029
+title: "Active Voice in Pull Request Descriptions"
+difficulty: 2
+tags: [passive-voice, active, pull-request]
+description: |
+  Rewrite these PR description lines in active voice. Also fix grammar errors.
+
+  ORIGINAL: "an new auth module was added by the team. the the tests were updated. performance improvements were made."
+
+  Rewrite in active voice + fix grammar errors. (Subject: "This PR")
+starter_code: "an new auth module was added by the team. the the tests were updated. performance improvements were made."
+hints:
+  - "Active: 'This PR adds a new auth module'"
+  - "'an new' → 'a new' (consonant sound)"
+  - "'the the' → 'the' (duplicate word)"
+  - "Active: 'This PR updates the tests'"
+  - "Active: 'This PR improves performance'"
+solution: "This PR adds a new auth module. The tests were updated. Performance improvements were made."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: passive-voice

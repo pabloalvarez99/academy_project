@@ -1,0 +1,25 @@
+id: grammar-mixed-020
+title: "Mixed Errors: Slack Message"
+difficulty: 2
+tags: [mixed, slack, capitalization, contractions]
+description: |
+  This Slack message has multiple grammar errors. Find and fix all of them.
+
+  ORIGINAL: "hey everyone, weve finished the the feature. it isnt deployed yet but we cant wait to ship it. see you at a afternoon standup."
+
+  Type the corrected version.
+starter_code: "hey everyone, weve finished the the feature. it isnt deployed yet but we cant wait to ship it. see you at a afternoon standup."
+hints:
+  - "'hey' → 'Hey' (start of message)"
+  - "'weve' → 'we've'"
+  - "'the the' → 'the' (duplicate word)"
+  - "'it isnt' → 'it isn't' AND 'it' should be 'It' (new sentence)"
+  - "'cant' → 'can't'"
+  - "'a afternoon' → 'an afternoon' (vowel sound)"
+solution: "Hey everyone, we've finished the feature. It isn't deployed yet but we can't wait to ship it. See you at an afternoon standup."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: mixed

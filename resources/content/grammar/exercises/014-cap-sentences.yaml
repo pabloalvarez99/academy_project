@@ -1,0 +1,22 @@
+id: grammar-cap-014
+title: "Capitalization: After Periods"
+difficulty: 1
+tags: [capitalization, sentences]
+description: |
+  Every sentence must start with a capital letter. Fix the capitalization errors.
+
+  ORIGINAL: "the build failed at 3am. we dont know why. the logs show an error."
+
+  Type the corrected version below.
+starter_code: "the build failed at 3am. we dont know why. the logs show an error."
+hints:
+  - "The very first word must be capitalized"
+  - "'dont' is missing an apostrophe → 'don't'"
+  - "Fix both the capitalization and the contraction error"
+solution: "The build failed at 3am. We don't know why. The logs show an error."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: capitalization

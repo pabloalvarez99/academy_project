@@ -1,0 +1,24 @@
+id: grammar-contractions-017
+title: "Contractions in a Code Review"
+difficulty: 2
+tags: [contractions, code-review, professional]
+description: |
+  This code review comment has multiple contraction errors. Fix all of them.
+
+  ORIGINAL: "Ive reviewed the PR. It doesnt handle the edge case. Youre right that we shouldnt merge it yet. Lets fix it first."
+
+  Type the corrected version.
+starter_code: "Ive reviewed the PR. It doesnt handle the edge case. Youre right that we shouldnt merge it yet. Lets fix it first."
+hints:
+  - "'Ive' → 'I've'"
+  - "'doesnt' → 'doesn't'"
+  - "'Youre' → 'You're'"
+  - "'shouldnt' → 'shouldn't'"
+  - "'Lets' → 'Let's'"
+solution: "I've reviewed the PR. It doesn't handle the edge case. You're right that we shouldn't merge it yet. Let's fix it first."
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: grammar
+  language: english
+  category: contractions
