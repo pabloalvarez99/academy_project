@@ -3,12 +3,12 @@ import { GetUserStats, GetContentVersion } from '../../lib/ipc'
 import type { UserStats, ContentVersion } from '../../lib/types'
 import { useUserStore } from '../../stores/userStore'
 
-function getGrammarLocalProgress(): { done: number; total: number } {
+function getLocalProgress(key: string, total: number): { done: number; total: number } {
   try {
-    const p = JSON.parse(localStorage.getItem('grammar-progress-v1') || '{"passed":{}}')
+    const p = JSON.parse(localStorage.getItem(key) || '{"passed":{}}')
     const done = Object.values(p.passed as Record<string, boolean>).filter(Boolean).length
-    return { done, total: 39 }
-  } catch { return { done: 0, total: 39 } }
+    return { done, total }
+  } catch { return { done: 0, total } }
 }
 
 export function Dashboard() {
@@ -16,7 +16,8 @@ export function Dashboard() {
   const [stats, setStats] = useState<UserStats | null>(null)
   const [version, setVersion] = useState<ContentVersion | null>(null)
   const [loading, setLoading] = useState(true)
-  const grammarProgress = getGrammarLocalProgress()
+  const grammarProgress = getLocalProgress('grammar-progress-v1', 39)
+  const sqlProgress = getLocalProgress('sql-progress-v1', 26)
 
   useEffect(() => {
     Promise.all([
@@ -52,25 +53,15 @@ export function Dashboard() {
         <StatCard label="Achievements" value={`${earnedAchievements.length}/${allAchievements.length}`} icon="🏆" />
       </div>
 
-      {/* Grammar skill tree progress */}
-      {grammarProgress.done > 0 && (
-        <div className="card mb-6 flex items-center gap-4">
-          <span className="text-2xl">✍️</span>
-          <div className="flex-1">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-sm font-medium text-gray-300">Grammar Skill Tree</span>
-              <span className="text-xs text-gray-500">{grammarProgress.done} / {grammarProgress.total} exercises</span>
-            </div>
-            <div className="h-1.5 bg-surface-700 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-accent rounded-full transition-all"
-                style={{ width: `${Math.round((grammarProgress.done / grammarProgress.total) * 100)}%` }}
-              />
-            </div>
-          </div>
-          <span className="text-xs text-accent font-medium">
-            {Math.round((grammarProgress.done / grammarProgress.total) * 100)}%
-          </span>
+      {/* Skill tree progress bars */}
+      {(grammarProgress.done > 0 || sqlProgress.done > 0) && (
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          {grammarProgress.done > 0 && (
+            <ProgressCard icon="✍️" label="Grammar Skill Tree" progress={grammarProgress} />
+          )}
+          {sqlProgress.done > 0 && (
+            <ProgressCard icon="⛃" label="SQL Skill Tree" progress={sqlProgress} />
+          )}
         </div>
       )}
 
@@ -164,6 +155,25 @@ export function Dashboard() {
           <p className="text-sm">Head to Programming, SQL, or Grammar to start your first exercise!</p>
         </div>
       )}
+    </div>
+  )
+}
+
+function ProgressCard({ icon, label, progress }: { icon: string; label: string; progress: { done: number; total: number } }) {
+  const pct = Math.round((progress.done / progress.total) * 100)
+  return (
+    <div className="card flex items-center gap-3">
+      <span className="text-xl shrink-0">{icon}</span>
+      <div className="flex-1 min-w-0">
+        <div className="flex justify-between items-center mb-1">
+          <span className="text-xs font-medium text-gray-300 truncate">{label}</span>
+          <span className="text-xs text-gray-500 shrink-0 ml-1">{progress.done}/{progress.total}</span>
+        </div>
+        <div className="h-1.5 bg-surface-700 rounded-full overflow-hidden">
+          <div className="h-full bg-accent rounded-full transition-all" style={{ width: `${pct}%` }} />
+        </div>
+      </div>
+      <span className="text-xs text-accent font-medium shrink-0">{pct}%</span>
     </div>
   )
 }
