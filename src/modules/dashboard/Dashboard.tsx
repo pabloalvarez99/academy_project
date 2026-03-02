@@ -3,11 +3,20 @@ import { GetUserStats, GetContentVersion } from '../../lib/ipc'
 import type { UserStats, ContentVersion } from '../../lib/types'
 import { useUserStore } from '../../stores/userStore'
 
+function getGrammarLocalProgress(): { done: number; total: number } {
+  try {
+    const p = JSON.parse(localStorage.getItem('grammar-progress-v1') || '{"passed":{}}')
+    const done = Object.values(p.passed as Record<string, boolean>).filter(Boolean).length
+    return { done, total: 39 }
+  } catch { return { done: 0, total: 39 } }
+}
+
 export function Dashboard() {
   const { currentUser } = useUserStore()
   const [stats, setStats] = useState<UserStats | null>(null)
   const [version, setVersion] = useState<ContentVersion | null>(null)
   const [loading, setLoading] = useState(true)
+  const grammarProgress = getGrammarLocalProgress()
 
   useEffect(() => {
     Promise.all([
@@ -39,9 +48,31 @@ export function Dashboard() {
       <div className="grid grid-cols-4 gap-3 mb-8">
         <StatCard label="Attempts" value={stats?.totalAttempts ?? 0} icon="🎯" />
         <StatCard label="Passed" value={stats?.totalPassed ?? 0} icon="✅" />
-        <StatCard label="Pass Rate" value={`${Math.round((stats?.passRate ?? 0) * 100)}%`} icon="📈" />
+        <StatCard label="Pass Rate" value={`${stats?.passRate ?? 0}%`} icon="📈" />
         <StatCard label="Achievements" value={`${earnedAchievements.length}/${allAchievements.length}`} icon="🏆" />
       </div>
+
+      {/* Grammar skill tree progress */}
+      {grammarProgress.done > 0 && (
+        <div className="card mb-6 flex items-center gap-4">
+          <span className="text-2xl">✍️</span>
+          <div className="flex-1">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-sm font-medium text-gray-300">Grammar Skill Tree</span>
+              <span className="text-xs text-gray-500">{grammarProgress.done} / {grammarProgress.total} exercises</span>
+            </div>
+            <div className="h-1.5 bg-surface-700 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-accent rounded-full transition-all"
+                style={{ width: `${Math.round((grammarProgress.done / grammarProgress.total) * 100)}%` }}
+              />
+            </div>
+          </div>
+          <span className="text-xs text-accent font-medium">
+            {Math.round((grammarProgress.done / grammarProgress.total) * 100)}%
+          </span>
+        </div>
+      )}
 
       <div className="grid grid-cols-2 gap-6">
         {/* Left column */}

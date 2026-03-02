@@ -5,6 +5,7 @@ import {
   ExecuteSQLExercise,
   GetSQLExercise,
   RunFreeSQL,
+  RecordAttempt,
 } from '../../lib/ipc'
 import type { Exercise, QueryResult, EvaluationResult } from '../../lib/types'
 
@@ -46,6 +47,7 @@ export function SQLModule() {
         const r = await ExecuteSQLExercise(selectedPath, query)
         setEvalResult(r)
         setQueryResult(r.userResult)
+        RecordAttempt(selectedPath, 'sql', r.passed ? 'passed' : 'failed', r.score ?? 0).catch(() => {})
       }
     } catch (e: any) {
       setQueryResult({ columns: [], rows: [], rowsAffected: 0, timeMs: 0, error: e?.toString() } as any)

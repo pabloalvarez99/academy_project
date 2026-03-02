@@ -220,6 +220,40 @@ export function registerUserHandlers(): void {
     }))
   })
 
+  ipcMain.handle('user:attempt', (_event, exerciseId: string, module: string, status: 'passed' | 'failed', score: number) => {
+    if (!currentUserId) return
+    const data = loadData()
+    data.attempts.push({
+      id: uuidv4(),
+      userId: currentUserId,
+      exerciseId,
+      module,
+      startedAt: Date.now(),
+      completedAt: Date.now(),
+      status,
+      score,
+    })
+    // Check and award achievements
+    const myAttempts = data.attempts.filter(a => a.userId === currentUserId)
+    const passed = myAttempts.filter(a => a.status === 'passed')
+    const grammarPassed = passed.filter(a => a.module === 'grammar').length
+    const codePassed = passed.filter(a => a.module === 'programming').length
+    const sqlPassed = passed.filter(a => a.module === 'sql').length
+    const earned = new Set(data.earnedAchievements.filter(a => a.userId === currentUserId).map(a => a.achievementId))
+    const award = (id: string) => {
+      if (!earned.has(id)) {
+        data.earnedAchievements.push({ userId: currentUserId!, achievementId: id, earnedAt: Date.now() })
+        earned.add(id)
+      }
+    }
+    if (passed.length >= 1) award('first_exercise')
+    if (grammarPassed >= 10) award('grammar_master')
+    if (codePassed >= 10) award('code_warrior')
+    if (sqlPassed >= 5) award('sql_ninja')
+    if (score === 100) award('perfect_score')
+    saveData(data)
+  })
+
   ipcMain.handle('user:reset', () => {
     if (!currentUserId) return
     const data = loadData()

@@ -5,6 +5,7 @@ import {
   GetProgrammingExercise,
   SubmitCode,
   CheckRuntimes,
+  RecordAttempt,
 } from '../../lib/ipc'
 import type { ExerciseSummary, Exercise, SubmitResult } from '../../lib/types'
 
@@ -63,12 +64,9 @@ export function ProgrammingModule() {
     setSubmitting(true)
     setResult(null)
     try {
-      const req = new programming.SubmitRequest()
-      req.exerciseId = exercise.id
-      req.language = lang
-      req.code = code
-      const r = await SubmitCode(req)
+      const r = await SubmitCode({ exerciseId: exercise.id, language: lang, code })
       setResult(r)
+      RecordAttempt(exercise.id, 'programming', r.passed ? 'passed' : 'failed', r.score ?? 0).catch(() => {})
     } catch (e: any) {
       setResult({ passed: false, score: 0, testResults: [], error: e?.toString() } as any)
     } finally {
@@ -77,7 +75,7 @@ export function ProgrammingModule() {
   }
 
   const runtimeAvailable = runtimes[lang] !== false
-  const exerciseLabel = (ex: content.ExerciseSummary) =>
+  const exerciseLabel = (ex: ExerciseSummary) =>
     ex.title || ex.id.split('/').pop()?.replace('.yaml', '') || ex.id
 
   const filtered = exercises.filter((ex) => matchesDiff(ex.difficulty, diffFilter))

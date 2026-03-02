@@ -111,6 +111,9 @@ export const GetAchievements = (): Promise<Achievement[]> =>
 export const ResetProgress = (): Promise<void> =>
   call('resetProgress')
 
+export const RecordAttempt = (exerciseId: string, module: string, status: 'passed' | 'failed', score: number): Promise<void> =>
+  call('recordAttempt', exerciseId, module, status, score)
+
 // ── Search ────────────────────────────────────────────────────────────────────
 
 export const SearchContent = (query: string): Promise<SearchResult[]> =>

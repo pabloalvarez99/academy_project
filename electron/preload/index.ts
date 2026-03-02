@@ -62,6 +62,8 @@ const api = {
     ipcRenderer.invoke('user:achievements'),
   resetProgress: (): Promise<void> =>
     ipcRenderer.invoke('user:reset'),
+  recordAttempt: (exerciseId: string, module: string, status: 'passed' | 'failed', score: number): Promise<void> =>
+    ipcRenderer.invoke('user:attempt', exerciseId, module, status, score),
 
   // ── Search ────────────────────────────────────────────────────────────────────
   searchContent: (query: string): Promise<unknown[]> =>
