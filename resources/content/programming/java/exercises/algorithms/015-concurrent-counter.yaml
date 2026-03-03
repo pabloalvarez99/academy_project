@@ -1,0 +1,85 @@
+id: java-algorithms-015
+title: "Concurrent Counter"
+difficulty: 3
+tags: [concurrency, threads, atomic, java, synchronization]
+description: |
+  Implement a thread-safe counter using AtomicInteger.
+
+  Spawn exactly 10 threads. Each thread increments a shared counter 1000 times.
+  Use a CountDownLatch to wait for all threads to finish before printing the result.
+  The final count must always be exactly 10000.
+
+  Input: (none — read nothing from stdin)
+
+  Output: a single line with the final counter value.
+
+  Note: The program must work correctly regardless of thread scheduling. Using a
+  plain int or non-atomic field will produce incorrect results due to race conditions.
+starter_code: |
+  import java.util.concurrent.*;
+  import java.util.concurrent.atomic.*;
+
+  public class Solution {
+      public static void main(String[] args) throws InterruptedException {
+          AtomicInteger counter = new AtomicInteger(0);
+          CountDownLatch latch = new CountDownLatch(10);
+
+          for (int i = 0; i < 10; i++) {
+              // create and start a thread that increments counter 1000 times
+              // call latch.countDown() when done
+          }
+
+          latch.await(); // wait for all threads
+          System.out.println(counter.get());
+      }
+  }
+test_cases:
+  - input: ""
+    expected_output: "10000\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: ""
+    expected_output: "10000\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+  - input: ""
+    expected_output: "10000\n"
+    time_limit_ms: 10000
+    memory_limit_kb: 131072
+hints:
+  - "AtomicInteger.incrementAndGet() is atomic — no synchronization block needed"
+  - "Create a Runnable: for each thread, loop 1000 times calling counter.incrementAndGet()"
+  - "Call latch.countDown() in the thread body after the loop (use try/finally if needed)"
+  - "latch.await() in main blocks until all 10 countDown() calls have been made"
+  - "new Thread(runnable).start() launches each thread"
+solution: |
+  import java.util.concurrent.*;
+  import java.util.concurrent.atomic.*;
+
+  public class Solution {
+      public static void main(String[] args) throws InterruptedException {
+          AtomicInteger counter = new AtomicInteger(0);
+          CountDownLatch latch = new CountDownLatch(10);
+
+          for (int i = 0; i < 10; i++) {
+              new Thread(() -> {
+                  try {
+                      for (int j = 0; j < 1000; j++) {
+                          counter.incrementAndGet();
+                      }
+                  } finally {
+                      latch.countDown();
+                  }
+              }).start();
+          }
+
+          latch.await();
+          System.out.println(counter.get());
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: java
+  category: algorithms

@@ -1,0 +1,88 @@
+id: java-algorithms-016
+title: "Functional Interfaces Pipeline"
+difficulty: 2
+tags: [functional, lambda, java, predicate, function, consumer]
+description: |
+  Build a word-processing pipeline using Java's built-in functional interfaces.
+
+  Read N words (one per line), then process each through this pipeline:
+    1. Predicate<String>: keep only words with length > 4
+    2. Function<String, String>: transform to uppercase
+    3. Consumer<String>: print the result
+
+  Words that do not pass the predicate are silently skipped.
+
+  Input:
+    N
+    N lines each containing one word
+
+  Output: filtered and transformed words, one per line, in original order.
+starter_code: |
+  import java.util.*;
+  import java.util.function.*;
+
+  public class Solution {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = Integer.parseInt(sc.nextLine().trim());
+          List<String> words = new ArrayList<>();
+          for (int i = 0; i < n; i++) words.add(sc.nextLine().trim());
+
+          Predicate<String> lengthFilter = // length > 4
+          Function<String, String> toUpper = // toUpperCase
+          Consumer<String> printer = // println
+
+          for (String word : words) {
+              if (lengthFilter.test(word)) {
+                  toUpper.andThen(printer).accept(word);
+              }
+          }
+      }
+  }
+test_cases:
+  - input: "5\nhello\nhi\nworld\nok\njava\n"
+    expected_output: "HELLO\nWORLD\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "4\ncat\nstream\ndog\nlambda\n"
+    expected_output: "STREAM\nLAMBDA\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "3\na\nbb\nccc\n"
+    expected_output: ""
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Predicate<String> lengthFilter = word -> word.length() > 4;"
+  - "Function<String, String> toUpper = String::toUpperCase;"
+  - "Consumer<String> printer = System.out::println;"
+  - "Function.andThen(consumer) is not valid — apply them separately or use toUpper.apply(word) then printer.accept(result)"
+  - "Alternatively: printer.accept(toUpper.apply(word)) inside the if block"
+solution: |
+  import java.util.*;
+  import java.util.function.*;
+
+  public class Solution {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = Integer.parseInt(sc.nextLine().trim());
+          List<String> words = new ArrayList<>();
+          for (int i = 0; i < n; i++) words.add(sc.nextLine().trim());
+
+          Predicate<String> lengthFilter = word -> word.length() > 4;
+          Function<String, String> toUpper = String::toUpperCase;
+          Consumer<String> printer = System.out::println;
+
+          for (String word : words) {
+              if (lengthFilter.test(word)) {
+                  printer.accept(toUpper.apply(word));
+              }
+          }
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: java
+  category: algorithms

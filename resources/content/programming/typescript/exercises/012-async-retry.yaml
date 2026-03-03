@@ -1,0 +1,93 @@
+id: ts-012
+title: "Async Retry"
+difficulty: 2
+tags: [async, promises, typescript, error-handling]
+description: |
+  Implement a retry function that retries an async operation up to N times.
+
+  The function signature: async function retry<T>(fn: () => Promise<T>, times: number): Promise<T>
+
+  For testing, read from stdin: first line is "success N" (fn succeeds after N tries) or "fail" (always fails).
+  Print "success" if it eventually succeeds, or "failed after 3 attempts" if all retries exhausted.
+starter_code: |
+  import * as readline from 'readline';
+
+  async function retry<T>(fn: () => Promise<T>, times: number): Promise<T> {
+    // implement here
+    throw new Error('not implemented');
+  }
+
+  // test harness
+  const rl = readline.createInterface({ input: process.stdin });
+  const lines: string[] = [];
+  rl.on('line', l => lines.push(l.trim()));
+  rl.on('close', async () => {
+    const [type, n] = lines[0].split(' ');
+    let attempt = 0;
+    const fn = () => new Promise<string>((res, rej) => {
+      attempt++;
+      if (type === 'success' && attempt >= parseInt(n)) res('ok');
+      else rej(new Error('fail'));
+    });
+    try {
+      await retry(fn, 3);
+      console.log('success');
+    } catch {
+      console.log(`failed after 3 attempts`);
+    }
+  });
+test_cases:
+  - input: "success 2\n"
+    expected_output: "success\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "success 1\n"
+    expected_output: "success\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "fail\n"
+    expected_output: "failed after 3 attempts\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Use a for loop: for (let i = 0; i < times; i++) { try { return await fn() } catch { if last attempt, rethrow } }"
+  - "On the last iteration (i === times - 1) re-throw the caught error instead of continuing"
+  - "The function must return the resolved value when fn() succeeds, so use 'return await fn()'"
+solution: |
+  import * as readline from 'readline';
+
+  async function retry<T>(fn: () => Promise<T>, times: number): Promise<T> {
+    for (let i = 0; i < times; i++) {
+      try {
+        return await fn();
+      } catch (e) {
+        if (i === times - 1) throw e;
+      }
+    }
+    throw new Error('unreachable');
+  }
+
+  const rl = readline.createInterface({ input: process.stdin });
+  const lines: string[] = [];
+  rl.on('line', l => lines.push(l.trim()));
+  rl.on('close', async () => {
+    const [type, n] = lines[0].split(' ');
+    let attempt = 0;
+    const fn = () => new Promise<string>((res, rej) => {
+      attempt++;
+      if (type === 'success' && attempt >= parseInt(n)) res('ok');
+      else rej(new Error('fail'));
+    });
+    try {
+      await retry(fn, 3);
+      console.log('success');
+    } catch {
+      console.log(`failed after 3 attempts`);
+    }
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

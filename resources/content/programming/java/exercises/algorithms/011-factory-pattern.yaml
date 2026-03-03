@@ -1,0 +1,134 @@
+id: java-algorithms-011
+title: "Shape Factory Pattern"
+difficulty: 2
+tags: [design-patterns, factory, interfaces, java, oop]
+description: |
+  Implement a Shape factory using the Factory Pattern.
+
+  Define a Shape interface with a method double area().
+  Implement three shapes:
+    - Circle: takes radius (double), area = PI * r^2
+    - Rectangle: takes width and height (doubles), area = width * height
+    - Triangle: takes base and height (doubles), area = 0.5 * base * height
+
+  Implement ShapeFactory.create(String type, double... params) which returns the correct Shape.
+
+  Input:
+    N
+    N lines of: "circle radius" or "rectangle width height" or "triangle base height"
+
+  Output: area of each shape, formatted to 2 decimal places, one per line.
+starter_code: |
+  import java.util.Scanner;
+
+  interface Shape {
+      // implement here
+  }
+
+  class Circle implements Shape {
+      // implement here
+  }
+
+  class Rectangle implements Shape {
+      // implement here
+  }
+
+  class Triangle implements Shape {
+      // implement here
+  }
+
+  class ShapeFactory {
+      public static Shape create(String type, double... params) {
+          // implement here
+          return null;
+      }
+  }
+
+  public class Solution {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = Integer.parseInt(sc.nextLine().trim());
+          for (int i = 0; i < n; i++) {
+              String[] parts = sc.nextLine().trim().split(" ");
+              String type = parts[0];
+              double[] params = new double[parts.length - 1];
+              for (int j = 0; j < params.length; j++) params[j] = Double.parseDouble(parts[j + 1]);
+              Shape shape = ShapeFactory.create(type, params);
+              System.out.printf("%.2f%n", shape.area());
+          }
+      }
+  }
+test_cases:
+  - input: "3\ncircle 5\nrectangle 4 6\ntriangle 3 8\n"
+    expected_output: "78.54\n24.00\n12.00\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "2\ncircle 1\nrectangle 10 2\n"
+    expected_output: "3.14\n20.00\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "3\ntriangle 6 4\ncircle 2\nrectangle 3 3\n"
+    expected_output: "12.00\n12.57\n9.00\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "interface Shape { double area(); }"
+  - "Use Math.PI for circle area. Format with System.out.printf(\"%.2f%n\", area)"
+  - "ShapeFactory.create() can switch on the type string to return the right implementation"
+  - "varargs double... params lets you pass different numbers of arguments for each shape"
+solution: |
+  import java.util.Scanner;
+
+  interface Shape {
+      double area();
+  }
+
+  class Circle implements Shape {
+      private final double radius;
+      public Circle(double radius) { this.radius = radius; }
+      @Override public double area() { return Math.PI * radius * radius; }
+  }
+
+  class Rectangle implements Shape {
+      private final double width, height;
+      public Rectangle(double width, double height) { this.width = width; this.height = height; }
+      @Override public double area() { return width * height; }
+  }
+
+  class Triangle implements Shape {
+      private final double base, height;
+      public Triangle(double base, double height) { this.base = base; this.height = height; }
+      @Override public double area() { return 0.5 * base * height; }
+  }
+
+  class ShapeFactory {
+      public static Shape create(String type, double... params) {
+          switch (type) {
+              case "circle":    return new Circle(params[0]);
+              case "rectangle": return new Rectangle(params[0], params[1]);
+              case "triangle":  return new Triangle(params[0], params[1]);
+              default: throw new IllegalArgumentException("Unknown shape: " + type);
+          }
+      }
+  }
+
+  public class Solution {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = Integer.parseInt(sc.nextLine().trim());
+          for (int i = 0; i < n; i++) {
+              String[] parts = sc.nextLine().trim().split(" ");
+              String type = parts[0];
+              double[] params = new double[parts.length - 1];
+              for (int j = 0; j < params.length; j++) params[j] = Double.parseDouble(parts[j + 1]);
+              Shape shape = ShapeFactory.create(type, params);
+              System.out.printf("%.2f%n", shape.area());
+          }
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: java
+  category: algorithms

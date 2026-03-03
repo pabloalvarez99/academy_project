@@ -1,0 +1,181 @@
+id: ts-018
+title: "Builder Pattern — QueryBuilder"
+difficulty: 2
+tags: [builder-pattern, design-patterns, typescript, sql]
+description: |
+  Implement a QueryBuilder using the builder pattern with method chaining.
+
+  class QueryBuilder {
+    select(cols: string): QueryBuilder   — sets SELECT clause (default '*')
+    from(table: string): QueryBuilder    — sets FROM clause
+    where(cond: string): QueryBuilder    — sets WHERE clause (optional)
+    orderBy(col: string): QueryBuilder   — sets ORDER BY clause (optional)
+    limit(n: number): QueryBuilder       — sets LIMIT clause (optional)
+    build(): string                      — returns the final SQL string
+  }
+
+  Build the SQL string in this order (omit optional clauses if not set):
+    SELECT <cols> FROM <table> [WHERE <cond>] [ORDER BY <col>] [LIMIT <n>]
+
+  Input format (one command per line, blank line separates queries):
+    select COLS
+    from TABLE
+    where CONDITION
+    orderby COL
+    limit N
+    build          — print the built SQL string, then reset the builder
+
+  Conditions may contain spaces (treat everything after the command keyword as the value).
+starter_code: |
+  import * as readline from 'readline';
+
+  class QueryBuilder {
+    private _select = '*';
+    private _from = '';
+    private _where = '';
+    private _orderBy = '';
+    private _limit = -1;
+
+    select(cols: string): QueryBuilder {
+      // implement here
+      return this;
+    }
+
+    from(table: string): QueryBuilder {
+      // implement here
+      return this;
+    }
+
+    where(cond: string): QueryBuilder {
+      // implement here
+      return this;
+    }
+
+    orderBy(col: string): QueryBuilder {
+      // implement here
+      return this;
+    }
+
+    limit(n: number): QueryBuilder {
+      // implement here
+      return this;
+    }
+
+    build(): string {
+      // implement here — assemble the SQL string
+      return '';
+    }
+
+    reset(): void {
+      this._select = '*';
+      this._from = '';
+      this._where = '';
+      this._orderBy = '';
+      this._limit = -1;
+    }
+  }
+
+  const qb = new QueryBuilder();
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const trimmed = line.trim();
+    const spaceIdx = trimmed.indexOf(' ');
+    const cmd = spaceIdx === -1 ? trimmed : trimmed.slice(0, spaceIdx);
+    const val = spaceIdx === -1 ? '' : trimmed.slice(spaceIdx + 1);
+    if (cmd === 'select') qb.select(val);
+    else if (cmd === 'from') qb.from(val);
+    else if (cmd === 'where') qb.where(val);
+    else if (cmd === 'orderby') qb.orderBy(val);
+    else if (cmd === 'limit') qb.limit(parseInt(val));
+    else if (cmd === 'build') { console.log(qb.build()); qb.reset(); }
+  });
+test_cases:
+  - input: "from users\nbuild\n"
+    expected_output: "SELECT * FROM users\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "select id,name\nfrom employees\nwhere age > 30\norderby name\nlimit 10\nbuild\n"
+    expected_output: "SELECT id,name FROM employees WHERE age > 30 ORDER BY name LIMIT 10\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "select email\nfrom users\nwhere active = true\nbuild\nfrom orders\nlimit 5\nbuild\n"
+    expected_output: "SELECT email FROM users WHERE active = true\nSELECT * FROM orders LIMIT 5\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Each setter stores the value and returns 'this' to enable chaining"
+  - "build() assembles parts: start with 'SELECT {cols} FROM {table}', then conditionally append WHERE/ORDER BY/LIMIT"
+  - "Check if optional fields are set before appending them (empty string or -1 means not set)"
+  - "Use an array of parts and join with spaces: const parts = ['SELECT ...', 'FROM ...']; if (this._where) parts.push('WHERE ' + this._where); ..."
+solution: |
+  import * as readline from 'readline';
+
+  class QueryBuilder {
+    private _select = '*';
+    private _from = '';
+    private _where = '';
+    private _orderBy = '';
+    private _limit = -1;
+
+    select(cols: string): QueryBuilder {
+      this._select = cols;
+      return this;
+    }
+
+    from(table: string): QueryBuilder {
+      this._from = table;
+      return this;
+    }
+
+    where(cond: string): QueryBuilder {
+      this._where = cond;
+      return this;
+    }
+
+    orderBy(col: string): QueryBuilder {
+      this._orderBy = col;
+      return this;
+    }
+
+    limit(n: number): QueryBuilder {
+      this._limit = n;
+      return this;
+    }
+
+    build(): string {
+      const parts = [`SELECT ${this._select} FROM ${this._from}`];
+      if (this._where)   parts.push(`WHERE ${this._where}`);
+      if (this._orderBy) parts.push(`ORDER BY ${this._orderBy}`);
+      if (this._limit >= 0) parts.push(`LIMIT ${this._limit}`);
+      return parts.join(' ');
+    }
+
+    reset(): void {
+      this._select = '*';
+      this._from = '';
+      this._where = '';
+      this._orderBy = '';
+      this._limit = -1;
+    }
+  }
+
+  const qb = new QueryBuilder();
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const trimmed = line.trim();
+    const spaceIdx = trimmed.indexOf(' ');
+    const cmd = spaceIdx === -1 ? trimmed : trimmed.slice(0, spaceIdx);
+    const val = spaceIdx === -1 ? '' : trimmed.slice(spaceIdx + 1);
+    if (cmd === 'select') qb.select(val);
+    else if (cmd === 'from') qb.from(val);
+    else if (cmd === 'where') qb.where(val);
+    else if (cmd === 'orderby') qb.orderBy(val);
+    else if (cmd === 'limit') qb.limit(parseInt(val));
+    else if (cmd === 'build') { console.log(qb.build()); qb.reset(); }
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

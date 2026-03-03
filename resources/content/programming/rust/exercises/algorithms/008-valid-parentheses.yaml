@@ -1,0 +1,70 @@
+id: rust-algorithms-008
+title: "Valid Parentheses"
+difficulty: 2
+tags: [stack, parentheses, string, algorithms, rust]
+description: |
+  Determine whether a string of brackets is valid.
+
+  Read a single string containing only the characters '(', ')', '{', '}', '[', ']'.
+  Print "true" if the brackets are properly matched and nested, or "false" otherwise.
+starter_code: |
+  use std::io::{self, BufRead};
+
+  fn is_valid(s: &str) -> bool {
+      // implement here
+      false
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let s = lines.next().unwrap();
+      println!("{}", is_valid(s.trim()));
+  }
+test_cases:
+  - input: "()[]{}\n"
+    expected_output: "true\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "([)]\n"
+    expected_output: "false\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "{[]}\n"
+    expected_output: "true\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Use a Vec<char> as a stack; push opening brackets onto it"
+  - "For each closing bracket, pop from the stack and check it matches the expected opener"
+  - "The string is valid if and only if the stack is empty at the end"
+  - "Return false immediately if a closing bracket is encountered with an empty stack"
+solution: |
+  use std::io::{self, BufRead};
+
+  fn is_valid(s: &str) -> bool {
+      let mut stack: Vec<char> = Vec::new();
+      for ch in s.chars() {
+          match ch {
+              '(' | '[' | '{' => stack.push(ch),
+              ')' => if stack.pop() != Some('(') { return false; },
+              ']' => if stack.pop() != Some('[') { return false; },
+              '}' => if stack.pop() != Some('{') { return false; },
+              _ => {}
+          }
+      }
+      stack.is_empty()
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let s = lines.next().unwrap();
+      println!("{}", is_valid(s.trim()));
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: algorithms

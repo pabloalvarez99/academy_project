@@ -1,0 +1,113 @@
+id: ts-016
+title: "Class Method Decorator — @log"
+difficulty: 3
+tags: [decorators, typescript, metaprogramming, classes]
+description: |
+  Implement a @log method decorator that wraps class methods with logging.
+
+  Before each call it should print: "calling methodName"
+  After each call it should print: "methodName returned returnValue"
+
+  Then apply @log to a Calculator class with methods:
+    add(a: number, b: number): number
+    multiply(a: number, b: number): number
+
+  Input format (one command per line):
+    add A B       — call calculator.add(A, B)
+    multiply A B  — call calculator.multiply(A, B)
+
+  Expected output for "add 2 3":
+    calling add
+    add returned 5
+
+  Note: This requires TypeScript decorators. Use the legacy decorator syntax compatible with
+  "experimentalDecorators": true in tsconfig. The decorator factory should have this signature:
+    function log(target: any, propertyKey: string, descriptor: PropertyDescriptor): PropertyDescriptor
+starter_code: |
+  import * as readline from 'readline';
+
+  function log(target: any, propertyKey: string, descriptor: PropertyDescriptor): PropertyDescriptor {
+    // implement here — wrap descriptor.value with logging
+    return descriptor;
+  }
+
+  class Calculator {
+    @log
+    add(a: number, b: number): number {
+      return a + b;
+    }
+
+    @log
+    multiply(a: number, b: number): number {
+      return a * b;
+    }
+  }
+
+  const calc = new Calculator();
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const parts = line.trim().split(' ');
+    const a = parseFloat(parts[1]);
+    const b = parseFloat(parts[2]);
+    if (parts[0] === 'add') calc.add(a, b);
+    else if (parts[0] === 'multiply') calc.multiply(a, b);
+  });
+test_cases:
+  - input: "add 2 3\n"
+    expected_output: "calling add\nadd returned 5\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "multiply 4 5\n"
+    expected_output: "calling multiply\nmultiply returned 20\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "add 10 7\nmultiply 3 3\n"
+    expected_output: "calling add\nadd returned 17\ncalling multiply\nmultiply returned 9\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Save the original method: const original = descriptor.value"
+  - "Replace descriptor.value with a new function that logs, calls original, logs result, returns it"
+  - "Use 'function' (not arrow) for the wrapper so 'this' is correctly bound to the class instance"
+  - "descriptor.value = function(this: any, ...args: any[]) { console.log('calling ' + propertyKey); const result = original.apply(this, args); console.log(propertyKey + ' returned ' + result); return result; }"
+solution: |
+  import * as readline from 'readline';
+
+  function log(target: any, propertyKey: string, descriptor: PropertyDescriptor): PropertyDescriptor {
+    const original = descriptor.value;
+    descriptor.value = function(this: any, ...args: any[]) {
+      console.log(`calling ${propertyKey}`);
+      const result = original.apply(this, args);
+      console.log(`${propertyKey} returned ${result}`);
+      return result;
+    };
+    return descriptor;
+  }
+
+  class Calculator {
+    @log
+    add(a: number, b: number): number {
+      return a + b;
+    }
+
+    @log
+    multiply(a: number, b: number): number {
+      return a * b;
+    }
+  }
+
+  const calc = new Calculator();
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const parts = line.trim().split(' ');
+    const a = parseFloat(parts[1]);
+    const b = parseFloat(parts[2]);
+    if (parts[0] === 'add') calc.add(a, b);
+    else if (parts[0] === 'multiply') calc.multiply(a, b);
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

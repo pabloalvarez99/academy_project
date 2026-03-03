@@ -1,0 +1,108 @@
+id: ts-014
+title: "Discriminated Union — Shape Areas"
+difficulty: 2
+tags: [discriminated-union, type-narrowing, typescript, generics]
+description: |
+  Define a discriminated union type for shapes and compute the area of each.
+
+  type Shape =
+    | { kind: 'circle';   r: number }
+    | { kind: 'rect';     w: number; h: number }
+    | { kind: 'triangle'; b: number; h: number }
+
+  Implement: function area(shape: Shape): number
+
+  Area formulas:
+    circle:   Math.PI * r * r
+    rect:     w * h
+    triangle: 0.5 * b * h
+
+  Read shapes from stdin, one per line. Each line is space-separated:
+    circle R
+    rect W H
+    triangle B H
+
+  Print the area of each shape rounded to 2 decimal places on its own line.
+starter_code: |
+  import * as readline from 'readline';
+
+  type Shape =
+    | { kind: 'circle';   r: number }
+    | { kind: 'rect';     w: number; h: number }
+    | { kind: 'triangle'; b: number; h: number };
+
+  function area(shape: Shape): number {
+    // implement here — use a switch on shape.kind
+    return 0;
+  }
+
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const parts = line.trim().split(' ');
+    let shape: Shape;
+    if (parts[0] === 'circle') {
+      shape = { kind: 'circle', r: parseFloat(parts[1]) };
+    } else if (parts[0] === 'rect') {
+      shape = { kind: 'rect', w: parseFloat(parts[1]), h: parseFloat(parts[2]) };
+    } else {
+      shape = { kind: 'triangle', b: parseFloat(parts[1]), h: parseFloat(parts[2]) };
+    }
+    console.log(area(shape).toFixed(2));
+  });
+test_cases:
+  - input: "circle 5\nrect 4 6\ntriangle 3 8\n"
+    expected_output: "78.54\n24.00\n12.00\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "circle 1\nrect 10 10\ntriangle 6 4\n"
+    expected_output: "3.14\n100.00\n12.00\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "rect 7 3\ncircle 2\ntriangle 5 5\n"
+    expected_output: "21.00\n12.57\n12.50\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Use 'switch (shape.kind)' — TypeScript narrows the type in each case branch"
+  - "In the 'circle' branch, shape.r is available; in 'rect', shape.w and shape.h, etc."
+  - "Add a default branch that calls a never-check: 'const _: never = shape' to catch missing cases"
+  - "Math.PI * r * r for circle; w * h for rect; 0.5 * b * h for triangle"
+solution: |
+  import * as readline from 'readline';
+
+  type Shape =
+    | { kind: 'circle';   r: number }
+    | { kind: 'rect';     w: number; h: number }
+    | { kind: 'triangle'; b: number; h: number };
+
+  function area(shape: Shape): number {
+    switch (shape.kind) {
+      case 'circle':   return Math.PI * shape.r * shape.r;
+      case 'rect':     return shape.w * shape.h;
+      case 'triangle': return 0.5 * shape.b * shape.h;
+      default: {
+        const _: never = shape;
+        throw new Error(`Unknown shape: ${_}`);
+      }
+    }
+  }
+
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const parts = line.trim().split(' ');
+    let shape: Shape;
+    if (parts[0] === 'circle') {
+      shape = { kind: 'circle', r: parseFloat(parts[1]) };
+    } else if (parts[0] === 'rect') {
+      shape = { kind: 'rect', w: parseFloat(parts[1]), h: parseFloat(parts[2]) };
+    } else {
+      shape = { kind: 'triangle', b: parseFloat(parts[1]), h: parseFloat(parts[2]) };
+    }
+    console.log(area(shape).toFixed(2));
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

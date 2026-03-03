@@ -1,0 +1,88 @@
+id: rust-algorithms-003
+title: "Merge Sort"
+difficulty: 2
+tags: [merge-sort, sorting, divide-and-conquer, algorithms, rust]
+description: |
+  Implement merge sort to sort an array of integers.
+
+  Read N on the first line, then N integers on the second line.
+  Print the sorted integers on one line separated by spaces.
+starter_code: |
+  use std::io::{self, BufRead};
+
+  fn merge_sort(arr: Vec<i64>) -> Vec<i64> {
+      // implement here
+      arr
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let _n: usize = lines.next().unwrap().trim().parse().unwrap();
+      let arr: Vec<i64> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+      let sorted = merge_sort(arr);
+      let result: Vec<String> = sorted.iter().map(|x| x.to_string()).collect();
+      println!("{}", result.join(" "));
+  }
+test_cases:
+  - input: "5\n5 3 1 4 2\n"
+    expected_output: "1 2 3 4 5\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "6\n9 7 5 3 1 2\n"
+    expected_output: "1 2 3 5 7 9\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "1\n42\n"
+    expected_output: "42\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Base case: return if arr.len() <= 1"
+  - "Split into two halves with arr.split_at(arr.len() / 2), recursively sort each"
+  - "Merge by comparing the front elements of each sorted half, pushing the smaller one first"
+solution: |
+  use std::io::{self, BufRead};
+
+  fn merge_sort(arr: Vec<i64>) -> Vec<i64> {
+      if arr.len() <= 1 {
+          return arr;
+      }
+      let mid = arr.len() / 2;
+      let left  = merge_sort(arr[..mid].to_vec());
+      let right = merge_sort(arr[mid..].to_vec());
+      merge(left, right)
+  }
+
+  fn merge(left: Vec<i64>, right: Vec<i64>) -> Vec<i64> {
+      let mut result = Vec::with_capacity(left.len() + right.len());
+      let (mut i, mut j) = (0, 0);
+      while i < left.len() && j < right.len() {
+          if left[i] <= right[j] {
+              result.push(left[i]);
+              i += 1;
+          } else {
+              result.push(right[j]);
+              j += 1;
+          }
+      }
+      result.extend_from_slice(&left[i..]);
+      result.extend_from_slice(&right[j..]);
+      result
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let _n: usize = lines.next().unwrap().trim().parse().unwrap();
+      let arr: Vec<i64> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+      let sorted = merge_sort(arr);
+      let result: Vec<String> = sorted.iter().map(|x| x.to_string()).collect();
+      println!("{}", result.join(" "));
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: algorithms

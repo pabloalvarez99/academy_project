@@ -1,0 +1,76 @@
+id: rust-algorithms-002
+title: "Two Sum"
+difficulty: 2
+tags: [two-sum, hashmap, algorithms, rust]
+description: |
+  Find two indices whose values sum to a target.
+
+  Read N on the first line, then N integers, then a target T.
+  Print two 0-based indices i and j (i < j) such that arr[i] + arr[j] == T.
+  Guaranteed exactly one solution exists. Print the indices on one line separated by a space.
+starter_code: |
+  use std::io::{self, BufRead};
+  use std::collections::HashMap;
+
+  fn two_sum(arr: &[i64], target: i64) -> (usize, usize) {
+      // implement here
+      (0, 1)
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let _n: usize = lines.next().unwrap().trim().parse().unwrap();
+      let arr: Vec<i64> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+      let target: i64 = lines.next().unwrap().trim().parse().unwrap();
+      let (i, j) = two_sum(&arr, target);
+      println!("{} {}", i, j);
+  }
+test_cases:
+  - input: "4\n2 7 11 15\n9\n"
+    expected_output: "0 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "3\n3 2 4\n6\n"
+    expected_output: "1 2\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "2\n1 9\n10\n"
+    expected_output: "0 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Use a HashMap<i64, usize> to store value -> index as you iterate"
+  - "For each element x, check if (target - x) is already in the map"
+  - "Insert x into the map after checking, so you never use the same index twice"
+solution: |
+  use std::io::{self, BufRead};
+  use std::collections::HashMap;
+
+  fn two_sum(arr: &[i64], target: i64) -> (usize, usize) {
+      let mut seen: HashMap<i64, usize> = HashMap::new();
+      for (i, &x) in arr.iter().enumerate() {
+          let complement = target - x;
+          if let Some(&j) = seen.get(&complement) {
+              return (j, i);
+          }
+          seen.insert(x, i);
+      }
+      unreachable!("guaranteed one solution")
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let _n: usize = lines.next().unwrap().trim().parse().unwrap();
+      let arr: Vec<i64> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+      let target: i64 = lines.next().unwrap().trim().parse().unwrap();
+      let (i, j) = two_sum(&arr, target);
+      println!("{} {}", i, j);
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: algorithms

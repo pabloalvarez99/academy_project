@@ -7,6 +7,7 @@ import { GrammarModule } from './modules/grammar/GrammarModule'
 import { ProgrammingModule } from './modules/programming/ProgrammingModule'
 import { SQLModule } from './modules/sql/SQLModule'
 import { KnowledgeModule } from './modules/knowledge/KnowledgeModule'
+import { SystemDesignModule } from './modules/system-design/SystemDesignModule'
 import { SearchModule } from './modules/search/SearchModule'
 import { SettingsModule } from './modules/settings/SettingsModule'
 
@@ -20,8 +21,9 @@ function AppShell() {
           <Route path="/grammar"     element={<GrammarModule />} />
           <Route path="/programming" element={<ProgrammingModule />} />
           <Route path="/sql"         element={<SQLModule />} />
-          <Route path="/knowledge"   element={<KnowledgeModule />} />
-          <Route path="/search"      element={<SearchModule />} />
+          <Route path="/knowledge"       element={<KnowledgeModule />} />
+          <Route path="/system-design"   element={<SystemDesignModule />} />
+          <Route path="/search"          element={<SearchModule />} />
           <Route path="/settings"    element={<SettingsModule />} />
           <Route path="*"            element={<Navigate to="/" replace />} />
         </Routes>

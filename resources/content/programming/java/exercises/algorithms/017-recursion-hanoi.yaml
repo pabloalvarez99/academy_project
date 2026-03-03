@@ -1,0 +1,86 @@
+id: java-algorithms-017
+title: "Tower of Hanoi"
+difficulty: 2
+tags: [recursion, java, algorithms, divide-and-conquer]
+description: |
+  Solve the Tower of Hanoi puzzle recursively for N disks using three pegs: A, B, C.
+
+  Rules:
+    - Move all disks from peg A to peg C using peg B as auxiliary.
+    - Only one disk may be moved at a time.
+    - A larger disk may never be placed on a smaller disk.
+
+  Print each move as: "Move disk D from X to Y"
+  where D is the disk number (1 = smallest, N = largest).
+  After all moves, print: "Total moves: M" where M = 2^N - 1.
+
+  Input:
+    N (number of disks, 1 <= N <= 10)
+
+  Output: each move on its own line, then the total move count.
+starter_code: |
+  import java.util.Scanner;
+
+  public class Solution {
+      static int moveCount = 0;
+
+      static void hanoi(int disk, String from, String to, String aux) {
+          // implement recursively
+      }
+
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = Integer.parseInt(sc.nextLine().trim());
+          hanoi(n, "A", "C", "B");
+          System.out.println("Total moves: " + moveCount);
+      }
+  }
+test_cases:
+  - input: "1\n"
+    expected_output: "Move disk 1 from A to C\nTotal moves: 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "2\n"
+    expected_output: "Move disk 1 from A to B\nMove disk 2 from A to C\nMove disk 1 from B to C\nTotal moves: 3\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "3\n"
+    expected_output: "Move disk 1 from A to C\nMove disk 2 from A to B\nMove disk 1 from C to B\nMove disk 3 from A to C\nMove disk 1 from B to A\nMove disk 2 from B to C\nMove disk 1 from A to C\nTotal moves: 7\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Base case: if disk == 1, print the move and increment moveCount, then return"
+  - "Recursive case: move N-1 disks from source to aux, then move disk N, then move N-1 disks from aux to destination"
+  - "hanoi(disk - 1, from, aux, to) moves the top N-1 disks out of the way"
+  - "Total moves for N disks is always 2^N - 1 (you can verify with Math.pow(2, n) - 1)"
+solution: |
+  import java.util.Scanner;
+
+  public class Solution {
+      static int moveCount = 0;
+
+      static void hanoi(int disk, String from, String to, String aux) {
+          if (disk == 1) {
+              System.out.println("Move disk 1 from " + from + " to " + to);
+              moveCount++;
+              return;
+          }
+          hanoi(disk - 1, from, aux, to);
+          System.out.println("Move disk " + disk + " from " + from + " to " + to);
+          moveCount++;
+          hanoi(disk - 1, aux, to, from);
+      }
+
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = Integer.parseInt(sc.nextLine().trim());
+          hanoi(n, "A", "C", "B");
+          System.out.println("Total moves: " + moveCount);
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: java
+  category: algorithms

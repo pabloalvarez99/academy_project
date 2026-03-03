@@ -1,0 +1,99 @@
+id: rust-algorithms-007
+title: "Graph BFS Shortest Path"
+difficulty: 3
+tags: [bfs, graph, shortest-path, algorithms, rust]
+description: |
+  Find the shortest path between two nodes in an unweighted undirected graph using BFS.
+
+  Read V (vertices) and E (edges) on the first line.
+  Then E lines each containing two integers u and v (0-based) representing an undirected edge.
+  Then read the source and destination on the last line.
+  Print the shortest path length (number of edges), or -1 if no path exists.
+starter_code: |
+  use std::io::{self, BufRead};
+  use std::collections::VecDeque;
+
+  fn bfs_shortest_path(graph: &Vec<Vec<usize>>, src: usize, dst: usize) -> i64 {
+      // implement here
+      -1
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let first: Vec<usize> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+      let (v, e) = (first[0], first[1]);
+      let mut graph = vec![vec![]; v];
+      for _ in 0..e {
+          let edge: Vec<usize> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+          graph[edge[0]].push(edge[1]);
+          graph[edge[1]].push(edge[0]);
+      }
+      let sd: Vec<usize> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+      println!("{}", bfs_shortest_path(&graph, sd[0], sd[1]));
+  }
+test_cases:
+  - input: "6 7\n0 1\n0 2\n1 3\n2 3\n3 4\n4 5\n1 5\n0 5\n"
+    expected_output: "3\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "4 3\n0 1\n1 2\n2 3\n0 3\n"
+    expected_output: "3\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "3 1\n0 1\n0 2\n"
+    expected_output: "-1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Use a VecDeque as your BFS queue; enqueue (node, distance) pairs"
+  - "Track visited nodes with a Vec<bool> to avoid revisiting"
+  - "If src == dst, the answer is 0"
+  - "Dequeue a node, check if it is the destination, then enqueue all unvisited neighbors with distance+1"
+solution: |
+  use std::io::{self, BufRead};
+  use std::collections::VecDeque;
+
+  fn bfs_shortest_path(graph: &Vec<Vec<usize>>, src: usize, dst: usize) -> i64 {
+      if src == dst {
+          return 0;
+      }
+      let n = graph.len();
+      let mut visited = vec![false; n];
+      let mut queue = VecDeque::new();
+      visited[src] = true;
+      queue.push_back((src, 0i64));
+      while let Some((node, dist)) = queue.pop_front() {
+          for &neighbor in &graph[node] {
+              if neighbor == dst {
+                  return dist + 1;
+              }
+              if !visited[neighbor] {
+                  visited[neighbor] = true;
+                  queue.push_back((neighbor, dist + 1));
+              }
+          }
+      }
+      -1
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let first: Vec<usize> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+      let (v, e) = (first[0], first[1]);
+      let mut graph = vec![vec![]; v];
+      for _ in 0..e {
+          let edge: Vec<usize> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+          graph[edge[0]].push(edge[1]);
+          graph[edge[1]].push(edge[0]);
+      }
+      let sd: Vec<usize> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+      println!("{}", bfs_shortest_path(&graph, sd[0], sd[1]));
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: algorithms

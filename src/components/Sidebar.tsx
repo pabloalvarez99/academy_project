@@ -7,8 +7,9 @@ const nav = [
   { to: '/grammar',    label: 'Grammar',      icon: '✎' },
   { to: '/programming',label: 'Programming',  icon: '⌨' },
   { to: '/sql',        label: 'SQL Lab',      icon: '⛃' },
-  { to: '/knowledge',  label: 'Knowledge',    icon: '📖' },
-  { to: '/search',     label: 'Search',       icon: '⌕' },
+  { to: '/knowledge',     label: 'Knowledge',      icon: '📖' },
+  { to: '/system-design', label: 'System Design',  icon: '⬡' },
+  { to: '/search',        label: 'Search',         icon: '⌕' },
   { to: '/settings',   label: 'Settings',     icon: '⚙' },
 ]
 

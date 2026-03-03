@@ -1,0 +1,124 @@
+id: ts-015
+title: "Mapped Types from Scratch"
+difficulty: 3
+tags: [mapped-types, generics, typescript, utility-types]
+description: |
+  Implement three TypeScript utility types from scratch without using the built-in versions:
+
+    type MyReadonly<T>    = { readonly [K in keyof T]: T[K] }
+    type MyPartial<T>     = { [K in keyof T]?: T[K] }
+    type MyPick<T, K extends keyof T> = { [P in K]: T[P] }
+
+  Then implement runtime functions that use these types:
+    function toPartial<T>(obj: T): MyPartial<T>  — returns a shallow copy (all fields present)
+    function pick<T, K extends keyof T>(obj: T, keys: K[]): MyPick<T, K>  — returns object with only specified keys
+
+  Input format (one command per line):
+    object KEY VALUE [KEY VALUE ...]  — define an object with key-value string pairs
+    pick KEY1 KEY2 ...               — print JSON of picked keys from the last defined object
+    partial                          — print JSON of partial (all keys) of the last defined object
+
+  Print results as JSON using JSON.stringify with keys sorted alphabetically.
+starter_code: |
+  import * as readline from 'readline';
+
+  type MyReadonly<T> = { readonly [K in keyof T]: T[K] };
+  type MyPartial<T> = { [K in keyof T]?: T[K] };
+  type MyPick<T, K extends keyof T> = { [P in K]: T[P] };
+
+  function toPartial<T>(obj: T): MyPartial<T> {
+    // implement here
+    return {} as MyPartial<T>;
+  }
+
+  function pick<T extends Record<string, unknown>, K extends keyof T>(obj: T, keys: K[]): MyPick<T, K> {
+    // implement here
+    return {} as MyPick<T, K>;
+  }
+
+  function sortedJson(obj: Record<string, unknown>): string {
+    const sorted: Record<string, unknown> = {};
+    Object.keys(obj).sort().forEach(k => { sorted[k] = obj[k]; });
+    return JSON.stringify(sorted);
+  }
+
+  let current: Record<string, string> = {};
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const parts = line.trim().split(' ');
+    if (parts[0] === 'object') {
+      current = {};
+      for (let i = 1; i < parts.length; i += 2) {
+        current[parts[i]] = parts[i + 1];
+      }
+    } else if (parts[0] === 'pick') {
+      const keys = parts.slice(1) as (keyof typeof current)[];
+      console.log(sortedJson(pick(current, keys) as Record<string, unknown>));
+    } else if (parts[0] === 'partial') {
+      console.log(sortedJson(toPartial(current) as Record<string, unknown>));
+    }
+  });
+test_cases:
+  - input: "object name Alice age 30\npartial\n"
+    expected_output: "{\"age\":\"30\",\"name\":\"Alice\"}\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "object name Bob city London job dev\npick name city\n"
+    expected_output: "{\"city\":\"London\",\"name\":\"Bob\"}\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "object x 1 y 2 z 3\npick x z\npartial\n"
+    expected_output: "{\"x\":\"1\",\"z\":\"3\"}\n{\"x\":\"1\",\"y\":\"2\",\"z\":\"3\"}\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "MyReadonly, MyPartial, MyPick are type-level only — the runtime functions are straightforward JS"
+  - "toPartial: return { ...obj } — a shallow copy is enough since all fields are already present"
+  - "pick: reduce over the keys array, building a new object with only those properties"
+  - "keys.reduce((acc, k) => { acc[k] = obj[k]; return acc; }, {} as MyPick<T, K>)"
+solution: |
+  import * as readline from 'readline';
+
+  type MyReadonly<T> = { readonly [K in keyof T]: T[K] };
+  type MyPartial<T> = { [K in keyof T]?: T[K] };
+  type MyPick<T, K extends keyof T> = { [P in K]: T[P] };
+
+  function toPartial<T>(obj: T): MyPartial<T> {
+    return { ...obj } as MyPartial<T>;
+  }
+
+  function pick<T extends Record<string, unknown>, K extends keyof T>(obj: T, keys: K[]): MyPick<T, K> {
+    return keys.reduce((acc, k) => {
+      acc[k] = obj[k];
+      return acc;
+    }, {} as MyPick<T, K>);
+  }
+
+  function sortedJson(obj: Record<string, unknown>): string {
+    const sorted: Record<string, unknown> = {};
+    Object.keys(obj).sort().forEach(k => { sorted[k] = obj[k]; });
+    return JSON.stringify(sorted);
+  }
+
+  let current: Record<string, string> = {};
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const parts = line.trim().split(' ');
+    if (parts[0] === 'object') {
+      current = {};
+      for (let i = 1; i < parts.length; i += 2) {
+        current[parts[i]] = parts[i + 1];
+      }
+    } else if (parts[0] === 'pick') {
+      const keys = parts.slice(1) as (keyof typeof current)[];
+      console.log(sortedJson(pick(current, keys) as Record<string, unknown>));
+    } else if (parts[0] === 'partial') {
+      console.log(sortedJson(toPartial(current) as Record<string, unknown>));
+    }
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

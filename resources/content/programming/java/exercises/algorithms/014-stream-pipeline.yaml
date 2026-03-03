@@ -1,0 +1,78 @@
+id: java-algorithms-014
+title: "Stream Pipeline"
+difficulty: 2
+tags: [streams, java, functional, lambda, collections]
+description: |
+  Build a Java Stream pipeline to process integers.
+
+  Read N integers (space-separated on one line), then apply this pipeline:
+    1. Filter: keep only even numbers
+    2. Map: square each (n * n)
+    3. Sort: descending order
+    4. Collect and print each result on its own line
+
+  If no numbers pass the filter, print nothing.
+
+  Input:
+    N
+    N space-separated integers on one line
+
+  Output: qualifying numbers (squared, sorted descending), one per line.
+starter_code: |
+  import java.util.*;
+  import java.util.stream.*;
+
+  public class Solution {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = Integer.parseInt(sc.nextLine().trim());
+          String[] tokens = sc.nextLine().trim().split(" ");
+          List<Integer> nums = new ArrayList<>();
+          for (String t : tokens) nums.add(Integer.parseInt(t));
+
+          // build stream pipeline: filter even, square, sort descending, print
+      }
+  }
+test_cases:
+  - input: "6\n1 2 3 4 5 6\n"
+    expected_output: "36\n16\n4\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "5\n7 3 8 10 1\n"
+    expected_output: "100\n64\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "4\n1 3 5 7\n"
+    expected_output: ""
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "nums.stream().filter(x -> x % 2 == 0) keeps even numbers"
+  - ".map(x -> x * x) squares each element"
+  - ".sorted(Comparator.reverseOrder()) sorts descending"
+  - ".forEach(System.out::println) prints each result"
+solution: |
+  import java.util.*;
+  import java.util.stream.*;
+
+  public class Solution {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = Integer.parseInt(sc.nextLine().trim());
+          String[] tokens = sc.nextLine().trim().split(" ");
+          List<Integer> nums = new ArrayList<>();
+          for (String t : tokens) nums.add(Integer.parseInt(t));
+
+          nums.stream()
+              .filter(x -> x % 2 == 0)
+              .map(x -> x * x)
+              .sorted(Comparator.reverseOrder())
+              .forEach(System.out::println);
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: java
+  category: algorithms

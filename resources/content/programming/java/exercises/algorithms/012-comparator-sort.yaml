@@ -1,0 +1,85 @@
+id: java-algorithms-012
+title: "Comparator Sort"
+difficulty: 2
+tags: [comparator, sorting, java, collections, oop]
+description: |
+  Sort a list of Person objects by two criteria:
+    1. Age ascending (younger first)
+    2. Name alphabetically (A-Z) for ties in age
+
+  Define a Person class with fields name (String) and age (int).
+
+  Input:
+    N
+    N lines of "name age"
+
+  Output: sorted persons, one per line as "name age".
+starter_code: |
+  import java.util.*;
+
+  class Person {
+      // implement here
+  }
+
+  public class Solution {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = Integer.parseInt(sc.nextLine().trim());
+          List<Person> people = new ArrayList<>();
+          for (int i = 0; i < n; i++) {
+              String[] parts = sc.nextLine().trim().split(" ");
+              // create Person and add to list
+          }
+          // sort using Comparator
+          for (Person p : people) {
+              System.out.println(p.name + " " + p.age);
+          }
+      }
+  }
+test_cases:
+  - input: "4\nAlice 30\nBob 25\nCharlie 30\nDiana 25\n"
+    expected_output: "Bob 25\nDiana 25\nAlice 30\nCharlie 30\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "3\nZara 20\nAna 20\nMike 19\n"
+    expected_output: "Mike 19\nAna 20\nZara 20\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "5\nEve 35\nAdam 22\nBob 22\nCarol 28\nDave 28\n"
+    expected_output: "Adam 22\nBob 22\nCarol 28\nDave 28\nEve 35\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Use Comparator.comparingInt(p -> p.age).thenComparing(p -> p.name)"
+  - "Collections.sort(people, comparator) or people.sort(comparator)"
+  - "You can also use people.sort(Comparator.comparingInt((Person p) -> p.age).thenComparing(p -> p.name))"
+solution: |
+  import java.util.*;
+
+  class Person {
+      String name;
+      int age;
+      Person(String name, int age) { this.name = name; this.age = age; }
+  }
+
+  public class Solution {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = Integer.parseInt(sc.nextLine().trim());
+          List<Person> people = new ArrayList<>();
+          for (int i = 0; i < n; i++) {
+              String[] parts = sc.nextLine().trim().split(" ");
+              people.add(new Person(parts[0], Integer.parseInt(parts[1])));
+          }
+          people.sort(Comparator.comparingInt((Person p) -> p.age).thenComparing(p -> p.name));
+          for (Person p : people) {
+              System.out.println(p.name + " " + p.age);
+          }
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: java
+  category: algorithms

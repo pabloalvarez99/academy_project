@@ -1,0 +1,121 @@
+id: rust-algorithms-004
+title: "Reverse a Linked List"
+difficulty: 2
+tags: [linked-list, pointers, algorithms, rust]
+description: |
+  Reverse a singly linked list implemented with a Node struct.
+
+  Read N on the first line, then N integers on the second line representing node values
+  in order from head to tail. Print the values of the reversed list on one line
+  separated by spaces.
+starter_code: |
+  use std::io::{self, BufRead};
+
+  struct Node {
+      val: i64,
+      next: Option<Box<Node>>,
+  }
+
+  fn build_list(values: &[i64]) -> Option<Box<Node>> {
+      let mut head = None;
+      for &v in values.iter().rev() {
+          head = Some(Box::new(Node { val: v, next: head }));
+      }
+      head
+  }
+
+  fn reverse_list(head: Option<Box<Node>>) -> Option<Box<Node>> {
+      // implement here
+      head
+  }
+
+  fn collect_values(head: Option<Box<Node>>) -> Vec<i64> {
+      let mut vals = Vec::new();
+      let mut current = head;
+      while let Some(node) = current {
+          vals.push(node.val);
+          current = node.next;
+      }
+      vals
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let _n: usize = lines.next().unwrap().trim().parse().unwrap();
+      let values: Vec<i64> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+      let head = build_list(&values);
+      let reversed = reverse_list(head);
+      let result: Vec<String> = collect_values(reversed).iter().map(|x| x.to_string()).collect();
+      println!("{}", result.join(" "));
+  }
+test_cases:
+  - input: "5\n1 2 3 4 5\n"
+    expected_output: "5 4 3 2 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "3\n10 20 30\n"
+    expected_output: "30 20 10\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "1\n7\n"
+    expected_output: "7\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Use three variables: prev (Option<Box<Node>>), current, and next to iteratively reverse pointers"
+  - "At each step: save current.next, set current.next = prev, advance prev = current, current = saved next"
+  - "Return prev when current is None — it is now the new head"
+solution: |
+  use std::io::{self, BufRead};
+
+  struct Node {
+      val: i64,
+      next: Option<Box<Node>>,
+  }
+
+  fn build_list(values: &[i64]) -> Option<Box<Node>> {
+      let mut head = None;
+      for &v in values.iter().rev() {
+          head = Some(Box::new(Node { val: v, next: head }));
+      }
+      head
+  }
+
+  fn reverse_list(head: Option<Box<Node>>) -> Option<Box<Node>> {
+      let mut prev = None;
+      let mut current = head;
+      while let Some(mut node) = current {
+          current = node.next.take();
+          node.next = prev;
+          prev = Some(node);
+      }
+      prev
+  }
+
+  fn collect_values(head: Option<Box<Node>>) -> Vec<i64> {
+      let mut vals = Vec::new();
+      let mut current = head;
+      while let Some(node) = current {
+          vals.push(node.val);
+          current = node.next;
+      }
+      vals
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let _n: usize = lines.next().unwrap().trim().parse().unwrap();
+      let values: Vec<i64> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+      let head = build_list(&values);
+      let reversed = reverse_list(head);
+      let result: Vec<String> = collect_values(reversed).iter().map(|x| x.to_string()).collect();
+      println!("{}", result.join(" "));
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: algorithms

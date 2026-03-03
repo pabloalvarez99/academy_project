@@ -1,0 +1,76 @@
+id: rust-algorithms-005
+title: "Coin Change"
+difficulty: 3
+tags: [dynamic-programming, coin-change, algorithms, rust]
+description: |
+  Find the minimum number of coins to make a target amount.
+
+  Read C on the first line (number of coin denominations), then C integers on the
+  second line (the coin values), then the target amount on the third line.
+  Print the minimum number of coins needed, or -1 if the amount cannot be made.
+starter_code: |
+  use std::io::{self, BufRead};
+
+  fn coin_change(coins: &[u64], amount: u64) -> i64 {
+      // implement here
+      -1
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let _c: usize = lines.next().unwrap().trim().parse().unwrap();
+      let coins: Vec<u64> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+      let amount: u64 = lines.next().unwrap().trim().parse().unwrap();
+      println!("{}", coin_change(&coins, amount));
+  }
+test_cases:
+  - input: "3\n1 5 6\n11\n"
+    expected_output: "2\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "2\n2 5\n3\n"
+    expected_output: "-1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "3\n1 2 5\n11\n"
+    expected_output: "3\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Use a bottom-up DP array dp[0..=amount] where dp[a] = min coins to make amount a"
+  - "Initialize dp[0] = 0 and all others to amount+1 (representing infinity)"
+  - "For each amount a from 1..=amount, try every coin: dp[a] = min(dp[a], dp[a - coin] + 1)"
+  - "If dp[amount] > amount, no solution exists — return -1"
+solution: |
+  use std::io::{self, BufRead};
+
+  fn coin_change(coins: &[u64], amount: u64) -> i64 {
+      let n = amount as usize;
+      let inf = n + 1;
+      let mut dp = vec![inf; n + 1];
+      dp[0] = 0;
+      for a in 1..=n {
+          for &c in coins {
+              if c as usize <= a {
+                  dp[a] = dp[a].min(dp[a - c as usize] + 1);
+              }
+          }
+      }
+      if dp[n] > n { -1 } else { dp[n] as i64 }
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let _c: usize = lines.next().unwrap().trim().parse().unwrap();
+      let coins: Vec<u64> = lines.next().unwrap().trim().split_whitespace().map(|x| x.parse().unwrap()).collect();
+      let amount: u64 = lines.next().unwrap().trim().parse().unwrap();
+      println!("{}", coin_change(&coins, amount));
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: algorithms

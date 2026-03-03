@@ -1,0 +1,85 @@
+id: rust-algorithms-010
+title: "Word Frequency Count"
+difficulty: 2
+tags: [hashmap, word-count, strings, algorithms, rust]
+description: |
+  Count how many times each word appears in the input.
+
+  Read lines from stdin until EOF. Words are separated by whitespace and are
+  case-sensitive. Print each unique word and its count on a separate line,
+  formatted as "word count", sorted alphabetically by word.
+starter_code: |
+  use std::io::{self, BufRead};
+  use std::collections::HashMap;
+
+  fn word_count(text: &str) -> HashMap<String, usize> {
+      // implement here
+      HashMap::new()
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut all_text = String::new();
+      for line in stdin.lock().lines() {
+          let line = line.unwrap();
+          all_text.push_str(&line);
+          all_text.push(' ');
+      }
+      let counts = word_count(&all_text);
+      let mut pairs: Vec<(String, usize)> = counts.into_iter().collect();
+      pairs.sort_by(|a, b| a.0.cmp(&b.0));
+      for (word, count) in pairs {
+          println!("{} {}", word, count);
+      }
+  }
+test_cases:
+  - input: "the cat sat on the mat\nthe cat sat\n"
+    expected_output: "cat 2\nmat 1\non 1\nsat 2\nthe 3\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "hello world\nhello\n"
+    expected_output: "hello 2\nworld 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "rust is fast rust is safe\n"
+    expected_output: "fast 1\nis 2\nrust 2\nsafe 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Split the text on whitespace using split_whitespace() to handle multiple spaces"
+  - "Use a HashMap<String, usize> and increment the count for each word with the entry API"
+  - "entry(word).or_insert(0) returns a mutable reference to the count; dereference and add 1"
+  - "Collect the map into a Vec of (String, usize) tuples and sort by the key before printing"
+solution: |
+  use std::io::{self, BufRead};
+  use std::collections::HashMap;
+
+  fn word_count(text: &str) -> HashMap<String, usize> {
+      let mut counts = HashMap::new();
+      for word in text.split_whitespace() {
+          *counts.entry(word.to_string()).or_insert(0) += 1;
+      }
+      counts
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut all_text = String::new();
+      for line in stdin.lock().lines() {
+          let line = line.unwrap();
+          all_text.push_str(&line);
+          all_text.push(' ');
+      }
+      let counts = word_count(&all_text);
+      let mut pairs: Vec<(String, usize)> = counts.into_iter().collect();
+      pairs.sort_by(|a, b| a.0.cmp(&b.0));
+      for (word, count) in pairs {
+          println!("{} {}", word, count);
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: algorithms

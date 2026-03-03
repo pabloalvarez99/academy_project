@@ -1,0 +1,144 @@
+id: ts-019
+title: "Type-Safe EventEmitter"
+difficulty: 3
+tags: [generics, events, typescript, type-safety, design-patterns]
+description: |
+  Implement a type-safe EventEmitter that constrains event names and their argument types.
+
+  class TypedEmitter<Events extends Record<string, any[]>> {
+    on<E extends keyof Events>(event: E, handler: (...args: Events[E]) => void): void
+    off<E extends keyof Events>(event: E, handler: (...args: Events[E]) => void): void
+    emit<E extends keyof Events>(event: E, ...args: Events[E]): void
+  }
+
+  The generic parameter Events maps event names to their argument tuple types, e.g.:
+    type AppEvents = {
+      message: [sender: string, text: string];
+      error:   [code: number, message: string];
+      count:   [value: number];
+    }
+
+  Input format (one command per line):
+    on EVENT          — register a handler for EVENT that prints "EVENT: ARGS" (args joined with ',')
+    off EVENT         — remove the handler for EVENT
+    emit EVENT ARGS   — emit EVENT with space-separated args
+
+  Print output only from handlers (not from on/off commands themselves).
+  Format: "EVENT: ARG1,ARG2,..."
+starter_code: |
+  import * as readline from 'readline';
+
+  class TypedEmitter<Events extends Record<string, any[]>> {
+    private handlers = new Map<keyof Events, ((...args: any[]) => void)[]>();
+
+    on<E extends keyof Events>(event: E, handler: (...args: Events[E]) => void): void {
+      // implement here
+    }
+
+    off<E extends keyof Events>(event: E, handler: (...args: Events[E]) => void): void {
+      // implement here
+    }
+
+    emit<E extends keyof Events>(event: E, ...args: Events[E]): void {
+      // implement here
+    }
+  }
+
+  type AppEvents = {
+    message: [sender: string, text: string];
+    error:   [code: string, msg: string];
+    count:   [value: string];
+  };
+
+  const emitter = new TypedEmitter<AppEvents>();
+  const activeHandlers = new Map<string, (...args: any[]) => void>();
+
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const parts = line.trim().split(' ');
+    const cmd = parts[0];
+    const event = parts[1] as keyof AppEvents;
+    if (cmd === 'on') {
+      const handler = (...args: any[]) => console.log(`${String(event)}: ${args.join(',')}`);
+      activeHandlers.set(String(event), handler);
+      emitter.on(event, handler);
+    } else if (cmd === 'off') {
+      const handler = activeHandlers.get(String(event));
+      if (handler) { emitter.off(event, handler); activeHandlers.delete(String(event)); }
+    } else if (cmd === 'emit') {
+      const args = parts.slice(2) as any;
+      emitter.emit(event, ...args);
+    }
+  });
+test_cases:
+  - input: "on message\nemit message alice hello\n"
+    expected_output: "message: alice,hello\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "on count\nemit count 42\noff count\nemit count 99\n"
+    expected_output: "count: 42\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "on error\non message\nemit error 404 not_found\nemit message bob hi\n"
+    expected_output: "error: 404,not_found\nmessage: bob,hi\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Store handlers in a Map<keyof Events, Function[]>; on() pushes, off() filters by reference"
+  - "emit() looks up the handlers array and calls each with spread args: handlers.forEach(h => h(...args))"
+  - "off() removes by reference equality: this.handlers.set(event, list.filter(h => h !== handler))"
+  - "Initialize the handlers array lazily in on(): if (!this.handlers.has(event)) this.handlers.set(event, [])"
+solution: |
+  import * as readline from 'readline';
+
+  class TypedEmitter<Events extends Record<string, any[]>> {
+    private handlers = new Map<keyof Events, ((...args: any[]) => void)[]>();
+
+    on<E extends keyof Events>(event: E, handler: (...args: Events[E]) => void): void {
+      if (!this.handlers.has(event)) this.handlers.set(event, []);
+      this.handlers.get(event)!.push(handler);
+    }
+
+    off<E extends keyof Events>(event: E, handler: (...args: Events[E]) => void): void {
+      const list = this.handlers.get(event);
+      if (list) this.handlers.set(event, list.filter(h => h !== handler));
+    }
+
+    emit<E extends keyof Events>(event: E, ...args: Events[E]): void {
+      const list = this.handlers.get(event);
+      if (list) list.forEach(h => h(...args));
+    }
+  }
+
+  type AppEvents = {
+    message: [sender: string, text: string];
+    error:   [code: string, msg: string];
+    count:   [value: string];
+  };
+
+  const emitter = new TypedEmitter<AppEvents>();
+  const activeHandlers = new Map<string, (...args: any[]) => void>();
+
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const parts = line.trim().split(' ');
+    const cmd = parts[0];
+    const event = parts[1] as keyof AppEvents;
+    if (cmd === 'on') {
+      const handler = (...args: any[]) => console.log(`${String(event)}: ${args.join(',')}`);
+      activeHandlers.set(String(event), handler);
+      emitter.on(event, handler);
+    } else if (cmd === 'off') {
+      const handler = activeHandlers.get(String(event));
+      if (handler) { emitter.off(event, handler); activeHandlers.delete(String(event)); }
+    } else if (cmd === 'emit') {
+      const args = parts.slice(2) as any;
+      emitter.emit(event, ...args);
+    }
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

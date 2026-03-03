@@ -1,0 +1,85 @@
+id: java-algorithms-010
+title: "Generic Pair"
+difficulty: 2
+tags: [generics, java, data-structures]
+description: |
+  Implement a generic Pair<A, B> class with:
+    - Constructor Pair(A first, B second)
+    - getFirst(), getSecond() getters
+    - swap() — returns new Pair<B, A>
+    - toString() — "Pair(first, second)"
+
+  Read N lines each with two tokens (strings), create Pair objects, print toString() and swapped toString().
+
+  Input:
+    N
+    N lines of "token1 token2"
+
+  Output: for each pair, print the pair then the swapped pair (one per line).
+starter_code: |
+  import java.util.Scanner;
+
+  class Pair<A, B> {
+      // implement here
+  }
+
+  public class Solution {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = Integer.parseInt(sc.nextLine().trim());
+          for (int i = 0; i < n; i++) {
+              String[] parts = sc.nextLine().trim().split(" ");
+              Pair<String, String> p = new Pair<>(parts[0], parts[1]);
+              System.out.println(p);
+              System.out.println(p.swap());
+          }
+      }
+  }
+test_cases:
+  - input: "2\nhello world\nfoo bar\n"
+    expected_output: "Pair(hello, world)\nPair(world, hello)\nPair(foo, bar)\nPair(bar, foo)\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "1\nalpha beta\n"
+    expected_output: "Pair(alpha, beta)\nPair(beta, alpha)\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "3\na b\nx y\n1 2\n"
+    expected_output: "Pair(a, b)\nPair(b, a)\nPair(x, y)\nPair(y, x)\nPair(1, 2)\nPair(2, 1)\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "class Pair<A, B> { private final A first; private final B second; ... }"
+  - "public Pair<B, A> swap() { return new Pair<>(second, first); }"
+  - "Override toString() to return \"Pair(\" + first + \", \" + second + \")\""
+solution: |
+  import java.util.Scanner;
+
+  class Pair<A, B> {
+      private final A first;
+      private final B second;
+      public Pair(A first, B second) { this.first = first; this.second = second; }
+      public A getFirst() { return first; }
+      public B getSecond() { return second; }
+      public Pair<B, A> swap() { return new Pair<>(second, first); }
+      @Override public String toString() { return "Pair(" + first + ", " + second + ")"; }
+  }
+
+  public class Solution {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = Integer.parseInt(sc.nextLine().trim());
+          for (int i = 0; i < n; i++) {
+              String[] parts = sc.nextLine().trim().split(" ");
+              Pair<String, String> p = new Pair<>(parts[0], parts[1]);
+              System.out.println(p);
+              System.out.println(p.swap());
+          }
+      }
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: java
+  category: algorithms

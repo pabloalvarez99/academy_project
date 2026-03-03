@@ -1,0 +1,67 @@
+id: rust-algorithms-006
+title: "Climbing Stairs"
+difficulty: 2
+tags: [dynamic-programming, fibonacci, algorithms, rust]
+description: |
+  Count the number of distinct ways to climb N stairs, taking 1 or 2 steps at a time.
+
+  Read N on the first line. Print the total number of distinct ways to reach the top.
+starter_code: |
+  use std::io::{self, BufRead};
+
+  fn climbing_stairs(n: u64) -> u64 {
+      // implement here
+      0
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let n: u64 = lines.next().unwrap().trim().parse().unwrap();
+      println!("{}", climbing_stairs(n));
+  }
+test_cases:
+  - input: "2\n"
+    expected_output: "2\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "5\n"
+    expected_output: "8\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "10\n"
+    expected_output: "89\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "The number of ways to reach step n equals ways(n-1) + ways(n-2) — this is the Fibonacci sequence"
+  - "Base cases: ways(1) = 1, ways(2) = 2"
+  - "Use two variables instead of a full array: just track the previous two values"
+solution: |
+  use std::io::{self, BufRead};
+
+  fn climbing_stairs(n: u64) -> u64 {
+      if n <= 2 {
+          return n;
+      }
+      let (mut a, mut b) = (1u64, 2u64);
+      for _ in 3..=n {
+          let c = a + b;
+          a = b;
+          b = c;
+      }
+      b
+  }
+
+  fn main() {
+      let stdin = io::stdin();
+      let mut lines = stdin.lock().lines().map(|l| l.unwrap()).filter(|l| !l.is_empty());
+      let n: u64 = lines.next().unwrap().trim().parse().unwrap();
+      println!("{}", climbing_stairs(n));
+  }
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: rust
+  category: algorithms

@@ -1,0 +1,143 @@
+id: ts-013
+title: "Generic TTL Cache"
+difficulty: 3
+tags: [generics, cache, typescript, data-structures]
+description: |
+  Implement a generic TTL (time-to-live) cache class.
+
+  class Cache<K, V> {
+    set(key: K, value: V, ttlMs: number): void  // store with expiry
+    get(key: K): V | undefined                  // return value if not expired, else undefined
+    has(key: K): boolean                         // true if key exists and is not expired
+  }
+
+  Entries automatically expire after ttlMs milliseconds from when they were set.
+
+  Input format (one command per line):
+    set KEY VALUE TTL_MS   — store KEY=VALUE with TTL milliseconds
+    get KEY                — print value, or "undefined" if missing/expired
+    has KEY                — print "true" or "false"
+    wait MS                — simulate time passing by MS milliseconds (use a fake clock offset)
+
+  For the "wait" command, advance an internal clock offset rather than actually sleeping.
+  The cache should use Date.now() plus the accumulated offset when checking expiry.
+starter_code: |
+  import * as readline from 'readline';
+
+  class Cache<K, V> {
+    private store = new Map<K, { value: V; expiresAt: number }>();
+    private clockOffset = 0;
+
+    now(): number {
+      return Date.now() + this.clockOffset;
+    }
+
+    advanceClock(ms: number): void {
+      this.clockOffset += ms;
+    }
+
+    set(key: K, value: V, ttlMs: number): void {
+      // implement here
+    }
+
+    get(key: K): V | undefined {
+      // implement here
+      return undefined;
+    }
+
+    has(key: K): boolean {
+      // implement here
+      return false;
+    }
+  }
+
+  const cache = new Cache<string, string>();
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const parts = line.trim().split(' ');
+    const cmd = parts[0];
+    if (cmd === 'set') {
+      cache.set(parts[1], parts[2], parseInt(parts[3]));
+    } else if (cmd === 'get') {
+      const val = cache.get(parts[1]);
+      console.log(val === undefined ? 'undefined' : val);
+    } else if (cmd === 'has') {
+      console.log(String(cache.has(parts[1])));
+    } else if (cmd === 'wait') {
+      cache.advanceClock(parseInt(parts[1]));
+    }
+  });
+test_cases:
+  - input: "set foo bar 1000\nget foo\nhas foo\n"
+    expected_output: "bar\ntrue\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "set foo bar 500\nwait 600\nget foo\nhas foo\n"
+    expected_output: "undefined\nfalse\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "set a 1 1000\nset b 2 2000\nwait 1100\nget a\nget b\n"
+    expected_output: "undefined\n2\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Store { value, expiresAt } where expiresAt = this.now() + ttlMs"
+  - "In get() and has(), check if this.now() >= entry.expiresAt to detect expiry"
+  - "advanceClock() simply adds to a clockOffset field; now() returns Date.now() + clockOffset"
+  - "Optionally delete expired entries in get() to free memory"
+solution: |
+  import * as readline from 'readline';
+
+  class Cache<K, V> {
+    private store = new Map<K, { value: V; expiresAt: number }>();
+    private clockOffset = 0;
+
+    now(): number {
+      return Date.now() + this.clockOffset;
+    }
+
+    advanceClock(ms: number): void {
+      this.clockOffset += ms;
+    }
+
+    set(key: K, value: V, ttlMs: number): void {
+      this.store.set(key, { value, expiresAt: this.now() + ttlMs });
+    }
+
+    get(key: K): V | undefined {
+      const entry = this.store.get(key);
+      if (!entry) return undefined;
+      if (this.now() >= entry.expiresAt) {
+        this.store.delete(key);
+        return undefined;
+      }
+      return entry.value;
+    }
+
+    has(key: K): boolean {
+      return this.get(key) !== undefined;
+    }
+  }
+
+  const cache = new Cache<string, string>();
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const parts = line.trim().split(' ');
+    const cmd = parts[0];
+    if (cmd === 'set') {
+      cache.set(parts[1], parts[2], parseInt(parts[3]));
+    } else if (cmd === 'get') {
+      const val = cache.get(parts[1]);
+      console.log(val === undefined ? 'undefined' : val);
+    } else if (cmd === 'has') {
+      console.log(String(cache.has(parts[1])));
+    } else if (cmd === 'wait') {
+      cache.advanceClock(parseInt(parts[1]));
+    }
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

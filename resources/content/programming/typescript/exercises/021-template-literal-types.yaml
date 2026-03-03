@@ -1,0 +1,99 @@
+id: ts-021
+title: "Template Literal Types — HTTP Route Matcher"
+difficulty: 3
+tags: [template-literal-types, typescript, type-safety, http]
+description: |
+  Use TypeScript template literal types to build a type-safe HTTP route handler.
+
+  Define a union of known routes:
+    type Route = 'GET /users' | 'POST /users' | 'DELETE /users' | 'GET /health';
+
+  And a parameterised route type:
+    type DynamicRoute = `GET /users/${string}`;
+
+  Implement a function:
+    function matchRoute(method: string, path: string): string
+
+  It should return the matched route string (e.g. "GET /users") or "GET /users/:id" for
+  dynamic user paths, or "not found" if nothing matches.
+
+  Matching rules (checked in order):
+    1. "GET /health"          → return "GET /health"
+    2. "GET /users"           → return "GET /users"
+    3. "POST /users"          → return "POST /users"
+    4. "DELETE /users"        → return "DELETE /users"
+    5. "GET /users/<anything>" where <anything> is non-empty → return "GET /users/:id"
+    6. anything else          → return "not found"
+
+  Read one request per line from stdin in the format: "METHOD PATH"
+  Print the matched route for each request.
+starter_code: |
+  import * as readline from 'readline';
+
+  type Route = 'GET /users' | 'POST /users' | 'DELETE /users' | 'GET /health';
+  type DynamicRoute = `GET /users/${string}`;
+  type AnyRoute = Route | DynamicRoute;
+
+  function matchRoute(method: string, path: string): string {
+    // implement here — check static routes first, then dynamic, then "not found"
+    return 'not found';
+  }
+
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const spaceIdx = line.trim().indexOf(' ');
+    const method = line.trim().slice(0, spaceIdx);
+    const path = line.trim().slice(spaceIdx + 1);
+    console.log(matchRoute(method, path));
+  });
+test_cases:
+  - input: "GET /users\nPOST /users\n"
+    expected_output: "GET /users\nPOST /users\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "GET /users/42\nGET /health\nDELETE /users\n"
+    expected_output: "GET /users/:id\nGET /health\nDELETE /users\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "GET /users/abc\nPUT /users\nGET /unknown\n"
+    expected_output: "GET /users/:id\nnot found\nnot found\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Check the static routes first with exact string comparison: if (method === 'GET' && path === '/users') return 'GET /users'"
+  - "For dynamic routes, check: method === 'GET' && path.startsWith('/users/') && path.length > '/users/'.length"
+  - "Template literal types (DynamicRoute) enforce the shape at compile time but don't add runtime behavior"
+  - "The type AnyRoute = Route | DynamicRoute gives you a union that covers all valid routes"
+  - "Compile-time: a variable typed as AnyRoute must satisfy one of the literal patterns; runtime: use regular string logic"
+solution: |
+  import * as readline from 'readline';
+
+  type Route = 'GET /users' | 'POST /users' | 'DELETE /users' | 'GET /health';
+  type DynamicRoute = `GET /users/${string}`;
+  type AnyRoute = Route | DynamicRoute;
+
+  function matchRoute(method: string, path: string): string {
+    const route = `${method} ${path}`;
+    if (route === 'GET /health')    return 'GET /health';
+    if (route === 'GET /users')     return 'GET /users';
+    if (route === 'POST /users')    return 'POST /users';
+    if (route === 'DELETE /users')  return 'DELETE /users';
+    if (method === 'GET' && path.startsWith('/users/') && path.length > '/users/'.length) {
+      return 'GET /users/:id';
+    }
+    return 'not found';
+  }
+
+  const rl = readline.createInterface({ input: process.stdin });
+  rl.on('line', line => {
+    const spaceIdx = line.trim().indexOf(' ');
+    const method = line.trim().slice(0, spaceIdx);
+    const path = line.trim().slice(spaceIdx + 1);
+    console.log(matchRoute(method, path));
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms

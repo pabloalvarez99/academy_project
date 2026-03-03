@@ -1,0 +1,103 @@
+id: ts-020
+title: "DeepReadonly Recursive Mapped Type"
+difficulty: 3
+tags: [mapped-types, recursive-types, typescript, immutability, utility-types]
+description: |
+  Implement the DeepReadonly<T> recursive mapped type that makes all nested properties readonly.
+
+  type DeepReadonly<T> = T extends (infer U)[]
+    ? ReadonlyArray<DeepReadonly<U>>
+    : T extends object
+    ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
+    : T;
+
+  Then implement a runtime function:
+    function freeze<T>(obj: T): DeepReadonly<T>
+
+  freeze() should deeply freeze an object using Object.freeze() recursively, returning a
+  DeepReadonly<T> typed result.
+
+  Read a single line of JSON from stdin. Apply freeze() to the parsed object.
+  Print the result as JSON (JSON.stringify). The structure should be identical since
+  freeze() does not change values — it only makes them immutable at the type level.
+
+  After freezing, attempt to verify the freeze worked by checking Object.isFrozen().
+  Print "frozen: true" or "frozen: false" on the second line.
+starter_code: |
+  import * as readline from 'readline';
+
+  type DeepReadonly<T> = T extends (infer U)[]
+    ? ReadonlyArray<DeepReadonly<U>>
+    : T extends object
+    ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
+    : T;
+
+  function freeze<T>(obj: T): DeepReadonly<T> {
+    // implement here — recursively Object.freeze all nested objects/arrays
+    return obj as DeepReadonly<T>;
+  }
+
+  const rl = readline.createInterface({ input: process.stdin });
+  const lines: string[] = [];
+  rl.on('line', l => lines.push(l.trim()));
+  rl.on('close', () => {
+    const data = JSON.parse(lines[0]);
+    const frozen = freeze(data);
+    console.log(JSON.stringify(frozen));
+    console.log(`frozen: ${Object.isFrozen(frozen)}`);
+  });
+test_cases:
+  - input: "{\"name\":\"Alice\",\"age\":30}\n"
+    expected_output: "{\"name\":\"Alice\",\"age\":30}\nfrozen: true\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "{\"user\":{\"id\":1,\"role\":\"admin\"}}\n"
+    expected_output: "{\"user\":{\"id\":1,\"role\":\"admin\"}}\nfrozen: true\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+  - input: "{\"items\":[1,2,3],\"meta\":{\"count\":3}}\n"
+    expected_output: "{\"items\":[1,2,3],\"meta\":{\"count\":3}}\nfrozen: true\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 131072
+hints:
+  - "Check if obj is null or not an object first: if (obj === null || typeof obj !== 'object') return obj as DeepReadonly<T>"
+  - "If it's an array, recursively freeze each element, then Object.freeze the array"
+  - "If it's an object, iterate Object.values and recursively freeze each value, then Object.freeze the object"
+  - "Object.freeze() returns the same object reference — you can freeze in-place and return it"
+  - "DeepReadonly is a compile-time type only; the runtime work is done by Object.freeze()"
+solution: |
+  import * as readline from 'readline';
+
+  type DeepReadonly<T> = T extends (infer U)[]
+    ? ReadonlyArray<DeepReadonly<U>>
+    : T extends object
+    ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
+    : T;
+
+  function freeze<T>(obj: T): DeepReadonly<T> {
+    if (obj === null || typeof obj !== 'object') {
+      return obj as DeepReadonly<T>;
+    }
+    if (Array.isArray(obj)) {
+      obj.forEach(item => freeze(item));
+    } else {
+      Object.values(obj as object).forEach(val => freeze(val));
+    }
+    return Object.freeze(obj) as DeepReadonly<T>;
+  }
+
+  const rl = readline.createInterface({ input: process.stdin });
+  const lines: string[] = [];
+  rl.on('line', l => lines.push(l.trim()));
+  rl.on('close', () => {
+    const data = JSON.parse(lines[0]);
+    const frozen = freeze(data);
+    console.log(JSON.stringify(frozen));
+    console.log(`frozen: ${Object.isFrozen(frozen)}`);
+  });
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: typescript
+  category: algorithms
