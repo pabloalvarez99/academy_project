@@ -1,0 +1,68 @@
+id: py-advanced-011
+title: "Namedtuple and Counter"
+difficulty: 2
+tags: [python, collections, namedtuple, counter, word-frequency]
+description: |
+  Use collections.namedtuple and Counter together for word frequency analysis.
+  Define WordCount = namedtuple('WordCount', ['word', 'count']).
+  Read all text from stdin, tokenize into lowercase words (strip punctuation), count frequencies with Counter.
+  Print the top 5 words as WordCount namedtuples, sorted by count descending then word ascending for ties.
+
+  Input format:
+    Multiple lines of text
+  Output:
+    5 lines of "WordCount(word='<word>', count=<count>)" using the namedtuple repr
+starter_code: |
+  import sys
+  import string
+  from collections import namedtuple, Counter
+
+  WordCount = namedtuple('WordCount', ['word', 'count'])
+
+  text = sys.stdin.read()
+  # tokenize: lowercase, remove punctuation, split on whitespace
+  words = []  # fill this
+
+  # count with Counter, build top-5 WordCount list sorted by (-count, word)
+  pass
+test_cases:
+  - input: "the cat sat on the mat the cat sat on the hat\n"
+    expected_output: "WordCount(word='the', count=4)\nWordCount(word='cat', count=2)\nWordCount(word='on', count=2)\nWordCount(word='sat', count=2)\nWordCount(word='hat', count=1)\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "to be or not to be that is the question to be\n"
+    expected_output: "WordCount(word='be', count=3)\nWordCount(word='to', count=3)\nWordCount(word='is', count=1)\nWordCount(word='not', count=1)\nWordCount(word='or', count=1)\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "apple banana apple cherry banana apple cherry cherry mango mango grape\n"
+    expected_output: "WordCount(word='apple', count=3)\nWordCount(word='cherry', count=3)\nWordCount(word='banana', count=2)\nWordCount(word='mango', count=2)\nWordCount(word='grape', count=1)\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "text.translate(str.maketrans('', '', string.punctuation)) removes all punctuation"
+  - "Counter(words).most_common() returns (word, count) pairs sorted by count desc"
+  - "For tie-breaking, sort by (-count, word) so words with same count sort alphabetically"
+  - "namedtuple repr prints as WordCount(word='x', count=n) automatically"
+solution: |
+  import sys
+  import string
+  from collections import namedtuple, Counter
+
+  WordCount = namedtuple('WordCount', ['word', 'count'])
+
+  text = sys.stdin.read().lower()
+  text = text.translate(str.maketrans('', '', string.punctuation))
+  words = text.split()
+
+  counter = Counter(words)
+  sorted_words = sorted(counter.items(), key=lambda x: (-x[1], x[0]))
+  top5 = sorted_words[:5]
+
+  for word, count in top5:
+      print(WordCount(word=word, count=count))
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: advanced

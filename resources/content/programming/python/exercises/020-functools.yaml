@@ -1,0 +1,104 @@
+id: py-advanced-007
+title: "Functools"
+difficulty: 2
+tags: [python, functools, reduce, partial, lru_cache, higher-order-functions]
+description: |
+  Practice the functools module with three utilities:
+  1. reduce(): multiply all numbers in a list
+  2. partial(): create a square() function from a general power(base, exp) function
+  3. lru_cache(): memoized fibonacci
+
+  Read one command per line and print the result.
+
+  Input format:
+    reduce n1 n2 ...     → print product of all numbers
+    square n             → print n squared using partial-based square()
+    fib n                → print nth Fibonacci number (0-indexed) using lru_cache
+  Output:
+    One result per line
+starter_code: |
+  import sys
+  from functools import reduce, partial, lru_cache
+
+  def multiply_all(numbers: list[int]) -> int:
+      pass  # use reduce
+
+  def power(base: int, exp: int) -> int:
+      return base ** exp
+
+  square = None  # create using partial(power, exp=2) — note: use partial correctly
+
+  @lru_cache(maxsize=None)
+  def fib(n: int) -> int:
+      pass  # implement recursively with memoization
+
+  for line in sys.stdin:
+      parts = line.split()
+      if not parts:
+          continue
+      cmd = parts[0]
+      if cmd == 'reduce':
+          # call multiply_all
+          pass
+      elif cmd == 'square':
+          # call square
+          pass
+      elif cmd == 'fib':
+          # call fib
+          pass
+test_cases:
+  - input: "reduce 2 3 4\nsquare 7\nfib 10\n"
+    expected_output: "24\n49\n55\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "fib 0\nfib 1\nreduce 5 5\n"
+    expected_output: "0\n1\n25\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "square 12\nreduce 1 2 3 4 5\nfib 7\n"
+    expected_output: "144\n120\n13\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "reduce(lambda a, b: a * b, numbers) multiplies all elements"
+  - "partial(power, exp=2) won't work because exp is the second positional arg; use partial(power, **{'exp':2}) or define square differently: partial(lambda b, e: b**e, e=2) — simplest: square = lambda n: power(n, 2) or use partial with keyword"
+  - "Clearest partial: define power(base, exp) and use square = partial(power, exp=2)"
+  - "@lru_cache memoizes recursive calls; fib(n) = fib(n-1) + fib(n-2), base cases fib(0)=0, fib(1)=1"
+solution: |
+  import sys
+  from functools import reduce, partial, lru_cache
+
+  def multiply_all(numbers: list[int]) -> int:
+      return reduce(lambda a, b: a * b, numbers)
+
+  def power(base: int, exp: int) -> int:
+      return base ** exp
+
+  square = partial(power, exp=2)
+
+  @lru_cache(maxsize=None)
+  def fib(n: int) -> int:
+      if n <= 0:
+          return 0
+      if n == 1:
+          return 1
+      return fib(n - 1) + fib(n - 2)
+
+  for line in sys.stdin:
+      parts = line.split()
+      if not parts:
+          continue
+      cmd = parts[0]
+      if cmd == 'reduce':
+          nums = list(map(int, parts[1:]))
+          print(multiply_all(nums))
+      elif cmd == 'square':
+          print(square(int(parts[1])))
+      elif cmd == 'fib':
+          print(fib(int(parts[1])))
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: advanced

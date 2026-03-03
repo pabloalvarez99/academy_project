@@ -1,0 +1,100 @@
+id: py-advanced-005
+title: "Abstract Classes"
+difficulty: 2
+tags: [python, abc, abstract-class, oop, inheritance]
+description: |
+  Use Python's abc module to define an abstract base class Shape with an abstract method area().
+  Implement two concrete subclasses: Circle(radius) and Rectangle(width, height).
+  Read shape specifications from stdin, one per line, and print each area rounded to 2 decimal places.
+
+  Input format:
+    Each line: "circle radius" or "rectangle width height"
+  Output:
+    Each line: the area as a float rounded to 2 decimal places
+starter_code: |
+  from abc import ABC, abstractmethod
+  import math
+  import sys
+
+  class Shape(ABC):
+      @abstractmethod
+      def area(self) -> float:
+          pass  # implement in subclasses
+
+  class Circle(Shape):
+      def __init__(self, radius: float):
+          self.radius = radius
+
+      def area(self) -> float:
+          pass  # implement
+
+  class Rectangle(Shape):
+      def __init__(self, width: float, height: float):
+          self.width = width
+          self.height = height
+
+      def area(self) -> float:
+          pass  # implement
+
+  for line in sys.stdin:
+      # parse line and print area
+      pass
+test_cases:
+  - input: "circle 5\nrectangle 4 6\ncircle 1\n"
+    expected_output: "78.54\n24.0\n3.14\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "rectangle 3 3\ncircle 2.5\nrectangle 10 2\n"
+    expected_output: "9.0\n19.63\n20.0\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "circle 0\nrectangle 1 1\n"
+    expected_output: "0.0\n1.0\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Circle area = math.pi * radius ** 2"
+  - "Rectangle area = width * height"
+  - "You cannot instantiate an ABC directly; subclasses must implement all abstract methods"
+  - "round(value, 2) rounds to 2 decimal places"
+solution: |
+  from abc import ABC, abstractmethod
+  import math
+  import sys
+
+  class Shape(ABC):
+      @abstractmethod
+      def area(self) -> float:
+          pass
+
+  class Circle(Shape):
+      def __init__(self, radius: float):
+          self.radius = radius
+
+      def area(self) -> float:
+          return math.pi * self.radius ** 2
+
+  class Rectangle(Shape):
+      def __init__(self, width: float, height: float):
+          self.width = width
+          self.height = height
+
+      def area(self) -> float:
+          return self.width * self.height
+
+  for line in sys.stdin:
+      line = line.strip()
+      if not line:
+          continue
+      parts = line.split()
+      if parts[0] == 'circle':
+          shape = Circle(float(parts[1]))
+      else:
+          shape = Rectangle(float(parts[1]), float(parts[2]))
+      print(round(shape.area(), 2))
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: advanced

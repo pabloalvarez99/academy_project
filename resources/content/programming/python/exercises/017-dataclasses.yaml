@@ -1,0 +1,75 @@
+id: py-advanced-004
+title: "Dataclasses"
+difficulty: 2
+tags: [python, dataclasses, oop]
+description: |
+  Use Python's @dataclass decorator to define a Product with fields: name (str), price (float), stock (int).
+  Implement a method total_value() returning price * stock.
+  Read N products (one per line: "name price stock"), print "name: total_value" for each, sorted by total_value descending.
+
+  Input format:
+    Each line: name price stock
+  Output:
+    Each line: "name: total_value" sorted by total_value descending
+starter_code: |
+  from dataclasses import dataclass
+  import sys
+
+  @dataclass
+  class Product:
+      name: str
+      price: float
+      stock: int
+
+      def total_value(self) -> float:
+          pass  # implement
+
+  for line in sys.stdin:
+      # parse and process
+      pass
+test_cases:
+  - input: "apple 1.5 100\nbanana 0.8 200\norange 2.0 50\n"
+    expected_output: "banana: 160.0\napple: 150.0\norange: 100.0\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "laptop 999.99 3\nphone 499.50 10\ncable 9.99 100\n"
+    expected_output: "phone: 4995.0\nlaptop: 2999.97\ncable: 999.0\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "widget 2.5 4\n"
+    expected_output: "widget: 10.0\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "@dataclass auto-generates __init__, __repr__, __eq__"
+  - "sorted(items, key=lambda x: x.total_value(), reverse=True)"
+  - "Use float(parts[1]) and int(parts[2]) when parsing each line"
+solution: |
+  from dataclasses import dataclass
+  import sys
+
+  @dataclass
+  class Product:
+      name: str
+      price: float
+      stock: int
+
+      def total_value(self) -> float:
+          return self.price * self.stock
+
+  products = []
+  for line in sys.stdin:
+      line = line.strip()
+      if not line:
+          continue
+      parts = line.split()
+      products.append(Product(parts[0], float(parts[1]), int(parts[2])))
+
+  for p in sorted(products, key=lambda x: x.total_value(), reverse=True):
+      print(f"{p.name}: {p.total_value()}")
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: advanced

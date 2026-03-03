@@ -1,0 +1,82 @@
+id: py-advanced-009
+title: "Asyncio Basics"
+difficulty: 3
+tags: [python, asyncio, async, await, concurrency, gather]
+description: |
+  Use asyncio to simulate concurrent I/O. Implement async def fetch(url, delay) that
+  sleeps for delay seconds (simulating network I/O) then prints "fetched: url".
+  Run all fetches concurrently using asyncio.gather().
+
+  Read lines from stdin where each line is "url delay_ms". Launch all fetches concurrently.
+  The output order is determined by delay (shortest delay completes first).
+
+  Input format:
+    Each line: "url delay_ms"   (delay_ms is milliseconds as an integer)
+  Output:
+    "fetched: url" printed as each fetch completes (shortest delay first)
+starter_code: |
+  import asyncio
+  import sys
+
+  async def fetch(url: str, delay_ms: int) -> None:
+      # sleep for delay_ms milliseconds, then print "fetched: url"
+      pass
+
+  async def main(tasks: list[tuple[str, int]]) -> None:
+      # create coroutines and run them concurrently with asyncio.gather
+      pass
+
+  lines = sys.stdin.read().strip().splitlines()
+  tasks = []
+  for line in lines:
+      if line.strip():
+          parts = line.split()
+          # parse url and delay_ms, add to tasks
+          pass
+
+  asyncio.run(main(tasks))
+test_cases:
+  - input: "https://slow.io 300\nhttps://fast.io 100\nhttps://mid.io 200\n"
+    expected_output: "fetched: https://fast.io\nfetched: https://mid.io\nfetched: https://slow.io\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "https://a.com 50\nhttps://b.com 50\nhttps://c.com 150\n"
+    expected_output: "fetched: https://a.com\nfetched: https://b.com\nfetched: https://c.com\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "https://only.io 100\n"
+    expected_output: "fetched: https://only.io\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "await asyncio.sleep(delay_ms / 1000) converts milliseconds to seconds"
+  - "asyncio.gather(*coroutines) runs all coroutines concurrently"
+  - "Print inside fetch after the sleep to get completion-order output"
+  - "asyncio.run(main()) is the entry point for running an async program"
+solution: |
+  import asyncio
+  import sys
+
+  async def fetch(url: str, delay_ms: int) -> None:
+      await asyncio.sleep(delay_ms / 1000)
+      print(f"fetched: {url}")
+
+  async def main(tasks: list[tuple[str, int]]) -> None:
+      coroutines = [fetch(url, delay) for url, delay in tasks]
+      await asyncio.gather(*coroutines)
+
+  lines = sys.stdin.read().strip().splitlines()
+  tasks = []
+  for line in lines:
+      line = line.strip()
+      if line:
+          parts = line.split()
+          tasks.append((parts[0], int(parts[1])))
+
+  asyncio.run(main(tasks))
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: advanced

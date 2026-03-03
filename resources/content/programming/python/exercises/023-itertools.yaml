@@ -1,0 +1,92 @@
+id: py-advanced-010
+title: "Itertools"
+difficulty: 2
+tags: [python, itertools, chain, groupby, islice, combinations]
+description: |
+  Practice the itertools module with four operations.
+  Read one command per run and print the result.
+
+  Input format:
+    chain a b c | x y z          → chain two space-separated groups, print each element
+    groupby a a b b b c           → group consecutive equal elements, print "key: count"
+    islice n a b c d e f ...      → print first n elements from the sequence
+    combinations n a b c d ...    → print all combinations of length n, space-separated tuples
+  Output:
+    One element or group per line
+starter_code: |
+  import sys
+  from itertools import chain, groupby, islice, combinations
+
+  line = sys.stdin.read().strip()
+  parts = line.split()
+  cmd = parts[0]
+
+  if cmd == 'chain':
+      # split remaining on '|', chain the two groups, print each element
+      pass
+  elif cmd == 'groupby':
+      # group consecutive equal elements, print "key: count" per group
+      pass
+  elif cmd == 'islice':
+      # parse n, then take first n elements from the rest
+      pass
+  elif cmd == 'combinations':
+      # parse n, then print all combinations of length n from the rest
+      pass
+test_cases:
+  - input: "chain 1 2 3 | 4 5 6\n"
+    expected_output: "1\n2\n3\n4\n5\n6\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "groupby a a b b b c\n"
+    expected_output: "a: 2\nb: 3\nc: 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "islice 3 10 20 30 40 50\n"
+    expected_output: "10\n20\n30\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "combinations 2 a b c\n"
+    expected_output: "a b\na c\nb c\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "chain(*groups): split on '|' in the raw input string to get two groups"
+  - "groupby requires consecutive equal elements — the input is already grouped"
+  - "islice(iterator, n) returns at most n items from the iterator"
+  - "combinations(iterable, r) yields tuples; join each with a space for output"
+solution: |
+  import sys
+  from itertools import chain, groupby, islice, combinations
+
+  line = sys.stdin.read().strip()
+  parts = line.split()
+  cmd = parts[0]
+
+  if cmd == 'chain':
+      rest = ' '.join(parts[1:])
+      groups = rest.split('|')
+      left = groups[0].split()
+      right = groups[1].split()
+      for item in chain(left, right):
+          print(item)
+  elif cmd == 'groupby':
+      items = parts[1:]
+      for key, group in groupby(items):
+          print(f"{key}: {len(list(group))}")
+  elif cmd == 'islice':
+      n = int(parts[1])
+      items = parts[2:]
+      for item in islice(items, n):
+          print(item)
+  elif cmd == 'combinations':
+      n = int(parts[1])
+      items = parts[2:]
+      for combo in combinations(items, n):
+          print(' '.join(combo))
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: advanced

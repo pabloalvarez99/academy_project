@@ -1,0 +1,77 @@
+id: py-advanced-012
+title: "Type Hints"
+difficulty: 2
+tags: [python, type-hints, typing, generics, dict]
+description: |
+  Write a fully type-annotated function merge_dicts(d1: dict[str, int], d2: dict[str, int]) -> dict[str, int]
+  that merges two dicts, summing values for duplicate keys.
+  Read N dicts from stdin (one JSON object per line), merge them all left-to-right, and print each key:value
+  pair sorted by key ascending.
+
+  Input format:
+    Each line: a JSON object like {"a": 1, "b": 2}
+  Output:
+    Each line: "key: value" sorted by key ascending
+starter_code: |
+  import sys
+  import json
+  from typing import TypeVar
+
+  def merge_dicts(d1: dict[str, int], d2: dict[str, int]) -> dict[str, int]:
+      pass  # merge d1 and d2, summing values for shared keys
+
+  lines = sys.stdin.read().strip().splitlines()
+  dicts = []
+  for line in lines:
+      if line.strip():
+          # parse JSON and add to dicts list
+          pass
+
+  # merge all dicts using merge_dicts, then print sorted key:value pairs
+  pass
+test_cases:
+  - input: "{\"a\": 1, \"b\": 2}\n{\"b\": 3, \"c\": 4}\n"
+    expected_output: "a: 1\nb: 5\nc: 4\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "{\"x\": 10}\n{\"x\": 5, \"y\": 3}\n{\"y\": 2, \"z\": 1}\n"
+    expected_output: "x: 15\ny: 5\nz: 1\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "{\"score\": 100, \"bonus\": 50}\n{\"score\": 25}\n{\"bonus\": 10, \"penalty\": 5}\n"
+    expected_output: "bonus: 60\npenalty: 5\nscore: 125\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "dict[str, int] is valid in Python 3.10+ without importing from typing"
+  - "To merge: result = {**d1}; for k, v in d2.items(): result[k] = result.get(k, 0) + v"
+  - "Use functools.reduce(merge_dicts, dicts) to fold over all dicts"
+  - "sorted(result.items()) returns (key, value) pairs sorted alphabetically by key"
+solution: |
+  import sys
+  import json
+  from functools import reduce
+
+  def merge_dicts(d1: dict[str, int], d2: dict[str, int]) -> dict[str, int]:
+      result = dict(d1)
+      for k, v in d2.items():
+          result[k] = result.get(k, 0) + v
+      return result
+
+  lines = sys.stdin.read().strip().splitlines()
+  dicts = []
+  for line in lines:
+      line = line.strip()
+      if line:
+          dicts.append(json.loads(line))
+
+  if dicts:
+      merged = reduce(merge_dicts, dicts)
+      for key, value in sorted(merged.items()):
+          print(f"{key}: {value}")
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: advanced

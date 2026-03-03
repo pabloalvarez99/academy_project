@@ -1,0 +1,101 @@
+id: py-advanced-008
+title: "Protocol Types"
+difficulty: 2
+tags: [python, typing, protocol, structural-subtyping, duck-typing]
+description: |
+  Use typing.Protocol to define a Drawable protocol with a draw() method returning a string.
+  Create Circle(radius) and Square(side) classes that satisfy the protocol without inheriting from it.
+  Read shape specifications from stdin, instantiate the correct shape, and print the result of draw().
+
+  Input format:
+    Each line: "circle radius" or "square side"
+  Output:
+    circle radius r  → "Circle(r=<radius>)"
+    square side s    → "Square(s=<side>)"
+starter_code: |
+  from typing import Protocol
+  import sys
+
+  class Drawable(Protocol):
+      def draw(self) -> str:
+          ...
+
+  class Circle:
+      def __init__(self, radius: float):
+          self.radius = radius
+
+      def draw(self) -> str:
+          pass  # return "Circle(r=<radius>)"
+
+  class Square:
+      def __init__(self, side: float):
+          self.side = side
+
+      def draw(self) -> str:
+          pass  # return "Square(s=<side>)"
+
+  def render(shape: Drawable) -> str:
+      return shape.draw()
+
+  for line in sys.stdin:
+      # parse line, create shape, call render(), print result
+      pass
+test_cases:
+  - input: "circle 5\nsquare 3\ncircle 2.5\n"
+    expected_output: "Circle(r=5.0)\nSquare(s=3.0)\nCircle(r=2.5)\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "square 10\ncircle 1\nsquare 0.5\n"
+    expected_output: "Square(s=10.0)\nCircle(r=1.0)\nSquare(s=0.5)\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "circle 100\nsquare 7\n"
+    expected_output: "Circle(r=100.0)\nSquare(s=7.0)\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "Protocol uses structural subtyping — classes don't need to inherit from Drawable"
+  - "Any class with a matching draw() method satisfies the Drawable protocol"
+  - "f'Circle(r={self.radius})' — use float so that '5' becomes '5.0'"
+  - "render() accepts a Drawable for type safety, but duck typing handles it at runtime"
+solution: |
+  from typing import Protocol
+  import sys
+
+  class Drawable(Protocol):
+      def draw(self) -> str:
+          ...
+
+  class Circle:
+      def __init__(self, radius: float):
+          self.radius = radius
+
+      def draw(self) -> str:
+          return f"Circle(r={self.radius})"
+
+  class Square:
+      def __init__(self, side: float):
+          self.side = side
+
+      def draw(self) -> str:
+          return f"Square(s={self.side})"
+
+  def render(shape: Drawable) -> str:
+      return shape.draw()
+
+  for line in sys.stdin:
+      line = line.strip()
+      if not line:
+          continue
+      parts = line.split()
+      if parts[0] == 'circle':
+          shape = Circle(float(parts[1]))
+      else:
+          shape = Square(float(parts[1]))
+      print(render(shape))
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: advanced

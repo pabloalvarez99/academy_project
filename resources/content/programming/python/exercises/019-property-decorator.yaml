@@ -1,0 +1,89 @@
+id: py-advanced-006
+title: "Property Decorator"
+difficulty: 2
+tags: [python, property, getter, setter, oop]
+description: |
+  Implement a Temperature class using @property and @setter.
+  The class stores temperature internally in Celsius.
+  Expose a celsius property (with getter and setter) and a fahrenheit property (read-only, computed as C * 9/5 + 32).
+  The celsius setter must raise ValueError if the value is below absolute zero (-273.15).
+  Read Celsius values from stdin (one per line), print the Fahrenheit equivalent rounded to 2 decimal places.
+
+  Input format:
+    Each line: a float representing degrees Celsius
+  Output:
+    Each line: the Fahrenheit equivalent rounded to 2 decimal places
+starter_code: |
+  import sys
+
+  class Temperature:
+      def __init__(self, celsius: float = 0.0):
+          self._celsius = celsius
+
+      @property
+      def celsius(self) -> float:
+          pass  # return internal value
+
+      @celsius.setter
+      def celsius(self, value: float):
+          pass  # validate and set
+
+      @property
+      def fahrenheit(self) -> float:
+          pass  # compute from celsius
+
+  for line in sys.stdin:
+      # parse celsius, set on Temperature, print fahrenheit
+      pass
+test_cases:
+  - input: "0\n100\n-40\n"
+    expected_output: "32.0\n212.0\n-40.0\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "37\n20\n-10\n"
+    expected_output: "98.6\n68.0\n14.0\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+  - input: "273.15\n-273.15\n"
+    expected_output: "523.67\n-459.67\n"
+    time_limit_ms: 5000
+    memory_limit_kb: 65536
+hints:
+  - "@property defines a getter; @celsius.setter defines the matching setter"
+  - "Fahrenheit formula: celsius * 9 / 5 + 32"
+  - "Raise ValueError('below absolute zero') if value < -273.15"
+  - "round(value, 2) for the output"
+solution: |
+  import sys
+
+  class Temperature:
+      def __init__(self, celsius: float = 0.0):
+          self._celsius = celsius
+
+      @property
+      def celsius(self) -> float:
+          return self._celsius
+
+      @celsius.setter
+      def celsius(self, value: float):
+          if value < -273.15:
+              raise ValueError("below absolute zero")
+          self._celsius = value
+
+      @property
+      def fahrenheit(self) -> float:
+          return self._celsius * 9 / 5 + 32
+
+  t = Temperature()
+  for line in sys.stdin:
+      line = line.strip()
+      if not line:
+          continue
+      t.celsius = float(line)
+      print(round(t.fahrenheit, 2))
+metadata:
+  version: "1.0.0"
+  content_version: 1
+  module: programming
+  language: python
+  category: advanced

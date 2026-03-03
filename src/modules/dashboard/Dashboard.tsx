@@ -18,6 +18,7 @@ export function Dashboard() {
   const [loading, setLoading] = useState(true)
   const grammarProgress = getLocalProgress('grammar-progress-v1', 39)
   const sqlProgress = getLocalProgress('sql-progress-v1', 26)
+  const progProgress = getLocalProgress('programming-progress-v1', 131)
   const sysDesignKnown = (() => {
     try { return JSON.parse(localStorage.getItem('system-design-known-v1') || '[]').length } catch { return 0 }
   })()
@@ -57,8 +58,11 @@ export function Dashboard() {
       </div>
 
       {/* Skill tree progress bars */}
-      {(grammarProgress.done > 0 || sqlProgress.done > 0 || sysDesignKnown > 0) && (
-        <div className="grid grid-cols-3 gap-3 mb-6">
+      {(grammarProgress.done > 0 || sqlProgress.done > 0 || progProgress.done > 0 || sysDesignKnown > 0) && (
+        <div className="grid grid-cols-4 gap-3 mb-6">
+          {progProgress.done > 0 && (
+            <ProgressCard icon="⌨" label="Programming" progress={progProgress} />
+          )}
           {grammarProgress.done > 0 && (
             <ProgressCard icon="✍️" label="Grammar" progress={grammarProgress} />
           )}
